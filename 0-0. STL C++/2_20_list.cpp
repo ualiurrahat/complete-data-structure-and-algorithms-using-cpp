@@ -3,7 +3,6 @@
 // effective deletion and insertion operation.
 // list is used when we need to insert and delete elements very fast.
 // linked list is a non-sequential data structure.
-
 // linked list is a connection of nodes
 // having data and address.
 // and the address inside the node will be next address.

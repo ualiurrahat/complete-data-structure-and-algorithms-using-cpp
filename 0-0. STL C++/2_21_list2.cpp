@@ -30,6 +30,7 @@ void display(forward_list<int> &li)
 int main()
 {
     // Singly LL
+    // creating assigning value directly
     forward_list<int> l1 = {2, 5, 6, 7};
     // 2 is head of l1 and 7 is the tail.
 
@@ -41,6 +42,7 @@ int main()
 
     // creating another single linked list.
     forward_list<int> l2;
+    // assigning value with assign() function
     l2.assign({3, 8, 9, 13});
 
     cout << l2.front() << endl;
