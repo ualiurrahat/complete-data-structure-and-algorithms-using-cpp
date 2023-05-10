@@ -1,11 +1,8 @@
 // set in c++ stl.
 /*
-Topic : Set
-
-syntax : set<T>objectName;
 1. set is an associative container that contains a sorted set of unique objects of type key.
 2. it is actually implemented using Red Black Tree(RBT)
-3. If we want to keep user defined data type in set, then we will have to 
+3. If we want to keep user defined data type in set, then we will have to
    provide compare function so that we can store them in sorted order.
 set:
 --> the result are sorted.
@@ -27,15 +24,16 @@ using namespace std;
 int main()
 {
     // set is just like a mathematical set.
-
-    set<int> s; // s = {10,5,30,2} => s={2,5,10,30};
+    // syntax : set<T>objectName;
+    set<int> s;
+    // s = {10,5,30,2};
+    // set convert this into,   s={2,5,10,30};
     s.insert(10);
     s.insert(5);
     s.insert(30);
     s.insert(2);
     s.insert(2);
-    // though we tried to insert 2 thrice, only one time will be inserted inside the set
-    s.insert(2);
+    // though we tried to insert 2 twice, only one time will be inserted inside the set
     cout << s.size() << endl;
 
     // now lets check if 8 and 2 is in the set or not.
@@ -61,8 +59,18 @@ int main()
 
     // lets see how many 2's are there in the set.
     int count = s.count(2);
-    cout << count << endl; // see. 2 is only 1 time here even though mentioned 3 time.
+    cout << count << endl;
+    // see. 2 is only 1 time here even though mentioned 3 time.
 
+    // set contains elements in linearly ascending orders
+    // set only stores unique elements. does not contain duplicates of elements
+    // dot operation on index(set.[0]) is not permitted
+    // all the functions work in logarithmic time complexity
+    // printing set:  we can not use this
+    // for (int i = 0; i < s.size(); i++)
+    // {
+    //     cout << s[i] << " " << endl;
+    // } cant use it as s[i] is not permitted
     // displaying the set.
     cout << "s = { ";
     for (it = s.begin(); it != s.end(); it++)
@@ -72,7 +80,6 @@ int main()
     cout << " }" << endl;
 
     // let's try to empty the set s.
-
     s.clear();
     if (s.empty())
     {
