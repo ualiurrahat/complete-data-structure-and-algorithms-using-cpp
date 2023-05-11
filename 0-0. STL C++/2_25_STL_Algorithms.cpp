@@ -44,7 +44,7 @@ int main()
     cout << endl;
 
     // max and min value.
-
+    // returns an iterator in case of vector
     auto it = max_element(v.begin(), v.end());
     cout << "max : " << (*it) << endl;
 
