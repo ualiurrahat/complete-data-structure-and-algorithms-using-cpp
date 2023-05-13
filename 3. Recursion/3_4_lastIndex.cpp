@@ -1,19 +1,21 @@
 // Find the last index of an element inside an array
 // ex: a[] = {5,6,5,4,5};
-// last index of 5 is 4.
+// x = 5, last index of 5 is 4.
+// x = 20 last index of 20 is -1
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
-int lastIndex(int a[], int n, int x)
+int lastIndex(int a[], int size, int x)
 {
-    if (n == 0)
+    // base case
+    if (size == 0)
     {
         return -1;
     }
-
-    int index = lastIndex(a + 1, n - 1, x);
+    // recursive call
+    int index = lastIndex(a + 1, size - 1, x);
     if (index != -1)
     {
         return index + 1;
@@ -39,8 +41,9 @@ int main()
     int n = 5;
     int num = 1;
     cout << lastIndex(a, n, num) << endl;
+    cout << lastIndex(a,n,18) << endl;
     n = 7;
     num = 14;
-    cout << lastIndex(a, n, num) << endl;
+    cout << lastIndex(b, n, num) << endl;
     return 0;
 }
