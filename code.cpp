@@ -1,24 +1,27 @@
 #include <iostream>
 using namespace std;
 
-int fibo(int n)
+bool isSorted(int a[], int n)
 {
-    if(n == 0 || n == 1)
+    if (n == 1 || n == 0)
     {
-        return n;
+        return true;
     }
-    
-    int fibo1 = fibo(n-1);
-    int fibo2 = fibo(n-2);
-    int ans = fibo1 + fibo2;
-    return ans;
+    if (a[0] < a[1])
+    {
+        return isSorted(a+1,n-1);
+    }
+    else
+    {
+        return false;
+    }
 }
 int main()
 {
-    int n;
-    cout << "Enter n : ";
-    cin >> n;
-    cout << fibo(n) << endl;
-    
+    int a[] = {1, 5, 10, 15, 20};
+    int b[] = {10, 5, 1, 20, 5};
+    cout << isSorted(a, 5) << endl;
+    cout << isSorted(b, 5) << endl;
+
     return 0;
 }
