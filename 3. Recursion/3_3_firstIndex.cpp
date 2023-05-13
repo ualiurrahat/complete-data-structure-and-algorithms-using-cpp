@@ -1,22 +1,26 @@
 // Find the first index of a number in an array.
-// ex: a = {18,1,8,1,20}
+// ex: a = {18,1,8,1,20}, x = 1
 // first index of 1 is 1.
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
-int firstIndex(int a[], int n, int x)
+int firstIndex(int a[], int size, int x)
 {
-    if (n == 0)
+    // base case
+    if (size == 0)
     {
         return -1;
     }
+    // small calculation
     if (a[0] == x)
     {
         return 0;
     }
-    int index = firstIndex(a + 1, n - 1, x);
+    // recursive call
+    int index = firstIndex(a + 1, size - 1, x);
+    
     if (index == -1)
     {
         return index;

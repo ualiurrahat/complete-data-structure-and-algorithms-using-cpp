@@ -1,27 +1,27 @@
 #include <iostream>
 using namespace std;
 
-bool isSorted(int a[], int n)
+int firstIndex(int a[], int size, int x)
 {
-    if (n == 1 || n == 0)
+    if (size == 0)
     {
-        return true;
+        return -1;
     }
-    if (a[0] < a[1])
+    if (a[0] == x)
     {
-        return isSorted(a+1,n-1);
+        return 0;
     }
-    else
-    {
-        return false;
-    }
+    int smallOutput = firstIndex(a + 1, size - 1, x);
+    int ans = (smallOutput == -1) ?  smallOutput : smallOutput + 1;
+    return ans;
 }
 int main()
 {
-    int a[] = {1, 5, 10, 15, 20};
+    int a[] = {5,5,6,5,6};
     int b[] = {10, 5, 1, 20, 5};
-    cout << isSorted(a, 5) << endl;
-    cout << isSorted(b, 5) << endl;
+    cout << firstIndex(a, 5,5) << endl;
+    cout << firstIndex(a,5,6) << endl;
+    cout << firstIndex(a,5,20) << endl;
 
     return 0;
 }
