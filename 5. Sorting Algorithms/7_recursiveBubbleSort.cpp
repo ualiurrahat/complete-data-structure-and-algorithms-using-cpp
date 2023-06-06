@@ -10,7 +10,7 @@ void bubbleSortRecursive(int a[], int n)
         return;
     }
 
-    // small calculation- placing the last elemetn to its right postion
+    // small calculation- placing the last element to its right postion
     bool swapped = false;
     for (int i = 0; i < n - 1; i++)
     {
@@ -32,20 +32,30 @@ void bubbleSortRecursive(int a[], int n)
 
 int main()
 {
-    int a[] = {18, 1, 8, 5, 20};
-    int b[] = {1, 2, 3, 4, 5};
-    bubbleSortRecursive(a, 5);
-    for (int i = 0; i < 5; i++)
+     int size;
+    cout << "Enter array size: ";
+    cin >> size;
+
+    int arr[size];
+    cout << "Enter array elements: ";
+    for (int i = 0; i < size; i++)
     {
-        cout << a[i] << " ";
+        cin >> arr[i];
+    }
+    cout << "Given array: ";
+    for (int i = 0; i < size; i++)
+    {
+        cout << arr[i] << " ";
     }
     cout << endl;
-    bubbleSortRecursive(b, 5);
-    for (int i = 0; i < 5; i++)
+    bubbleSortRecursive(arr, size);
+    cout << "Sorted array: ";
+    for (int i = 0; i < size; i++)
     {
-        cout << b[i] << " ";
+        cout << arr[i] << " ";
     }
     cout << endl;
+
 
     return 0;
 }

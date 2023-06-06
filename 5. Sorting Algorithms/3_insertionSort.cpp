@@ -5,6 +5,8 @@ sorted part consisits of the first element only at the beginning
 then elements from unsorted part is compared within the sorted ones
 and inserted within the sorted parts
 thus whole array is sorted
+*** insertion sort is a little improvised sorting algo compared to bubble sort
+because it requires lesser no. of total swapping.
 */
 
 #include <bits/stdc++.h>
