@@ -7,6 +7,9 @@ int main()
 {
      // creating object statically
      Student s1, s2;
+     // here, we did not assign values of these objects properties.
+     // so, now they are given garbage value
+     // ex: s1.age = garbage value,...so on
      // accessing static object properties and assigning value
      // syntax: objectName.propertyName = value;
      s1.age = 20;
