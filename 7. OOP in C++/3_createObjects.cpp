@@ -1,13 +1,14 @@
-#include <bits/stdc++.h>
-// including header file containing Student class.
-#include "6_0_student.cpp"
-
+#include <iostream>
 using namespace std;
+// including header file containing Student class.
+#include "2_studentClass.cpp"
 
 int main()
 {
      // creating object statically
      Student s1, s2;
+     // accessing static object properties and assigning value
+     // syntax: objectName.propertyName = value;
      s1.age = 20;
      s1.roll = 1;
 
@@ -23,9 +24,10 @@ int main()
      cout << endl;
 
      // creating object dynamically
-     // structure: data_type objName = new data_type
+     // structure: dataType *objectName = new dataType
      Student *s3 = new Student;
-     (*s3).age = 25; //s3->age
+     // accessing properties of object using dereferencing
+     (*s3).age = 25; // s3->age
      (*s3).roll = 5;
 
      Student *s4 = new Student;
