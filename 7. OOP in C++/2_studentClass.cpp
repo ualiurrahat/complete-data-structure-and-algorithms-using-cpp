@@ -1,3 +1,5 @@
+#include <iostream>
+using namespace std;
 // class: a user defined data types used to create objects
 // having same properties and funcitons of each
 // writing our Student class here
