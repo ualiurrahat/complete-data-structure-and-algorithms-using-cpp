@@ -1,3 +1,14 @@
+/*
+operator overloading: extending the functionality of pre-existing
+operatetor so that it can work in our user defined classes also.
+example: int c = a+b; is possible for int var a,b,c
+but can we do Fraction f3 = f1 + f2?
+No. why? cause the + operator does not know
+how to add two fraction number.By using operator overloading,
+we can achieve that. WOW!!!
+here, we are overloading operator +,* and ==
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -58,6 +69,11 @@ public:
         this->denominator = this->denominator / gcd;
     }
 
+    // changing the add funciton from previous version
+    // we write on the Fraction class
+    // earlier the result was assigned to this pointer fraction object.
+    // but here, we are assigning result fraction to a new fraction object.
+    // and returning the result.
     Fraction add(Fraction const &f2)
     {
         int lcm = denominator * f2.denominator; // denominator = this->denominator
@@ -66,32 +82,44 @@ public:
 
         int ans_numerator = (x * numerator) + (y * f2.numerator);
 
-        // // now updating f1.
+        // commenting this since we want f1 to be unchanged.
         // numerator = ans_numerator;
         // denominator = lcm;
+
+        // creating new object to obtain result object value.
         Fraction fNew(ans_numerator, lcm);
+        // simplifying the result.
         fNew.simplify();
+
+        // returning result object
         return fNew;
     }
 
-    // Operator Overloading
+    // Operator Overloading: overloading the '+' operator
+    // syntax: returnType operator(keyword)operatorSign(parameter){}
     Fraction operator+(Fraction const &f2) const
     {
+
         int lcm = denominator * f2.denominator; // denominator = this->denominator
         int x = (lcm / denominator);
         int y = (lcm / f2.denominator);
 
         int ans_numerator = (x * numerator) + (y * f2.numerator);
 
-        // // now updating f1.
+        // commenting this since we want f1 to be unchanged.
         // numerator = ans_numerator;
         // denominator = lcm;
+
+        // creating new object to obtain result object value.
         Fraction fNew(ans_numerator, lcm);
+        // simplifying the result.
         fNew.simplify();
+
+        // returning result object
         return fNew;
     }
 
-    // operator overloading for multiplication
+    // operator overloading: the '*' operator
     Fraction operator*(Fraction const &f2) const
     {
         int num = numerator * f2.numerator;
@@ -121,13 +149,21 @@ int main()
     Fraction f1(5, 25);
     Fraction f2(8, 25);
     Fraction f3 = f1.add(f2);
+    cout << "fraction f1 = " << endl;
     f1.show();
+    cout << "fraction f2 = " << endl;
     f2.show();
+    cout << "fraction f3 = f1.add(f2)=" << endl;
     f3.show();
     Fraction f4 = f1 + f2;
+    // here, f1 goes in the this operator.
+    // + sign calls the funciton : Fraction operator+(Fraction const $f2)
+    // f2 goes inside the parameter
+    cout << "fraction f4 = f1+f2 =" << endl;
     f4.show();
 
     Fraction f5 = f1 * f2;
+    cout << "f5 = f1*f2 = " << endl;
     f5.show();
 
     if (f1 == f2)

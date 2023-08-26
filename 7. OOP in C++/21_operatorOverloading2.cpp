@@ -1,4 +1,13 @@
-// unary operator overloading.
+/*
+here, we will overload operators: ++(pre-increment),
+++(post-increment), +=
+
+Note: Whenever we tell our function to return something,
+it uses a buffer memory to make copy of the same data type
+then returns its data. If we want funciton to not make copy
+of the object, and use the object for which we call the function,
+we need to use reference of the object as return type of function.
+*/
 
 #include <bits/stdc++.h>
 
@@ -60,6 +69,11 @@ public:
         this->denominator = this->denominator / gcd;
     }
 
+    // changing the add funciton from previous version
+    // we write on the Fraction class
+    // earlier the result was assigned to this pointer fraction object.
+    // but here, we are assigning result fraction to a new fraction object.
+    // and returning the result.
     Fraction add(Fraction const &f2)
     {
         int lcm = denominator * f2.denominator; // denominator = this->denominator
@@ -68,32 +82,44 @@ public:
 
         int ans_numerator = (x * numerator) + (y * f2.numerator);
 
-        // // now updating f1.
+        // commenting this since we want f1 to be unchanged.
         // numerator = ans_numerator;
         // denominator = lcm;
+
+        // creating new object to obtain result object value.
         Fraction fNew(ans_numerator, lcm);
+        // simplifying the result.
         fNew.simplify();
+
+        // returning result object
         return fNew;
     }
 
-    // Operator Overloading
+    // Operator Overloading: overloading the '+' operator
+    // syntax: returnType operator(keyword)operatorSign(parameter){}
     Fraction operator+(Fraction const &f2) const
     {
+
         int lcm = denominator * f2.denominator; // denominator = this->denominator
         int x = (lcm / denominator);
         int y = (lcm / f2.denominator);
 
         int ans_numerator = (x * numerator) + (y * f2.numerator);
 
-        // // now updating f1.
+        // commenting this since we want f1 to be unchanged.
         // numerator = ans_numerator;
         // denominator = lcm;
+
+        // creating new object to obtain result object value.
         Fraction fNew(ans_numerator, lcm);
+        // simplifying the result.
         fNew.simplify();
+
+        // returning result object
         return fNew;
     }
 
-    // operator overloading for multiplication
+    // operator overloading: the '*' operator
     Fraction operator*(Fraction const &f2) const
     {
         int num = numerator * f2.numerator;
@@ -108,13 +134,12 @@ public:
     {
         return (numerator == f2.numerator && denominator == f2.denominator);
     }
-
     // pre-increment (++)operator overloading
     // ***: nesting is possible in pre-increment operator overloading
     // ex: ++(++i) is possible.
     // if we don't return reference(Fraction&)
     // if we return only object(Fraction)
-    // then function will create a copy of the value
+    // then function will create a copy of the value using buffer memory
     // as the same of this-> object value
     // but ++(++f1)won't work
     // as the outer++ works only in the copied buffer(temporary)
@@ -153,6 +178,8 @@ public:
     }
 
     // plus-equal(+=) operator overloading
+    // it is like adding: f1.add(f2)
+    // but here,resultant is kept on this-> pointer object
     Fraction &operator+=(Fraction const &f2)
     {
         int lcm = denominator * f2.denominator; // denominator = this->denominator
@@ -178,6 +205,10 @@ public:
 
 int main()
 {
+    // += operator supports nesting.
+    int i = 25, j = 8;
+    (i += j) += j; // i = i+j then i = 33,again i = i+j = 41
+    cout << i << " " << j << endl;
     Fraction f1(10, 2);
     f1.show();
     ++f1;
@@ -198,6 +229,5 @@ int main()
     Fraction f6(5, 2);
     f5 += f6;
     f5.show();
-
     return 0;
 }
