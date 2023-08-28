@@ -64,6 +64,66 @@ int majorityElementBetter(int arr[], int n)
     // always contains a majority element
     return -1;
 }
+// T:O(N), S:O(N)
+
+// optimal approach: use moore's voting algo
+// verify if the element  is majority one or not.
+
+int majorityElementOptimal(int arr[], int n)
+{
+    // to store frequency of elements.
+    int count = 0;
+    // to store probable majority element.
+    int ele;
+
+    // applying moore's voting algorithm
+    // if count > 1 for any element,it may be
+    // a majority element.
+    for (int i = 0; i < n; i++)
+    {
+        // starting to check a new portion of the array
+        if (count == 0)
+        {
+            ele = arr[i];
+            count = 1;
+        }
+        // increasing frequency of ele
+        else if (arr[i] == ele)
+        {
+            count++;
+        }
+        // decreasing frequency of ele
+        // since arr[i] != ele
+        else
+        {
+            count--;
+        }
+    }
+    // now if count1 > 0, means there is a
+    // chance that ele is our majority element
+    // but we need to check if ele appears
+    // more than n/2 times in the entire array
+
+    // to store total frequency of ele
+    int count2 = 0;
+    // loop to count total frequency of ele
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] == ele)
+        {
+            count2++;
+        }
+    }
+    // condition for ele to be majority element
+    if (count2 > n / 2)
+    {
+        return ele;
+    }
+    // it never gets executed if there is always
+    // a majority element in the array.
+    return -1;
+}
+// T:O(N), S:O(1)
 int main()
 {
 
@@ -86,7 +146,8 @@ int main()
     }
     cout << endl;
     // cout << "majority element in the array is: " << majorityElementBrute(arr, n) << endl;
-    cout << "majority element in the array is: " << majorityElementBetter(arr, n) << endl;
+    // cout << "majority element in the array is: " << majorityElementBetter(arr, n) << endl;
+    cout << "majority element in the array is: " << majorityElementOptimal(arr, n) << endl;
 
     return 0;
 }
