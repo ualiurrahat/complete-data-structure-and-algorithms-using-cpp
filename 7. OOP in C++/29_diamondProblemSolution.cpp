@@ -36,6 +36,11 @@ public:
         cout << "Vehicle class parameterized constructor!" << endl;
         maxSpeed = z;
     }
+    // print funciton
+    void print()
+    {
+        cout << "vehicle" << endl;
+    }
     // destructor
     ~Vehicle()
     {
@@ -63,13 +68,13 @@ public:
         cout << "Car class destructor!" << endl;
     }
 
-    void print()
-    {
-        cout << "NumTyres: " << numTyres << endl;
-        cout << "NumGears: " << numGears << endl;
-        cout << "color: " << color << endl;
-        // cout << "maxSpeed: " << maxSpeed << endl;
-    }
+    // void print()
+    // {
+    //     cout << "NumTyres: " << numTyres << endl;
+    //     cout << "NumGears: " << numGears << endl;
+    //     cout << "color: " << color << endl;
+    //     // cout << "maxSpeed: " << maxSpeed << endl;
+    // }
 };
 // creating Truck class from Vehicle
 class Truck : public Vehicle
@@ -83,8 +88,34 @@ public:
 
 // now creating a Bus class,
 // taking Truck,Car as its base class.
+class Bus : public Car, public Truck
+{
+public:
+    Bus()
+    {
+        cout << "Bus default constructor!" << endl;
+    }
+};
 int main()
 {
+    Bus b;
+    // look at the constructor call pattern:
+    // vehicle,car,vehicle,truck and then bus constructor.
 
+    // b.print(); show error as ambiguity occurs
+    // Bus is inherited Car,Truck classes
+    // these both classes inherited print() function
+    // from the base Vehcile class.
+    // so compiler is confused on which print()
+    // function user is pointing to.
+    // solution 1: use write Bus class own print() function
+    // solution 2: explicitly mention whose print() funciton
+    // you want to acquire. like this:
+    // b.Car::print();
+
+    // NOTE: if we want to restrict double coping of Vehicle class
+    // properties in class Bus(through inheritance of class Car,Truck)
+    // we can made class Car,Truck virtual
+    // check out the next code.
     return 0;
 }
