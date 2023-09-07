@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "8_0_LinkedListClass.cpp"
+#include "2_linkedListClass.cpp"
 
 using namespace std;
 
@@ -8,17 +8,16 @@ using namespace std;
 // so return type would be Node*
 // the function takes input untill -1 is given as input
 // means function terminates with -1 input
+// we cant ask size as linked list is dynamic
+// so will take input as linked list node
+// untill -1 is given.
 
-Node *take_input()
+Node *takeInput()
 {
-    // we cant ask size as linked list is dynamic
-    // so will take input as linked list node
-    // untill -1 is given.
 
-    // complexity: T:O(n^2)
-    cout << "Enter your data: ";
+    cout << "Enter your data (enter -1 to exit): ";
     int data;
-    // initialising head with null
+    // initialising head node with null
     Node *head = nullptr;
 
     cin >> data;
@@ -39,29 +38,32 @@ Node *take_input()
             }
             temp->next = newNode;
         }
-        cout << "enter data: ";
+        cout << "enter data (enter -1 to exit): ";
         cin >> data;
     }
     return head;
 }
-
-void print_linked_list(Node *head)
+// complexity: T:O(n^2)
+// function to print linked list
+void printLinkedList(Node *head)
 {
-    // always use a temp pointer as head
-    // otherwise maintaining head would be difficult
-
+    // using a temp pointer as head is better
+    // if there is chance of head pointer gets changed
+    // ex: Node* temp = head;
+    // here, we are sending a copy of head pointer address
+    // so, no change is happening in main() function's head node
     while (head != nullptr)
     {
-        cout << head->data << " ";
+        cout << head->data << "->";
         head = head->next;
     }
-    cout << endl;
+    cout << "null" << endl;
 }
 
 int main()
 {
-    Node *head = take_input();
-    print_linked_list(head);
+    Node *head = takeInput();
+    printLinkedList(head);
 
     return 0;
 }

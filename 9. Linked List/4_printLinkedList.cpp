@@ -1,20 +1,22 @@
 #include <bits/stdc++.h>
-#include "8_0_LinkedListClass.cpp"
+#include "2_linkedListClass.cpp"
 
 using namespace std;
 
-void print_linked_list(Node *head)
+// function to print linked list
+void printLinkedList(Node *head)
 {
     // using a temp pointer as head is better
-    // if there is chance of head pointer gets changed 
+    // if there is chance of head pointer gets changed
+    // ex: Node* temp = head;
     // here, we are sending a copy of head pointer address
     // so, no change is happening in main() function's head node
     while (head != nullptr)
     {
-        cout << head->data << " ";
+        cout << head->data << "->";
         head = head->next;
     }
-    cout << endl;
+    cout << "null" << endl;
 }
 
 int main()
@@ -33,12 +35,12 @@ int main()
 
     cout << "head address: " << head << endl;
 
-    print_linked_list(head);
+    printLinkedList(head);
     // we send a copy of head pointer as a parameter
-    // in the print linked list function
+    // in this printLinkedList function
     // so our head pointer in main function
     // remains unchanged
-    print_linked_list(head);
+    printLinkedList(head);
 
     cout << head->data << endl;
     cout << "head address: " << head << endl;
