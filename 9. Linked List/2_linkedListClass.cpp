@@ -14,4 +14,12 @@ public:
         this->data = data;
         this->next = nullptr;
     }
+    // destructor
+    ~Node()
+    {
+        if (next != NULL)
+        {
+            delete next;
+        }
+    }
 };
