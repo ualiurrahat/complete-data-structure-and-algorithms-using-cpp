@@ -1,12 +1,17 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+// Doubly LL class.
+// each node has a data
+// a next pointer to hold next node address
+// a prev pointer to hold previous node address
 class Node
 {
 public:
     int data;
     Node *prev;
     Node *next;
+    // constructor
     Node(int data)
     {
         this->data = data;
@@ -22,7 +27,7 @@ public:
             delete next;
             next = nullptr;
         }
-        if(prev != nullptr)
+        if (prev != nullptr)
         {
             delete prev;
             prev = nullptr;
@@ -30,17 +35,18 @@ public:
         cout << "memory free for node with data " << val << endl;
     }
 };
-
+// function to print Doubly LL
 void print(Node *head)
 {
-    while (head != nullptr)
+    Node *temp = head;
+    while (temp != nullptr)
     {
-        cout << head->data << " ";
-        head = head->next;
+        cout << temp->data << "<->";
+        temp = temp->next;
     }
-    cout << endl;
+    cout << "null" << endl;
 }
-
+// function to get length of a doubley LL
 int length(Node *head)
 {
     if (head == nullptr)
@@ -56,10 +62,12 @@ int length(Node *head)
     }
     return len;
 }
-
+// function to insert a node as head of the doubly LL
+// takes head,tail nodes and data of the node that has to be added in the LL as parameters
+// taking  references of head and tail to make changes in the head node of main() function
 void insertAtHead(Node *&head, Node *&tail, int data)
-// taking head reference to make changes in the head node of main() function
 {
+    // in case if head is null
     if (head == nullptr)
     {
         Node *temp = new Node(data);
@@ -73,6 +81,9 @@ void insertAtHead(Node *&head, Node *&tail, int data)
     head->prev = temp;
     head = temp;
 }
+// function to insert a node as tail of the doubly LL
+// takes head,tail nodes and data of the node that has to be added in the LL as parameters
+// taking  references of head and tail to make changes in the head node of main() function
 void insertAtTail(Node *&head, Node *&tail, int data)
 {
     // if tail is null, means head is null too
@@ -88,15 +99,19 @@ void insertAtTail(Node *&head, Node *&tail, int data)
     temp->prev = tail;
     tail = temp;
 }
-
+// function to insert a node at any given position of the doubly LL
+// takes head,tail nodes and data of the node that has to be added in the LL
+// and the postion where new node has to be placed as parameters
+// taking  references of head and tail to make changes in the head node of main() function
 void insertAtPosition(Node *&head, Node *&tail, int position, int data)
 {
-    // inserting at position 1 == insert at head
+    // in case of inserting at position 1 i.e. insert at head
     if (position == 1)
     {
         insertAtHead(head, tail, data);
         return;
     }
+    // in case of position at any other place
     Node *temp = head;
     int i = 1;
     while (i < position - 1 && temp != nullptr)
@@ -104,7 +119,7 @@ void insertAtPosition(Node *&head, Node *&tail, int position, int data)
         temp = temp->next;
         i++;
     }
-    // inseting at last == insert at tail
+    // in case of inseting at last i.e. insert at tail
     if (temp != nullptr && temp->next == nullptr)
     {
         insertAtTail(head, tail, data);
@@ -124,7 +139,7 @@ void insertAtPosition(Node *&head, Node *&tail, int position, int data)
 // function to take input
 Node *take_input()
 {
-    // we cant ask size as linked list is dynamic
+    // we can not ask size as linked list is dynamic
     // so will take input as linked list node
     // untill -1 is given.
     cout << "enter your linked list: " << endl;
@@ -161,6 +176,7 @@ Node *deleteNode(Node *head, int index)
     if (index == 0)
     {
         Node *temp = head;
+        temp->next->prev = nullptr;
         head = temp->next;
         temp->next = nullptr;
         delete temp;
@@ -168,6 +184,7 @@ Node *deleteNode(Node *head, int index)
     }
     // deleting mid indexed nodes
     int len = length(head);
+    // in case invalid index is enquired
     if (index >= len)
     {
         return head;
@@ -264,7 +281,7 @@ int main()
 
     head = deleteNode(head, 30);
     print(head);
-    head = deleteNode(head,5);
+    head = deleteNode(head, 5);
     print(head);
 
     return 0;
