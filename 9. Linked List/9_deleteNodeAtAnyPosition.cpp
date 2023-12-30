@@ -145,6 +145,7 @@ Node *insertNodeRecursively(Node *head, int i, int data)
 }
 // function to delete a node from the list at any index
 // takes the head node and index  i as paramter.
+// index i starts from value 0.
 // returns head node
 Node *deleteNode(Node *head, int i)
 {

@@ -65,6 +65,7 @@ void printLinkedList(Node *head)
 //....................
 
 // function to insert a node at any position.
+// index i starts with value 0.
 // takes the head node, index i and data of new node as parameters.
 Node *insertNode(Node *head, int i, int data)
 {

@@ -169,7 +169,7 @@ Node *take_input()
     return head;
 }
 
-// delete node 0-based index wise
+// delete node index wise
 Node *deleteNode(Node *head, int index)
 {
     // deleting first index
@@ -215,110 +215,48 @@ Node *deleteNode(Node *head, int index)
         return head;
     }
 }
-// function to delete head node of DLL
-Node *deleteHead(Node *head)
-{
-    // Write your code here.
-    // edge case: when LL has one node only
-    if (head->next == nullptr)
-    {
-        delete head;
-        return nullptr;
-    }
-    Node *temp = head;
-    head = temp->next;
-    head->prev = nullptr;
-    temp->next = nullptr;
-    delete temp;
-    return head;
-}
-// to delete the last node of the LL
-Node *deleteLastNode(Node *head)
+// function to convert an array into a doubly linked list
+Node *convertArrayIntoDLL(int arr[], int n)
 {
     // Write your code here
+    Node *head = new Node(arr[0]);
+    Node *tail = new Node(arr[n - 1]);
+
     Node *temp = head;
-    // case for only one node in the list
-    if (temp->next == NULL)
+    for (int i = 1; i < n - 1; i++)
     {
-        delete temp;
-        return NULL;
-    }
-    while (temp->next != NULL)
-    {
+        Node *newNode = new Node(arr[i]);
+        temp->next = newNode;
+        newNode->prev = temp;
         temp = temp->next;
     }
-    temp->prev->next = NULL;
-    temp->prev = NULL;
-    delete temp;
+    // to add last element of array into DLL
+    if (n > 1)
+    {
+        temp->next = tail;
+        tail->prev = temp;
+    }
+
     return head;
 }
 int main()
 {
-    Node *head = nullptr;
-    Node *tail = nullptr;
+    // array size
+    int n;
+    cout << "Enter array size: ";
+    cin >> n;
 
-    insertAtHead(head, tail, 20);
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
+    // n size array
+    int arr[n];
+    cout << "Enter array elements: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
 
-    insertAtHead(head, tail, 30);
+    // creating Doubly LL from user given array
+    Node *head = convertArrayIntoDLL(arr, n);
+    cout << "Contructed Doubley LL from array: ";
     print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-    cout << "length : " << length(head) << endl;
-
-    insertAtHead(head, tail, 40);
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-    // cout << head << endl;
-    // head got changed here. as we updated head node
-
-    // cout << sizeof(head) << endl;
-    insertAtTail(head, tail, 100);
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-
-    insertAtPosition(head, tail, 3, 400);
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-    insertAtPosition(head, tail, 1, 2022);
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-
-    insertAtPosition(head, tail, 25, 2022);
-    // position 25 makes head = nullptr before it reaches to 25th position
-    // so no change in the linked list
-    print(head);
-    cout << "head: " << head->data << endl;
-    cout << "tail: " << tail->data << endl;
-
-    head = take_input();
-    print(head);
-
-    // delete node with index 0
-    head = deleteNode(head, 0);
-    print(head);
-
-    // delete node with index more than length of the LL
-    // will bring no change
-    head = deleteNode(head, 5);
-    print(head);
-
-    head = deleteNode(head, 2);
-    print(head);
-
-    head = deleteNode(head, 4);
-    print(head);
-
-    head = deleteNode(head, 30);
-    print(head);
-    head = deleteNode(head, 5);
-    print(head);
-
     return 0;
 }
