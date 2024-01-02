@@ -1,6 +1,7 @@
 // Stack is a linear data structure which is an abstract data type(ADT)
 // ADT means random access of elements are not allowed
 // we will have to perform insertion deletion in a very specified order
+// Stack uses the same point or location for entry and removal of elements.
 
 // stack property:
 // 1. entry and exit point is same

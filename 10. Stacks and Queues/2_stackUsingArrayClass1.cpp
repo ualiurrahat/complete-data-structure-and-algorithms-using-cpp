@@ -1,25 +1,28 @@
-// creating stack class using static array
-// this stack can be full
-// so size is an issue here.
-#include<climits>
-#include<iostream>
+// either array or linked list is used
+// as internal storage for implementation of other data structures.
+// here, we are creating stack class using static array
+// NOTE: we need to consider the size issue here.Since we are using static array here.
+#include <climits>
+#include <iostream>
 
 using namespace std;
-
 
 class StackUsingArray
 {
 private:
-    int *data;          // integer pointer to store elements in stacks
-    int nextIndex;      // and nextIndex var to check element's index
-    int capacity;       // capacity var to check stack length
+    int *data;     // array pointer to store elements in stacks
+    int nextIndex; // to maintain element's index
+    int capacity;  // size of stack
 
 public:
-    //Constructor
+    // Constructor: user will declare stack with size also.
     StackUsingArray(int totalSize)
     {
+        // initializg array with user given totalSize
         data = new int[totalSize];
+        // index of first element is 0.
         nextIndex = 0;
+        // total size of the stack
         capacity = totalSize;
     }
 
@@ -29,19 +32,21 @@ public:
         return nextIndex;
     }
 
-    // check if stack is empty
+    // function to tell if stack is empty.
     bool isEmpty()
     {
         // if(nextIndex == 0)
         //     return true;
         // else
         //     return false;
+
         // short form of the above code
         return nextIndex == 0;
     }
-    // insert element
+    // push function for stack. to insert element in the stack.
     void push(int element)
     {
+        // when stack is full. we can not insert anymore.
         if (nextIndex == capacity)
         {
             cout << "Stack is full!" << endl;
@@ -51,9 +56,13 @@ public:
         nextIndex++;
     }
 
-    // delete element
+    // pop function to delete element from the stack.
+    // removes the top element from the stack
+    // returns new top element
+    // returns INT_MIN in case of empty stack.
     int pop()
     {
+        // when stack is empty, we can not pop up element from stack.
         if (isEmpty())
         {
             cout << "Stack is empty!" << endl;
@@ -65,9 +74,10 @@ public:
         return data[nextIndex];
     }
 
-    // top element
+    // function to find top element from stack.
     int top()
     {
+        // if stack is empty, returns INT_MIN.
         if (isEmpty())
         {
             cout << "Stack is empty!" << endl;
@@ -75,7 +85,7 @@ public:
             // that stack is empty
             return INT_MIN;
         }
+        // returning the top element.
         return data[nextIndex - 1];
     }
 };
-
