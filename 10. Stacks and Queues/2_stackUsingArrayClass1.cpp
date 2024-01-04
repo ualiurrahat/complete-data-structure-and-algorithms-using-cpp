@@ -89,3 +89,25 @@ public:
         return data[nextIndex - 1];
     }
 };
+int main()
+{
+    // creating a stack with size 5
+    StackUsingArray s(5);
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.push(40);
+    s.push(50);
+    s.push(100); // stack is full. so this will not add to the stack s
+
+    cout << s.top() << endl; // 50
+    cout << s.pop() << endl; // 50
+    cout << s.pop() << endl; // 40
+    cout << s.pop() << endl; // 30
+    cout << s.pop() << endl; // 20
+    cout << s.top() << endl; // 10
+
+    cout << s.size() << endl;    // 1
+    cout << s.isEmpty() << endl; // 0
+    return 0;
+}
