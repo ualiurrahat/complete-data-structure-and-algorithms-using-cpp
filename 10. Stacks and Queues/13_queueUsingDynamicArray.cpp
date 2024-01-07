@@ -1,16 +1,16 @@
+// this time we are implementing queue
+// using dynamic array.So size issue is solved.
 #include <iostream>
 using namespace std;
-
-// stack with unlimited size using dynamic array
 
 template <typename T>
 class QueueUsingArray
 {
 private:
-    T *data;
-    int firstIndex; // to get front element
-    int nextIndex;  // to get index of next element
-    int size;       // total queue size
+    T *data;        // array to store queue elements. generic data type
+    int firstIndex; // index of front element
+    int nextIndex;  //  index of next element
+    int size;       // no. of elements present in queue.
     int capacity;   // capacity of queue
 
 public:
@@ -36,12 +36,13 @@ public:
         return size == 0;
     }
 
-    // insert elements
+    // function to perform enqueue operation in queue.
     void enqueue(T element)
     {
-        // checking if queuse is full
+        // in case of queue is full
         if (size == capacity)
         {
+            // creating double sized new array to store elements in queue.
             T *newData = new T[2 * capacity];
             int j = 0;
             // filling up newData with data's existing element
@@ -61,16 +62,19 @@ public:
             delete[] data;
             // assigning newData as data
             data = newData;
+            // resetting firstIndex and newtIndex
             firstIndex = 0;
             nextIndex = capacity;
+            // updating capacity.
             capacity *= 2;
         }
-        // inserting element and increasing size
+        // inserting element in queue
         data[nextIndex] = element;
+        // updating size
         size++;
         // next elements index
         nextIndex = (nextIndex + 1) % capacity;
-        // checking if queue was empty,then front element needs to be set
+        // resetting firstIndex if queue is empty before inserting current element.
         if (firstIndex == -1)
         {
             firstIndex = 0;
@@ -109,3 +113,26 @@ public:
         return ans;
     }
 };
+
+int main()
+{
+    QueueUsingArray<int> q(5);
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    q.enqueue(40);
+    q.enqueue(50);
+    q.enqueue(60); // no queue is full message. as we have solved the size issue in enqueue function.
+    q.enqueue(70);
+    q.enqueue(80);
+
+    cout << q.front() << endl;   // 10
+    cout << q.deque() << endl;   // 10
+    cout << q.deque() << endl;   // 20
+    cout << q.deque() << endl;   // 30
+    cout << q.deque() << endl;   // 40
+    cout << q.getSize() << endl; // 4
+    cout << q.isEmpty() << endl; // 0
+
+    return 0;
+}
