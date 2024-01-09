@@ -17,7 +17,7 @@ public:
     // destructor
     ~Node()
     {
-        if (next != NULL)
+        if (next != nullptr)
         {
             delete next;
         }

@@ -7,352 +7,624 @@ Example:
 Given linked list is 1 -> 0 -> 2 -> 1 -> 2.
 The sorted list for the given linked list will be 0 -> 1 -> 1 -> 2 -> 2.
 */
-
 #include <bits/stdc++.h>
 using namespace std;
 
-// Doubly LL class.
-// each node has a data
-// a next pointer to hold next node address
-// a prev pointer to hold previous node address
 class Node
 {
 public:
     int data;
-    Node *prev;
     Node *next;
+
     // constructor
     Node(int data)
     {
         this->data = data;
         this->next = nullptr;
-        this->prev = nullptr;
     }
     // destructor
     ~Node()
     {
-        int data = data;
         if (next != nullptr)
         {
             delete next;
-            next = nullptr;
         }
-        if (prev != nullptr)
-        {
-            delete prev;
-            prev = nullptr;
-        }
-        cout << "memory free for node with data " << data << endl;
     }
 };
-// function to print Doubly LL
-void print(Node *head)
+// function to take user input linked list
+// returns head of the list
+// so return type would be Node*
+// the function takes input untill -1 is given as input
+// means function terminates with -1 input
+// we cant ask size as linked list is dynamic
+// so will take input as linked list node
+// untill -1 is given.
+Node *takeInputBetter()
 {
-    Node *temp = head;
-    while (temp != nullptr)
+
+    cout << "Enter your data (enter -1 to exit): ";
+    int data;
+    // initialising head and tail node with null
+    Node *head = nullptr;
+    Node *tail = nullptr;
+
+    cin >> data;
+    while (data != -1)
     {
-        cout << temp->data << "<->";
-        temp = temp->next;
+        // creating new node with user provided data
+        Node *newNode = new Node(data);
+        // if head is null, then assign newNode as head
+        if (head == nullptr)
+        {
+            head = newNode;
+            // for only one node, tail and head are same
+            tail = newNode;
+        }
+        else
+        {
+            // assign new node as next of tail node
+            tail->next = newNode;
+            // update tail node
+            tail = tail->next; // or, tail = newNode;
+        }
+        cout << "enter data (enter -1 to exit): ";
+        cin >> data;
+    }
+    return head;
+}
+// complexity: T:O(n), n = size of LL
+// function to print linked list
+void printLinkedList(Node *head)
+{
+    // using a temp pointer as head is better
+    // if there is chance of head pointer gets changed
+    // ex: Node* temp = head;
+    // here, we are sending a copy of head pointer address
+    // so, no change is happening in main() function's head node
+    while (head != nullptr)
+    {
+        cout << head->data << "->";
+        head = head->next;
     }
     cout << "null" << endl;
 }
-// function to get length of a doubley LL
+// T:O(n), n = size of LL
+
+// function to insert a node at any position.
+// takes the head node, index i and data of new node as parameters.
+
+Node *insertNode(Node *head, int i, int data)
+{
+    // creating new node with data
+    Node *newNode = new Node(data);
+
+    // condition to add new Node at first.
+    // since new node becomes the first node.
+    // head needs to be updated as new node.
+    if (i == 0)
+    {
+        newNode->next = head;
+        head = newNode;
+        // returning updated head
+        return head;
+    }
+
+    // var count for finding right index
+    // and temp node pointer to find the previous node of ith index.
+    int count = 0;
+    Node *temp = head;
+
+    // loop to get the right positon to place newNode
+    // loop checks two condition: value of i is valid or not
+    // temp is not null pointer.
+    while (temp != nullptr && count < i - 1)
+    {
+        temp = temp->next;
+        count++;
+    }
+
+    // adding newNode in the list
+    // to add new node in the correct place,
+    // temp must be valid, i.e. not null
+    if (temp != nullptr)
+    {
+        Node *a = temp->next;
+        temp->next = newNode;
+        newNode->next = a;
+        // or, if we don't want to create node a
+        // newNode->next = temp->next;
+        // temp->next = newNode;
+    }
+    // returning head of the linked list.
+    return head;
+}
+// T:O(1), for inserting node at first,
+// T:O(n), for any other postion insertion.
+//..................
+
+// function to insert node at any position recursively.
+Node *insertNodeRecursively(Node *head, int i, int data)
+{
+    // edge case
+    // for null head, nothing can be added.
+    // just return the head.
+    if (head == nullptr)
+    {
+        return head;
+    }
+    // 1. base case
+    // when i = 0,
+    // create new node with data as value,attach it with head
+    // update the head and return
+    if (i == 0)
+    {
+        Node *newNode = new Node(data);
+        newNode->next = head;
+        head = newNode;
+        return head;
+    }
+
+    // 2. recursive call
+    Node *smallHead = insertNodeRecursively(head->next, i - 1, data);
+    // 3. small calculation
+    head->next = smallHead;
+    return head;
+}
+// function to delete a node from the list at any index
+// takes the head node and index  i as paramter.
+// returns head node
+Node *deleteNode(Node *head, int i)
+{
+    // to store the deleted node
+    Node *a;
+    int count = 0;
+    Node *temp = head;
+    // case 1: deleting head node
+    if (i == 0)
+    {
+        a = head;
+        // updating head
+        head = head->next;
+        // deleting old head
+        delete a;
+        // returning updated head.
+        return head;
+    }
+
+    // case 2: deleting any other node except head node
+    // loop for finding the node that has to be deleted
+    while (temp != nullptr && count < i - 1)
+    {
+        temp = temp->next;
+        count++;
+    }
+
+    // delete operation will be valid if
+    // index i is valid, hence temp is not null.
+    if (temp != nullptr)
+    {
+        a = temp->next;
+        Node *b = a->next;
+        temp->next = b;
+        delete a;
+    }
+    // returning head after performing deletion
+    return head;
+}
+// T:O(1), for deleting head node
+// T:O(n), for deleting any other node.
+//..............................
+
+// function to delete a node from the list recursively.
+Node *deleteNodeRecursively(Node *head, int i)
+{
+    // edge case: for null head
+    // just return the head
+    if (head == nullptr)
+    {
+        return head;
+    }
+    // 1. base case: if index i = 0;
+    // means, we need to delete the head node
+    if (i == 0)
+    {
+        // storing the head node.
+        Node *temp = head;
+        // updating head node
+        head = head->next;
+        // deleting previous head node
+        delete temp;
+        // returning the head.
+        return head;
+    }
+    // 2. recursive call.
+    Node *smallHead = deleteNodeRecursively(head->next, i - 1);
+    // 3. small calculation
+    head->next = smallHead;
+    // returning head node after performing deletion.
+    return head;
+}
+// find lenght of linked list
+// length = total num of nodes
 int length(Node *head)
 {
     if (head == nullptr)
     {
         return 0;
     }
-    int len = 0;
-    while (head != nullptr)
+    int count = 1;
+    while (head->next != nullptr)
     {
-
         head = head->next;
-        len++;
+        count++;
     }
-    return len;
+    return count;
 }
-// function to insert a node as head of the doubly LL
-// takes head,tail nodes and data of the node that has to be added in the LL as parameters
-// taking  references of head and tail to make changes in the head node of main() function
-void insertAtHead(Node *&head, Node *&tail, int data)
+// T:O(N)
+//............
+
+// recursive function to find length
+int lengthRecursively(Node *head)
 {
-    // in case if head is null
+    // edge case
     if (head == nullptr)
     {
-        Node *temp = new Node(data);
-        head = temp;
-        // head null means tail is also null. updating tail
-        tail = temp;
-        return;
+        return 0;
     }
-    Node *temp = new Node(data);
-    temp->next = head;
-    head->prev = temp;
-    head = temp;
-}
-// function to insert a node as tail of the doubly LL
-// takes head,tail nodes and data of the node that has to be added in the LL as parameters
-// taking  references of head and tail to make changes in the head node of main() function
-void insertAtTail(Node *&head, Node *&tail, int data)
-{
-    // if tail is null, means head is null too
-    if (tail == nullptr)
+    // base case
+    if (head->next == nullptr)
     {
-        Node *temp = new Node(data);
-        head = temp;
-        tail = temp;
-        return;
+        return 1;
     }
-    Node *temp = new Node(data);
-    tail->next = temp;
-    temp->prev = tail;
-    tail = temp;
-}
-// function to insert a node at any given position of the doubly LL
-// takes head,tail nodes and data of the node that has to be added in the LL
-// and the postion where new node has to be placed as parameters
-// taking  references of head and tail to make changes in the head node of main() function
-void insertAtPosition(Node *&head, Node *&tail, int position, int data)
-{
-    // in case of inserting at position 1 i.e. insert at head
-    if (position == 1)
-    {
-        insertAtHead(head, tail, data);
-        return;
-    }
-    // in case of position at any other place
-    Node *temp = head;
-    int i = 1;
-    while (i < position - 1 && temp != nullptr)
-    {
-        temp = temp->next;
-        i++;
-    }
-    // in case of inseting at last i.e. insert at tail
-    if (temp != nullptr && temp->next == nullptr)
-    {
-        insertAtTail(head, tail, data);
-        return;
-    }
-    // inseting at other positon except head and tail
-    if (temp != nullptr)
-    {
-        Node *nodeToInsert = new Node(data);
-        nodeToInsert->next = temp->next;
-        temp->next->prev = nodeToInsert;
-        temp->next = nodeToInsert;
-        nodeToInsert->prev = temp;
-    }
+    // recursive call
+    int smallLength = lengthRecursively(head->next);
+    // small calculation
+    return smallLength + 1;
 }
 
-// function to take input
-Node *take_input()
+// find mid node of the LL
+// for even length,there will be two mid nodes.
+// this function returns the first mid node.
+// NOTE: using length to find out mid node is not good practice
+// solution: use the slow and fast pointer method(next code function) to do so.
+Node *midPoint(Node *head)
 {
-    // we can not ask size as linked list is dynamic
-    // so will take input as linked list node
-    // untill -1 is given.
-    cout << "enter your linked list: " << endl;
-    int data;
-    cin >> data;
-    Node *head = nullptr;
-    Node *tail = nullptr;
-
-    while (data != -1)
-    {
-        Node *newNode = new Node(data);
-        if (head == nullptr)
-        {
-            head = newNode;
-            tail = newNode;
-        }
-        else
-        {
-            newNode->prev = tail;
-            tail->next = newNode;
-            tail = tail->next;
-        }
-        // further input for nodes
-        cin >> data;
-    }
-    // returning head of the linked list
-    return head;
-}
-
-// delete node index wise
-Node *deleteNode(Node *head, int index)
-{
-    // deleting first index
-    if (index == 0)
-    {
-        Node *temp = head;
-        temp->next->prev = nullptr;
-        head = temp->next;
-        temp->next = nullptr;
-        delete temp;
-        return head;
-    }
-    // deleting mid indexed nodes
+    // find length of LL
     int len = length(head);
-    // in case indataid index is enquired
-    if (index >= len)
-    {
-        return head;
-    }
-    int count = 1;
+    // mid node is the (len-1)/2 th node.
+    len = (len - 1) / 2;
+    int count = 0;
+    // to store mid node
     Node *temp = head;
-    while (count < index)
+    while (count != len)
     {
         temp = temp->next;
         count++;
     }
-    if (temp->next != nullptr && index < len - 1)
-    {
-        Node *a = temp->next;
-        temp->next = a->next;
-        a->next->prev = temp;
-        a->next = nullptr;
-        a->prev = nullptr;
-        delete a;
-        return head;
-    }
-    // deleting last index
-    if (index == len - 1)
-    {
-        Node *a = temp->next;
-        a->prev = nullptr;
-        temp->next = nullptr; // temp->next = null
-        return head;
-    }
+    // return the mid node
+    return temp;
 }
-// function to convert an array into a doubly linked list
-Node *convertArrayIntoDLL(int arr[], int n)
+// better function to find mid node
+// using slow and fast pointers.
+Node *midPointBetter(Node *head)
 {
-    // Write your code here
-    Node *head = new Node(arr[0]);
-    Node *tail = new Node(arr[n - 1]);
-
-    Node *temp = head;
-    for (int i = 1; i < n - 1; i++)
-    {
-        Node *newNode = new Node(arr[i]);
-        temp->next = newNode;
-        newNode->prev = temp;
-        temp = temp->next;
-    }
-    // to add last element of array into DLL
-    if (n > 1)
-    {
-        temp->next = tail;
-        tail->prev = temp;
-    }
-
-    return head;
-}
-// function to delete head node of DLL
-Node *deleteHead(Node *head)
-{
-    // Write your code here.
-    // edge case: when LL has one node only
-    if (head->next == nullptr)
-    {
-        delete head;
-        return nullptr;
-    }
-    Node *temp = head;
-    head = temp->next;
-    head->prev = nullptr;
-    temp->next = nullptr;
-    delete temp;
-    return head;
-}
-
-// to delete the last node of the LL
-Node *deleteLastNode(Node *head)
-{
-    // Write your code here
-    Node *temp = head;
-    // case for only one node in the list
-    if (temp->next == NULL)
-    {
-        delete temp;
-        return NULL;
-    }
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->prev->next = NULL;
-    temp->prev = NULL;
-    delete temp;
-    return head;
-}
-// function to reverse a doubly LL
-// approach: take a stack. insert all the LL data into it.
-// starting from head. and then fill all the stack data from top to bottom
-// in the LL starting from head.
-Node *reverseDoublyLLBruteForce(Node *head)
-{
-    // edge case: if head is null
     if (head == nullptr)
     {
         return head;
     }
-    // take a stack to store data of LL nodes
-    stack<int> st;
-    // to traverse the LL
-    Node *temp = head;
-    // traverse and store LL data into stack
-    while (temp != nullptr)
-    {
-        st.push(temp->data);
-        temp = temp->next;
-    }
-    // now fill up the temp data into LL starting from head.
-    temp = head;
-    while (temp != nullptr)
-    {
-        temp->data = st.top();
-        // update temp to go to next node
-        temp = temp->next;
-        // remove top element from stack
-        st.pop();
-    }
-    // reversing is done. return the head
-    return head;
-}
-// T:O(n)+(n) = O(2n)
-// S:O(n)
+    Node *slow = head;
+    Node *fast = head->next;
 
-// optimal approach to reverse DLL.
-// method: a DLL node has 3 elements: data,nextP,prevP
-// we reversed data in previous method.
-// here we will reversed the prev,next linked.
-// reverse means, next pointer becomes previous and vice versa.
-Node *reverseDLLOptimal(Node *head)
+    // conditions for odd and even lengh linked list
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    // code for second mid node in case of even length LL
+    // if(fast->next == nullptr)
+    //       return slow->next;
+
+    // slow is the mid node
+    return slow;
+}
+// function to merge two sorted linked list
+// takes two sorted LL as parameters.
+// it returns the head of the sorted LL
+Node *mergeTwoSortedLL(Node *head1, Node *head2)
 {
-    // for single node list
+    // to sotre head and tail of the sorted LL
+    Node *finalHead = NULL;
+    Node *finalTail = NULL;
+
+    // traversing each LL and sorting nodes
+    while (head1 != NULL && head2 != NULL)
+    {
+        // when head1 has lesser value than head2
+        if (head1->data < head2->data)
+        {
+            // if finalHead is null.
+            // means it is the first node of merged LL
+            if (finalHead == NULL)
+            {
+                // assign node to head and tail of merged LL
+                finalHead = head1;
+                finalTail = head1;
+                // move to next node in the LL1
+                head1 = head1->next;
+            }
+            // now head is already there in the merged LL
+            // so need to add this node as a tail.
+            else
+            {
+                // add the node as next tail of the merged LL
+                finalTail->next = head1;
+                // update the tail
+                finalTail = finalTail->next;
+                // move to next node in the LL1
+                head1 = head1->next;
+            }
+        }
+        // head2 value is lesser than head1
+        else
+        {
+            // if finalHead is null.
+            // means it is the first node of merged LL
+            if (finalHead == NULL)
+            {
+                // assign head and tail node of the merged LL
+                finalHead = head2;
+                finalTail = head2;
+                // move to the next node of LL2
+                head2 = head2->next;
+            }
+            // now head is already there in the merged LL
+            // so need to add this node as a tail.
+            else
+            {
+                // add the node as tail's next of the merged LL
+                finalTail->next = head2;
+                // update tail
+                finalTail = finalTail->next;
+                // move to the next node of the LL2
+                head2 = head2->next;
+            }
+        }
+    }
+
+    // if LL1 gets exhaused, need to continue sorting with LL2
+    while (head2 != NULL)
+    {
+        // add current node as tail's next of the merged LL
+        finalTail->next = head2;
+        // update tail
+        finalTail = finalTail->next;
+        // move to the next node of the LL2
+        head2 = head2->next;
+    }
+
+    // if LL2 gets exhausted, need to continue sorting LL1
+    while (head1 != NULL)
+    {
+        // add current node as tail's next of the merged LL
+        finalTail->next = head1;
+        // update tail
+        finalTail = finalTail->next;
+        // move to the next node of the LL1
+        head1 = head1->next;
+    }
+    // returns the head of the merged LL
+    return finalHead;
+}
+// T:(N1+N2), N1 = size of LL1, N2 = size of LL2
+//......................
+
+// sort a linked list using merge sort
+Node *mergeSort(Node *head)
+{
+    // base case
     if (head == nullptr || head->next == nullptr)
     {
         return head;
     }
-    // to track the previous node of each node in LL.
-    Node *last = nullptr;
-    // to traverse the list.
-    Node *current = head;
-    while (current != nullptr)
+
+    // find the mid node of the LL
+    Node *mid = midPointBetter(head);
+    // dividing whole LL into two parts for merge sorting
+    // first part: from head to mid
+    // second part: from mid->next to last node.
+    Node *a = head;
+    Node *b = mid->next;
+
+    mid->next = nullptr;
+    // this is important.Assigning null to the mid->next,
+    // we are disconnecting the LL from head to end.
+    // and dividing LL into two parts will be successul only after that
+
+    // 2.recursively sort
+    a = mergeSort(a);
+    b = mergeSort(b);
+
+    // 3. merge a and b
+    Node *c = mergeTwoSortedLL(a, b);
+    return c;
+}
+
+// function to reverse a linked list : brute force approch
+Node *reverseLLBrute(Node *head)
+{
+    // 1. base case
+    if (head == NULL || head->next == NULL)
     {
-        last = current->prev;
-        current->prev = current->next;
-        current->next = last;
-        current = current->prev;
+        return head;
     }
-    // LL is reversed.update head of the reversed LL
-    head = last->prev;
+
+    // 2. recursive call
+    Node *smallAns = reverseLLBrute(head->next);
+
+    // 3. small Calculation : traverse the list
+    // and go to the last node. to add the head node
+    // as next of the last node.
+
+    // pointer for LL traversal
+    Node *temp = smallAns;
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    // add head as next of temp node
+    temp->next = head;
+    //  now head is the last node of ther reversed LL
+    // head->next has to be null
+    head->next = NULL;
+    // return the reversed list
+    return smallAns;
+}
+// T:O(N^2)
+
+//..................
+// class for reverseLL to get better  time complexity
+// this will return an object
+// having head and tail property
+class Pair
+{
+public:
+    Node *head;
+    Node *tail;
+};
+
+// better function to get head and tail of a reverse LL
+// but this function returns an object of pair class
+// T:O(N)
+Pair reverseLL2(Node *head)
+{
+    // 1. base case
+    if (head == nullptr || head->next == nullptr)
+    {
+        Pair ans;
+        ans.head = head;
+        ans.tail = head;
+        return ans;
+    }
+
+    Pair smallAns = reverseLL2(head->next);
+    smallAns.tail->next = head;
+    head->next = nullptr;
+    // creating ans is must.
+    // smallAns is not returning reversed list properly.
+    // so we created Pair ans to upgrade and correctly form the reversed LL
+    // ex: at reverseLL2(3->4->null)
+    // smallAns.head = 4
+    // smallAns.tail = 4
+    // but tail actual should be 3
+    // so ans.tail = head .. here ans becomes ans.head =4, ans.tail = 3 which is correct
+    Pair ans;
+    ans.head = smallAns.head;
+    ans.tail = head;
+    // returning the ans pair containing head and tail of LL
+    return ans;
+}
+
+// function to get the reversed LL from reverseLL2() function
+// previous function was returning a pair
+// this function gets the reversed LL head and returns
+// the head Node pointer
+Node *reverseLLBetter(Node *head)
+{
+    return reverseLL2(head).head;
+}
+// T:O(N)
+//...............
+
+// best function to reverse a LL recursively
+// the main conern is to find the tail and attach head as tail's next
+// guess what?? - tail is head->next in the original LL
+Node *reverseLLBest(Node *head)
+{
+    // 1. base case
+    if (head == nullptr || head->next == nullptr)
+    {
+        return head;
+    }
+    // 2. recursive call
+    Node *smallAns = reverseLLBest(head->next);
+
+    // 3.small calculation
+    // tail is the head->next in the original LL
+    // ex: LL = 1->2->3->4-> null, reversed = 4->3->2->
+    // now tail is 2 and head->next == 2
+    Node *tail = head->next;
+    // now head should be tail->next
+    // ex: reversed = 4->3->2->(need to add 1)
+    // so tail->next = head(head is 1 in the original LL)
+    tail->next = head;
+    // assign null to head's next
+    head->next = nullptr;
+    // returning small reversed LL
+    return smallAns;
+}
+// T:O(N)
+// .................
+
+// reversing LL iteratively
+Node *reverseLLIteratively(Node *head)
+{
+    Node *prev = nullptr;
+    Node *curr = head;
+    Node *next;
+
+    while (curr != nullptr) // LL: 1 2 3 4
+    {
+        next = curr->next; // 2 | 3 | 4 | null
+        curr->next = prev; // 1->null | 2->1->null | 3->2->1->null | 4->3->2->1->null
+        prev = curr;       // 1 | 2 | 3 | 4
+        curr = next;       // 2 | 3 | 4 |  null
+    }
+
+    // prev is the head node of LL
+    head = prev;
     return head;
 }
-// T:O(n)
-// S:O(1)
+// T:O(N)
+//.................
+
+// function to search a particular node with key as value
+// if it exists, function returns 1
+// otherwise -1
+
+int searchNodeIteratively(Node *head, int key)
+{
+    while (head != nullptr)
+    {
+        if (head->data == key)
+        {
+
+            return 1;
+        }
+        else
+        {
+            head = head->next;
+        }
+    }
+
+    return -1;
+}
+
+// search a node in recursive way
+int searchNodeRecursively(Node *head, int key)
+{
+    if (head == nullptr)
+    {
+
+        return -1;
+    }
+    if (head->data == key)
+    {
+
+        return 1;
+    }
+    return searchNodeRecursively(head->next, key);
+}
 
 // function to add two numbers in the LL
 Node *addTwoNumbersInLL(Node *l1, Node *l2)
@@ -488,54 +760,6 @@ Node *oddEvenListBetter(Node *head)
     return head;
     // O(n)
 }
-
-// function to sort list of 0,1,2s.
-Node *sortListOfZeroesOnesTwosBruteForce(Node *head)
-{
-    // edge case
-    if (head == nullptr || head->next == nullptr)
-    {
-        return head;
-    }
-    // to store total no. of 0,1,2 present in the list.
-    int count0 = 0, count1 = 0, count2 = 0;
-    Node *temp = head;
-    // traverse the list and count total no. of 0,1,2s.
-    while (temp != nullptr)
-    {
-        int num = temp->data;
-        if (num == 0)
-            count0++;
-        else if (num == 1)
-            count1++;
-        else
-            count2++;
-
-        temp = temp->next;
-    }
-    temp = head;
-    // now traverse and sort the list
-    while (temp)
-    {
-        if (count0)
-        {
-            temp->data = 0;
-            count0--;
-        }
-        else if (count1)
-        {
-            temp->data = 1;
-            count1--;
-        }
-        else
-        {
-            temp->data = 2;
-            count2--;
-        }
-        temp = temp->next;
-    }
-    return head;
-}
 // better function to sort list of 0,1,2s.
 Node *sortListOfZeroesOnesBetter(Node *head)
 {
@@ -598,12 +822,12 @@ int main()
 {
     // take user provided list
     cout << "Insert a linked list with only 0,1,2 as node value" << endl;
-    Node *head = take_input();
+    Node *head = takeInputBetter();
     cout << "Input linked list: ";
-    print(head);
+    printLinkedList(head);
     // head = sortListOfZeroesOnesTwosBruteForce(head);
     head = sortListOfZeroesOnesBetter(head);
     cout << "linked list after sorting: ";
-    print(head);
+    printLinkedList(head);
     return 0;
 }
