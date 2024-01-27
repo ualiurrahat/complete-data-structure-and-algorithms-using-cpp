@@ -1,7 +1,6 @@
-/*You are given a Singly Linked List of integers. Return true if it has a cycle, else return false.
-A cycle occurs when a node's next points back to a previous node in the list.*/
-///////////////
-
+/*/*You’re given a linked list. The last node might point to null, or it might point to a node in the list, thus forming a cycle.
+Find out whether the linked list has a cycle or not, and the length of the cycle if it does.
+If there is no cycle, return 0, otherwise return the length of the cycle.*/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -564,48 +563,100 @@ bool detectCycleOptimal(Node *head)
     return false;
     // T:O(n), S:O(1)
 }
+
+// brute force approach to find length of loop
+int lengthOfLoopBrute(Node *head)
+{
+    // step 1: take a map and store all nodes with timer as value
+    // starting from 1 and increase by one for each node.
+    map<Node *, int> mpp;
+    Node *temp = head;
+    int timer = 1;
+
+    // traversing the list
+    while (temp)
+    {
+        // condition for any node visited twice
+        if (mpp.find(temp) != mpp.end())
+        {
+            // temp is found in the map. so loop is there
+            // difference of current timer value and node's store value in the map
+            // is the length of the loop. returning the length
+            int value = mpp[temp];
+            return timer - value;
+        }
+        // node is stored in the map
+        mpp[temp] = timer;
+        // update timer value
+        timer++;
+        // move to the next node in the list
+        temp = temp->next;
+    }
+    // program comes to this line when temp becomes null
+    // means no loop is there. so return 0 as length of the loop.
+    return 0;
+}
+// function to calculate length of the loop
+// slow and fast point to the same node
+// now calculating the lenght of the loop.
+int findLength(Node *slow, Node *fast)
+{
+    // taking count to store lenght of the loop
+    int count = 1;     // initial value
+    fast = fast->next; // moving fast to the next node so that fast and slow are unequal
+    // loop to traverse the fast node untill it becomes equal to slow again.
+    while (fast != slow)
+    {
+        count++;
+        fast = fast->next;
+    }
+    return count;
+}
+// optimal approach to find length of the loop
+int lengthOfLoopOptimal(Node *head)
+{
+    // step1: take slow and fast pointer.
+    // move slow by one and fast by two nodes in each iteration of the list traversal.
+    Node *slow = head;
+    Node *fast = head;
+    while (fast != NULL && fast->next != NULL)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        // step 2: if slow and fast are equal,then there is a loop
+        if (slow == fast)
+        {
+            // returning the function that will return
+            // the length of the loop
+            return findLength(slow, fast);
+        }
+    }
+    // this line is executed when fast becomes null
+    // means no loop is there. so returning 0 as length of the loop
+    return 0;
+}
 int main()
 {
-    Node *head1 = takeInputBetter();
-    printLinkedList(head1);
-
-    // bool isCycle = detectCycleBrute(head);
-    bool isCycle1 = detectCycleOptimal(head1);
-    if (isCycle1)
-    {
-        cout << "loop exists in list 1" << endl;
-    }
-    else
-    {
-        cout << "loop does not exist in list 1" << endl;
-    }
     // creating a LL with loop : 1->2->3->4->5->6->7->8(loop starts from node with data 3)
-    Node *head2 = nullptr;
-    Node *tail2 = nullptr;
+    Node *head = nullptr;
+    Node *tail = nullptr;
     for (int i = 1; i <= 8; i++)
     {
         Node *newNode = new Node(i);
-        if (head2 == nullptr)
+        if (head == nullptr)
         {
-            head2 = newNode;
-            tail2 = newNode;
+            head = newNode;
+            tail = newNode;
         }
-        tail2->next = newNode;
-        tail2 = tail2->next;
+        tail->next = newNode;
+        tail = tail->next;
     }
     // now creating loop with node having data 3 and 8
-    Node *startingNode = head2->next->next;
-    tail2->next = startingNode;
+    Node *startingNode = head->next->next;
+    tail->next = startingNode;
 
-    bool isCycle2 = detectCycleOptimal(head2);
-    if (isCycle2)
-    {
-        cout << "loop exists in list 2" << endl;
-    }
-    else
-    {
-        cout << "loop does not exist in list 2" << endl;
-    }
+    int length = lengthOfLoopOptimal(head);
+    cout << "length of the loop is: " << length << endl;
 
     return 0;
 }
