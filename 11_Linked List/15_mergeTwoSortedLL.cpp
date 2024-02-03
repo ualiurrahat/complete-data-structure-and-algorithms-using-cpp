@@ -400,7 +400,7 @@ Node *mergeTwoSortedLLOptimal(Node *head1, Node *head2)
     // S:O(1), no extra space used
     // T:O(N=n1+n2)
 }
-// T:(N1+N2), N1 = size of LL1, N2 = size of LL2
+
 int main()
 {
     // first sorted LL
