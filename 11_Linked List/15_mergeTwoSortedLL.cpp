@@ -301,108 +301,120 @@ Node *midPointBetter(Node *head)
     // slow is the mid node
     return slow;
 }
-// function to merge two sorted linked list
-// takes two sorted LL as parameters.
-// it returns the head of the sorted LL
-Node *mergeTwoSortedLL(Node *head1, Node *head2)
+// function to convert vector array into LL
+Node *convertArrayIntoLL(vector<int> &arr)
 {
-    // to sotre head and tail of the sorted LL
-    Node *finalHead = NULL;
-    Node *finalTail = NULL;
+    Node *head = new Node(arr[0]);
+    Node *temp = head;
+    int n = arr.size();
+    for (int i = 1; i < n; i++)
+    {
+        Node *tail = new Node(arr[i]);
+        temp->next = tail;
+        temp = temp->next;
+    }
+    return head;
+}
+// brute force solution to merge two sorted LL
+Node *mergeTwoSortedLLBrute(Node *head1, Node *head2)
+{
+    // step 1: take an array and insert all nodes data from both lists.
+    vector<int> arr;
+    Node *temp1 = head1;
+    // inserting node's data from list 1
+    while (temp1 != NULL) // O(n1)
+    {
+        arr.push_back(temp1->data);
+        temp1 = temp1->next;
+    }
+    // inserting node's data from list 2
+    Node *temp2 = head2;
+    while (temp2 != NULL) // O(n2)
+    {
+        arr.push_back(temp2->data);
+        temp2 = temp2->next;
+    }
+    // step 2: sort the array.
+    sort(arr.begin(), arr.end());               // o(NlogN), here N = n1+n2
+                                                // step 3: now convert the array into a linked list.
+                                                // this will be the sorted list
+    Node *sortedHead = convertArrayIntoLL(arr); // O(N)
+    return sortedHead;
+    // T:O(n1) + O(n2) + O(NlogN) + O(N)
+    // S:O(N)+O(N), for array and answer linked list = O(2N)
+}
+// optimal solution to merge two sorted linked list
+// here, we will use dummy pointer and two pointers approach
+// will not create any new node, but will change the links between the existing nodes.
+// it returns the head of the sorted LL
+Node *mergeTwoSortedLLOptimal(Node *head1, Node *head2)
+{
+    // creating a dummy node with data as -1.
+    // this node's next will be head of sorted LL
+    Node *dummyNode = new Node(-1);
+    Node *temp = dummyNode;
+    // temporary node to traverse both lists
+    Node *t1 = head1;
+    Node *t2 = head2;
 
     // traversing each LL and sorting nodes
-    while (head1 != NULL && head2 != NULL)
+    while (t1 != NULL && t2 != NULL)
     {
-        // when head1 has lesser value than head2
-        if (head1->data < head2->data)
+        // when t1 node's data is lesser than t2's
+        if (t1->data < t2->data)
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign node to head and tail of merged LL
-                finalHead = head1;
-                finalTail = head1;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as next tail of the merged LL
-                finalTail->next = head1;
-                // update the tail
-                finalTail = finalTail->next;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
+            // link t1 as temp's next
+            temp->next = t1;
+            // update temp
+            temp = t1;
+            // go to next node in list 1
+            t1 = t1->next;
         }
-        // head2 value is lesser than head1
+        // now t2 node's data is smaller
         else
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign head and tail node of the merged LL
-                finalHead = head2;
-                finalTail = head2;
-                // move to the next node of LL2
-                head2 = head2->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as tail's next of the merged LL
-                finalTail->next = head2;
-                // update tail
-                finalTail = finalTail->next;
-                // move to the next node of the LL2
-                head2 = head2->next;
-            }
+            // link temp's next with t2
+            temp->next = t2;
+            // update temp
+            temp = t2;
+            // go to next node in list 2
+            t2 = t2->next;
         }
     }
+    // the loop will be terminated when either t1 or t2 becomes null.
 
-    // if LL1 gets exhaused, need to continue sorting with LL2
-    while (head2 != NULL)
+    // case when t2 is exhausted and t1 is left
+    if (t1 != NULL)
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head2;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL2
-        head2 = head2->next;
+        // attach temp with the remaining part of t1
+        temp->next = t1;
     }
-
-    // if LL2 gets exhausted, need to continue sorting LL1
-    while (head1 != NULL)
+    // case when t1 is exhausted, and t2 is left
+    else
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head1;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL1
-        head1 = head1->next;
+        // attch temp with remaining part of t2
+        temp->next = t2;
     }
-    // returns the head of the merged LL
-    return finalHead;
+    // dummy's next is the head of sorted LL
+    return dummyNode->next;
+    // S:O(1), no extra space used
+    // T:O(N=n1+n2)
 }
 // T:(N1+N2), N1 = size of LL1, N2 = size of LL2
 int main()
 {
     // first sorted LL
-    cout << "Enter the first sorted LL:";
+    cout << "Enter the first sorted LL:" << endl;
     Node *head1 = takeInputBetter();
     printLinkedList(head1);
     // second sorted LL
-    cout << "Enter the second sorted LL:";
+    cout << "Enter the second sorted LL:" << endl;
     Node *head2 = takeInputBetter();
     printLinkedList(head2);
     cout << "The merged sorted LL: ";
-    Node *head3 = mergeTwoSortedLL(head1, head2);
-    printLinkedList(head3);
+    // Node *head3 = mergeTwoSortedLLBrute(head1, head2);
+    Node *mergedHead = mergeTwoSortedLLOptimal(head1, head2);
+    printLinkedList(mergedHead);
 
     return 0;
 }
