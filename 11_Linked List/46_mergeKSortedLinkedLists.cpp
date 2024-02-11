@@ -771,6 +771,106 @@ O(N)[for traversing lists] +O(NlogN)[for sorting array] +O(N)[for converting arr
 Space complexity:
 O(N)[for array] + O(N)[for answered list] == O(2∗N))*/
 }
+
+// function to merge two sorted linked lists
+Node *mergeTwoLists(Node *head1, Node *head2)
+{
+  Node *dummyNode = new Node(-1);
+  Node *temp = dummyNode;
+  while (head1 != NULL && head2 != NULL)
+  {
+    if (head1->data < head2->data)
+    {
+      temp->next = head1;
+      temp = head1;
+      head1 = head1->next;
+    }
+    else
+    {
+      temp->next = head2;
+      temp = head2;
+      head2 = head2->next;
+    }
+  }
+  if (head1)
+  {
+    temp->next = head1;
+  }
+  else
+  {
+    temp->next = head2;
+  }
+  return dummyNode->next;
+}
+// better function to merge k sorted lists
+Node *mergeKSortedListsBetter(vector<Node *> &lists)
+{
+  // take first list's head node from lists.
+  Node *head = lists[0];
+  // traverse all the lists and merge two lists for each run.
+  for (int i = 1; i < lists.size(); i++)
+  {
+    head = mergeTwoLists(head, lists[i]);
+  }
+  return head;
+  // S:O(1), as we are using no extra space.
+  // T: if N = total no. of lists, and k = no. of nodes in each list
+  // T:O(n*(k*(k+1)/2)) =~ O(n^3)
+}
+// best function to merge k sorted lists
+Node *mergeKSortedListsOptimal(vector<Node *> &listArray)
+{
+  // step1: take a minimum heap priority queue
+  /*pair<int, Node*>: This is the type of elements that will be stored in the priority queue. It's a pair consisting of an integer and a pointer to a Node object. The integer represents the priority, and the Node* represents the data associated with that priority.
+
+vector<pair<int, Node*>>: This is the underlying container used by the priority queue. It's a vector of pairs of integers and pointers to Node objects.
+
+greater<pair<int, Node*>>: This is a comparison function or functor used to determine the priority order in the priority queue. In this case, it means that elements with greater priority (i.e., smaller integers) will be dequeued first*/
+  priority_queue<pair<int, Node *>,
+                 vector<pair<int, Node *>>, greater<pair<int, Node *>>>
+      pq;
+
+  // step 2: take all the heads of all lists and store them in the priority queue.
+  for (int i = 0; i < listArray.size(); i++)
+  {
+    if (listArray[i])
+    {
+      pq.push({listArray[i]->data, listArray[i]});
+    }
+  }
+  // step 3: take a dummyNode. we will create the merged lists with this
+  // dummyNode's next will point to the head node of the merged list after full operation
+  // of the function.
+  Node *dummyNode = new Node(-1);
+  Node *temp = dummyNode;
+
+  // step4: traverse the priority queue and create the merged lists
+  while (!pq.empty())
+  {
+    // store the top element i.e. the minimum data node
+    auto it = pq.top();
+    // pop the top element
+    pq.pop();
+    // if it's next is not null, insert it in the queue
+    if (it.second->next)
+    {
+      pq.push({it.second->next->data, it.second->next});
+    }
+    // insert the it node in the merged list
+    temp->next = it.second;
+    // update the temp node,i.e. tail of the merged list
+    temp = temp->next;
+  }
+  // dummyNode's next is the head of the merged list
+  return dummyNode->next;
+  // S:O(k), at max priority queue has k elements.
+  // T: here, no. of lists = k,
+  // let each list has n elements.
+  // each operation of priority queue takes log[size] i.e. here logk time
+  // O[k*logk] -> for inserting first head of all lists.
+  // O(k*n[for while loop]*3*[logk][logk for pop,top,insert operation, that is why 3*logk])
+  // T:(klogk + k*n*3log(k)) i.e. O(n^2*logn)
+}
 int main()
 {
   int n;
@@ -784,7 +884,8 @@ int main()
     Node *head = takeInputBetter();
     lists.push_back(head);
   }
-  Node *mergedHead = mergeKSortedListsBrute(lists);
+  // Node *mergedHead = mergeKSortedListsBrute(lists);
+  Node *mergedHead = mergeKSortedListsOptimal(lists);
   printLinkedList(mergedHead);
   return 0;
 }
