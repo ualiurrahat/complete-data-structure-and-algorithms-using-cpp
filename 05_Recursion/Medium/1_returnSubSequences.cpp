@@ -12,17 +12,28 @@
 
 using namespace std;
 
+// function to to get subsequence of a string
+// it takes the input string and an output string array
+// output string array stores all the subsequence and
+// function returns size of output array.
 int subSequence(string input, string output[])
 {
+    // base case
     if (input.empty())
     {
         output[0] = "";
         return 1;
     }
-
+    // trim the first  character of the input string
     string smallString = input.substr(1);
+    // recursion call with the trimmed input string
+    // this will create all subsequences for smallString
     int smallOutputSize = subSequence(smallString, output);
-
+    // small calculation
+    // first copy the found subsequences from recursion call
+    // and create new substring combinining from
+    // already existed string in output array and attaching first character
+    // in frot of them.
     for (int i = 0; i < smallOutputSize; i++)
     {
         output[i + smallOutputSize] = input[0] + output[i];
