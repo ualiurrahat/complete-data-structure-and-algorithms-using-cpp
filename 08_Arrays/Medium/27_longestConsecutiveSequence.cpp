@@ -98,6 +98,51 @@ int longestSuccessiveElementsBetter(vector<int> &a)
     // T:O(nlogn) + O(n)
     // S:O(1)
 }
+// optimal solution
+int longestSuccessiveElementsOptimal(vector<int> &a)
+{
+    int n = a.size();
+    // if vector is empty, return 0
+    if (n == 0)
+        return 0;
+    // to store answer
+    int longest = 1;
+    // step1: store all the elments in a set
+    unordered_set<int> st;
+    for (int i = 0; i < n; i++)
+    {
+        st.insert(a[i]);
+    }
+
+    // step 2: traverse the set
+    for (auto it : st)
+    {
+        // 2.1 : for a number num, if num -1 does not exist,
+        // then num is the starting number of the sequence
+        if (st.find(it - 1) == st.end())
+        {
+            int cnt = 1; // to store current length of sequence
+            int x = it;
+            // 2.2: check if x+1,x+2,.., exists in the set
+            // if so, update the current length
+            while (st.find(x + 1) != st.end())
+            {
+                x = x + 1;
+                cnt++;
+            }
+            // update longest
+            longest = max(cnt, longest);
+        }
+    }
+    return longest;
+    // S:O(n), for set
+    // T:O(n*1)[for storing elements in unordered set]
+    // O(N*2)[for finding consecutive sequence]
+    // T:O(N)+O(2N) = O(3N)
+    // note: this is for when unordered map performes in O(1)
+    // in worst case it performs on O(N),
+    // then T:O(N)+O(N*N) = O(N^2)
+}
 int main()
 {
     int size;
@@ -110,7 +155,8 @@ int main()
         cin >> arr[i];
     }
     // int ans = longestSuccessiveElementsBrute(arr);
-    int ans = longestSuccessiveElementsBetter(arr);
+    // int ans = longestSuccessiveElementsBetter(arr);
+    int ans = longestSuccessiveElementsOptimal(arr);
     cout << "longest sucessive elements length: " << ans << endl;
 
     return 0;
