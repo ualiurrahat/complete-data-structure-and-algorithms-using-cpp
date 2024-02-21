@@ -20,6 +20,7 @@ void towerOfHanoi(int n, char source, char destination, char helper)
 
     // move those (n-1) disks from helper to destination using source
     towerOfHanoi(n - 1, helper, destination, source);
+    // T:O(2^n - 1);
 }
 
 int main()
