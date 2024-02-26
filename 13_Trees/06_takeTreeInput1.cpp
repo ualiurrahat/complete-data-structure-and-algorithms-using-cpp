@@ -1,8 +1,6 @@
-// user input function for tree
-// brute force technique
-
+// here, we will code the function for user given tree as input.
 #include <bits/stdc++.h>
-#include "11_2_treeClass.cpp"
+#include "04_treeNode.h"
 
 using namespace std;
 
@@ -10,27 +8,32 @@ using namespace std;
 void printTree(TreeNode<int> *root)
 {
     // edge case
-    // this is not base case.
-    // base case is implicitly done by the for loop here.
+
     if (root == nullptr)
     {
         return;
     }
+    // first print root data
     cout << root->data << ": ";
     // printing all children of the root node
     for (int i = 0; i < root->children.size(); i++)
     {
-        cout << root->children[i]->data << " ,";
+        if (i == root->children.size() - 1)
+        {
+            cout << root->children[i]->data;
+        }
+        else
+        {
+            cout << root->children[i]->data << " , ";
+        }
     }
     cout << endl;
-
     // recursively calling each children of nodes
     for (int i = 0; i < root->children.size(); i++)
     {
         printTree(root->children[i]);
     }
 }
-
 // function to take tree as user input
 // brute force technique
 // not handling the part when user gives nullptr as input
@@ -47,8 +50,8 @@ TreeNode<int> *takeInput()
     cout << "Enter total num of children of " << rootData << endl;
     cin >> n;
 
-    // taking all children input for each node.
-    // starting from rootNode.
+    // recursive call to take input for all children  nodes.
+    // starting from rootNode's children.
     for (int i = 0; i < n; i++)
     {
         TreeNode<int> *child = takeInput();
@@ -59,9 +62,9 @@ TreeNode<int> *takeInput()
     // return root of the tree
     return root;
 }
-
 int main()
 {
+
     // userInput for tree
     TreeNode<int> *root = takeInput();
     // printing tree
