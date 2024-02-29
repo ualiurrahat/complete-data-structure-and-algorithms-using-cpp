@@ -49,7 +49,7 @@ TreeNode<int> *takeInputLevelWise()
     }
     return root;
 }
- 
+
 void printTreeLevelWise(TreeNode<int> *root)
 {
     // edge case
@@ -79,7 +79,7 @@ void printTreeLevelWise(TreeNode<int> *root)
     }
 }
 
-// function to count nodes of a tree
+// function to count total no. of nodes of a tree
 int countNodes(TreeNode<int> *root)
 {
     // edge case
@@ -89,10 +89,11 @@ int countNodes(TreeNode<int> *root)
     }
     int ans = 1;
 
-    // traversing all children of root node
+    // recursive calling and traversing all children of root node
+    // current node returns its total no. of children.
     for (int i = 0; i < root->children.size(); i++)
     {
-        // counting node of each trees of children tree
+        // counting total children nodes of each nodes.
         // adding them to find total number of nodes
         // with the help of recursion
         ans = ans + countNodes(root->children[i]);

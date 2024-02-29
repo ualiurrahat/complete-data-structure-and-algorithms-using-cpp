@@ -92,7 +92,7 @@ void printTree(TreeNode<int> *root)
         return;
     }
     cout << root->data << ": ";
-    //printing children of root node first  and then other nodes
+    // printing children of root node first  and then other nodes
     for (int i = 0; i < root->children.size(); i++)
     {
         cout << root->children[i]->data << " ,";
@@ -107,7 +107,7 @@ void printTree(TreeNode<int> *root)
 }
 
 // print tree at level wise
-// print function 2
+
 void printTreeLevelWise(TreeNode<int> *root)
 {
     // edge case
@@ -116,23 +116,32 @@ void printTreeLevelWise(TreeNode<int> *root)
         return;
     }
 
-    // creating queue to push TreeNodes.
+    // take a queue to store the tree nodes.
     queue<TreeNode<int> *> pendingNodes;
+    // push root node to the queue
     pendingNodes.push(root);
 
+    // store remaining nodes in the queue
+    // and print them levelwise.
     while (pendingNodes.size() != 0)
     {
+        // front node from the queue
         TreeNode<int> *front = pendingNodes.front();
+        // pop out the node from the queue
         pendingNodes.pop();
 
-        // printing root node's value
+        // print front node.
         cout << front->data << " : ";
-        // loop to print root node's children
+        // loop to print front node's children
         for (int i = 0; i < front->children.size(); i++)
         {
+            // print current child node
             cout << front->children[i]->data << ", ";
+            // push the current child node in the queue.
             pendingNodes.push(front->children[i]);
         }
+        // printing of the current level is done.
+        // go to new line to print next level.
         cout << endl;
     }
 }
