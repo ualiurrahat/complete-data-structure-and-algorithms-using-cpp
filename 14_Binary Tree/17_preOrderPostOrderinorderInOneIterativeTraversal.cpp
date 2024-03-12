@@ -1,9 +1,3 @@
-/*
-
-*/
-/*
-
-*/
 
 #include <bits/stdc++.h>
 // inluding binary tree header file
@@ -470,21 +464,153 @@ vector<int> iterativePostOrderTraversalOne(BinaryTreeNode<int> *root)
     // Time Complexity: O(n), where n is the number of nodes in the binary tree
     // Space Complexity: O(n) for the two stacks, where n is the number of nodes in the binary tree
 }
+// post order traversal in iterative way
+// using only one stack here
+vector<int> iterativePostOrderTraversalTwo(BinaryTreeNode<int> *root)
+{
+    vector<int> ans; // to store elements in post order traversal.
+    // edge case: if root is empty
+    if (root == nullptr)
+    {
+        return ans; // return empty vector
+    }
+    stack<BinaryTreeNode<int> *> st; // stack for iterativer traversal
+
+    //  temporary nodes to traverse the whole tree
+    BinaryTreeNode<int> *curr = root;
+    BinaryTreeNode<int> *temp = root;
+    // traverse the tree
+    while (curr != nullptr || !st.empty())
+    {
+        // if curr is not empty, insert node in the stack
+        if (curr != nullptr)
+        {
+            st.push(curr);
+            // move to the left child
+            curr = curr->left;
+        }
+        // in case curr is empty
+        else
+        {
+            // move to the right child of top node from stack
+            temp = st.top()->right;
+            // if temp is empty
+            if (temp == nullptr)
+            {
+                temp = st.top();
+                st.pop();
+                // push temp node data to the ans vector
+                ans.push_back(temp->data);
+                while (!st.empty() && temp == st.top()->right)
+                {
+                    temp = st.top();
+                    st.pop();
+                    ans.push_back(temp->data);
+                }
+            }
+            else
+            {
+                curr = temp;
+            }
+        }
+    }
+    return ans;
+    // T:O(2N), N[for inserting element in stack] + N[inside while loo]
+    // S:O(N)
+}
+// here is a function that use only one traversal
+// and returns preorder,inorder,postorder traversal
+// v[0]---> preorder, v[1]-->inorder,v[2]-->postorder
+void allIterativeTraversal(BinaryTreeNode<int> *root, vector<vector<int>> &v)
+{
+    // edge case
+    if (root == nullptr)
+    {
+        return;
+    }
+    // take a stack of pair of node and an integer number
+    stack<pair<BinaryTreeNode<int> *, int>> st;
+    // push root node with integer value 1 in the stack
+    st.push({root, 1});
+
+    while (!st.empty())
+    {
+        // take out the top element
+        auto it = st.top();
+        // pop the element
+        st.pop();
+
+        // this is part of preorder
+        // increment int value 1 to 2
+        // push the curretn node with value increased.
+        // push the left side of the tree in the stack
+        if (it.second == 1)
+        {
+            // push in the preorder
+            v[0].push_back(it.first->data);
+            it.second++;
+            st.push(it);
+            if (it.first->left != nullptr)
+            {
+                st.push({it.first->left, 1});
+            }
+        }
+        // this is part of inorder
+        // increment int value 2 to 3
+        // push the current node with value increases
+        // push the right side tree to the stack
+        else if (it.second == 2)
+        {
+            v[1].push_back(it.first->data);
+            it.second++;
+            st.push(it);
+            if (it.first->right != nullptr)
+            {
+                st.push({it.first->right, 1});
+            }
+        }
+        // this is part of postorder
+        // no need to push back again
+        else
+        {
+            v[2].push_back(it.first->data);
+        }
+    }
+    return;
+    // T:O(3*N), S:(4*n)
+}
+
+vector<vector<int>> getAllIterativeTraversals(BinaryTreeNode<int> *root)
+{
+    vector<vector<int>> v(3);
+    allIterativeTraversal(root, v);
+    return v;
+}
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
     BinaryTreeNode<int> *root = takeInputLevelWise();
-
     printBinaryTreeLevelWise(root);
+    vector<vector<int>> ans = getAllIterativeTraversals(root);
 
-    vector<int> ans = iterativePostOrderTraversalOne(root);
-    cout << "post order: ";
-    for (int i = 0; i < ans.size(); i++)
+    cout << "Inorder: ";
+    for (auto num : ans[0])
     {
-        cout << ans[i] << " ";
+        cout << num << " ";
     }
     cout << endl;
-
+    cout << "PreOrder: ";
+    for (auto num : ans[1])
+    {
+        cout << num << " ";
+    }
+    cout << endl;
+    cout << "PostOrder: ";
+    for (auto num : ans[2])
+    {
+        cout << num << " ";
+    }
+    cout << endl;
     // delete tree
     delete root;
 
