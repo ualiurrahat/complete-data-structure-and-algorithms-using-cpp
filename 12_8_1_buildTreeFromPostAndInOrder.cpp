@@ -152,6 +152,7 @@ BinaryTreeNode<int> *buildTree(int *in, int *pre, int size)
   return buildTreeHelper(in, pre, 0, size - 1, 0, size - 1);
 }
 
+// helper2 funciton to build tree from inorder and post-order form
 BinaryTreeNode<int> *buildTreeHelper2(int *in, int *post, int inS, int inE, int postS, int postE)
 {
   if (inS > inE)
@@ -183,6 +184,7 @@ BinaryTreeNode<int> *buildTreeHelper2(int *in, int *post, int inS, int inE, int 
 
   return root;
 }
+// function to build tree from inorder and post order form
 BinaryTreeNode<int> *buildTree2(int *in, int *post, int size)
 {
   return buildTreeHelper2(in, post, 0, size - 1, 0, size - 1);
@@ -194,7 +196,7 @@ int main()
   int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
   int post[] = {4, 5, 2, 8, 9, 6, 7, 3, 1};
 
-  BinaryTreeNode<int>* root = buildTree2(in,post,9);
+  BinaryTreeNode<int> *root = buildTree2(in, post, 9);
   print(root);
 
   return 0;

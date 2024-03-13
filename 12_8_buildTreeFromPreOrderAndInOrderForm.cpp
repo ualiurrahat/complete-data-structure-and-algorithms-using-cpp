@@ -1,6 +1,8 @@
 // construct the original tree from its given in-order and pre-order form
 // note: we can not construct tree without these two form
 // can't get the tree with only in-order or pre-order form. we need both.
+// assuming trees have only unique data
+// means no two nodes in the tree contain same data.
 #include <bits/stdc++.h>
 // inluding binary tree class file
 #include "12_0_binaryTreeClass.cpp"
@@ -219,7 +221,7 @@ BinaryTreeNode<int> *buildTreeHelper(int *in, int *pre, int inS, int inE, int pr
     int rootData = pre[preS];
     // not pre[0] as we are working at a portion of the whole tree.
 
-    //  searching rootIndex in inE array
+    //  searching rootIndex in inorder array
     int rootIndex = -1;
     // searching index of root in in-order form
     for (int i = inS; i <= inE; i++)
@@ -231,7 +233,7 @@ BinaryTreeNode<int> *buildTreeHelper(int *in, int *pre, int inS, int inE, int pr
         }
     }
 
-    //necessary var.
+    // necessary var.
     int lInS = inS;
     int lInE = rootIndex - 1;
     int lPreS = preS + 1;
