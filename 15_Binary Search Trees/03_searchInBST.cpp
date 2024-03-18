@@ -1,12 +1,6 @@
-// print a BST within a limit. within numbers from k1 to k2.
-
-#include <bits/stdc++.h>
-#include "13_1_BSTclass.cpp"
-
-using namespace std;
-
-// function to search an element
-// existing in the BST or not
+// here, we will create a BST using the BST class
+//  that we created in the header file.
+#include "01_binarySearchTreeNode.h"
 BinaryTreeNode<int> *findNode(BinaryTreeNode<int> *root, int data)
 {
 
@@ -30,9 +24,10 @@ BinaryTreeNode<int> *findNode(BinaryTreeNode<int> *root, int data)
         // data is less than root data
         return findNode(root->left, data);
     }
+    // T:O(logN), S:O(1)
 }
 // take input function level wise
-// better function
+// for Binary Tree Input
 // returns nullptr if -1 is given as nodeData
 BinaryTreeNode<int> *takeInputLevelWise()
 {
@@ -110,39 +105,22 @@ void printTree(BinaryTreeNode<int> *root)
     printTree(root->left);
     printTree(root->right);
 }
-// function to print beween a range.
-void printBetweenK1K2(BinaryTreeNode<int> *root, int k1, int k2)
-{
-    // base case
-    if (root == nullptr)
-    {
-        return;
-    }
-    // if root data lies between the range
-    // print the data
-    if (root->data >= k1 && root->data <= k2)
-    {
-        cout << root->data << endl;
-    }
-    // data is greater than given initial value
-    // recursive call on left subtree
-    if (root->data > k1)
-    {
-        printBetweenK1K2(root->left, k1, k2);
-    }
-    // recursive call on right subtree
-    // when data is <= to the given final value
-    if (root->data <= k2)
-    {
-        printBetweenK1K2(root->right, k1, k2);
-    }
-}
 
 int main()
 {
+
     BinaryTreeNode<int> *root = takeInputLevelWise();
     printTree(root);
-    printBetweenK1K2(root, 20, 70);
+    // searching node with value 3 in the BST
+    BinaryTreeNode<int> *search = findNode(root, 3);
+    if (search == nullptr)
+    {
+        cout << "No data with value 3 exists in the BST" << endl;
+    }
+    else
+    {
+        cout << "node exists" << endl;
+    }
     delete root;
 
     return 0;

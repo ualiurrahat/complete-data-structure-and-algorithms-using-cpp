@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// function to search an element
-// existing in the BST or not
+// function to search a node with given data
+// exists in the BST or not
 BinaryTreeNode<int> *findNode(BinaryTreeNode<int> *root, int data)
 {
 
