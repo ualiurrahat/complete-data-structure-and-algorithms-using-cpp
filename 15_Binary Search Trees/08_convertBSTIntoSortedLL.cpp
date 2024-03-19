@@ -1,4 +1,6 @@
-// to check if a given BT is a BST or not
+/*you are given a BST. You have to convert it
+into a sorted Linked List
+*/
 
 #include "01_binarySearchTreeNode.h"
 BinaryTreeNode<int> *findNode(BinaryTreeNode<int> *root, int data)
@@ -271,19 +273,173 @@ bool isBSTOptimal(BinaryTreeNode<int> *root, int min = INT_MIN, int max = INT_MA
     return leftOutput && rightOutput;
     // T:O(height)
 }
+// function to create a BST from a sorted array
+// it takes the sorted array,starting and ending index as inputs.
+// Function to create a Binary Search Tree (BST) from a sorted array
+// Returns:
+//   - BinaryTreeNode<int>*: Pointer to the root of the constructed BST
+BinaryTreeNode<int> *BSTFromSortedArray(int a[], int start_index, int end_index)
+{
+    // Base case: If the start index is greater than the end index,
+    // it means there are no elements in the current subarray, so return nullptr
+    if (start_index > end_index)
+    {
+        return nullptr;
+    }
+
+    // Base case: If the start index is equal to the end index,
+    // it means there is only one element in the current subarray,
+    // so create a node for that element and return its pointer
+    if (start_index == end_index)
+    {
+        BinaryTreeNode<int> *root = new BinaryTreeNode<int>(a[start_index]);
+        return root;
+    }
+
+    // Since the array is sorted, the middle element of the current subarray (a[mid]) will be the root.
+    int mid = (start_index + end_index) / 2;
+
+    // Creating a node for the root with the value of the middle element
+    BinaryTreeNode<int> *root = new BinaryTreeNode<int>(a[mid]);
+
+    // Recursively construct the left subtree from the elements before the middle element
+    root->left = BSTFromSortedArray(a, start_index, mid - 1);
+
+    // Recursively construct the right subtree from the elements after the middle element
+    root->right = BSTFromSortedArray(a, mid + 1, end_index);
+
+    // Return the pointer to the root of the constructed BST
+    return root;
+    // T:O(N),
+    // S:O(N)
+}
+
+// class for linked list
+class Node
+{
+public:
+    int data;
+    Node *next;
+    Node(int data)
+    {
+        this->data = data;
+        this->next = nullptr;
+    }
+};
+// function to create a sorted linked list from a given binary search tree (BST)
+// function will return the head of the linked list
+// This is a recursive approach
+
+Node *BSTtoSortedLLBrute(BinaryTreeNode<int> *root)
+{
+    // base case: if the root is null, return null
+    if (root == nullptr)
+    {
+        return nullptr;
+    }
+
+    // head of linked list will be the root of the BST
+    Node *head = new Node(root->data);
+
+    // recursively create linked list nodes from the left subtree of the BST
+    Node *leftPart = BSTtoSortedLLBrute(root->left);
+
+    // recursively create linked list nodes from the right subtree of the BST
+    Node *rightPart = BSTtoSortedLLBrute(root->right);
+
+    // next node of head would be the right part from the BST
+    head->next = rightPart;
+
+    // now we need to add the left part from the BST before the head node
+    if (leftPart != nullptr)
+    {
+        // traverse to the last node of the left part
+        Node *temp = leftPart;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+        // temp is the last node before the head node
+        // connect it with the head node
+        temp->next = head;
+        // now head will be the first node, i.e., the left part
+        head = leftPart;
+    }
+
+    return head;
+    // T:O(n)+O(n)[for while loop in case of skew tree] = O(2n)
+    // S:O(n)
+}
+// function to create a sorted linked list from a given binary search tree (BST)
+// function will return the head and tail of the linked list
+// This is a recursive approach
+
+pair<Node *, Node *> BSTtoSortedLLPair(BinaryTreeNode<int> *root)
+{
+    // base case: if the root is null, return null for both head and tail
+    if (root == nullptr)
+    {
+        return {nullptr, nullptr};
+    }
+
+    // recursively create linked list nodes from the left subtree of the BST
+    pair<Node *, Node *> leftPart = BSTtoSortedLLPair(root->left);
+
+    // create a new node for the current root data
+    Node *head = new Node(root->data);
+
+    // if left part exists, connect the tail of left part with the head
+    if (leftPart.first != nullptr)
+    {
+        leftPart.second->next = head;
+    }
+
+    // recursively create linked list nodes from the right subtree of the BST
+    pair<Node *, Node *> rightPart = BSTtoSortedLLPair(root->right);
+
+    // if right part exists, connect the head with the right part's head
+    if (rightPart.first != nullptr)
+    {
+        head->next = rightPart.first;
+    }
+
+    // return head of the list and tail of the list
+    // if left part exists, return its head, otherwise return head of the current node
+    Node *listHead = (leftPart.first != nullptr) ? leftPart.first : head;
+    // if right part exists, return its tail, otherwise return tail of the current node
+    Node *listTail = (rightPart.second != nullptr) ? rightPart.second : head;
+
+    return {listHead, listTail};
+    // T:O(n),
+    // S:O(n)
+}
+
+// better function to create a sorted linked list from a given binary search tree (BST)
+// function will return the head of the linked list
+Node *BSTtoSortedLLBetter(BinaryTreeNode<int> *root)
+{
+    // call the utility function to get the head and tail of the list
+    pair<Node *, Node *> result = BSTtoSortedLLPair(root);
+    // return the head of the list
+    return result.first;
+}
+
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1
     // 10 8 12 6 9 11 13 -1 -1 -1 -1 -1 -1 -1 -1
 
     BinaryTreeNode<int> *root = takeInputLevelWise();
-    // cout << isBSTBrute(root) << endl;
-    // will print 1 if BST, otherwise 0.
+    printTree(root);
+    // Node *head = BSTtoSortedLLBrute(root);
+    Node *head = BSTtoSortedLLBetter(root);
 
-    isBSTReturn checkBST = isBSTBetter(root);
-    cout << checkBST.isBST << endl;
-
-    cout << isBSTOptimal(root) << endl;
+    while (head->next != nullptr)
+    {
+        cout << head->data << "->";
+        head = head->next;
+    }
+    cout << head->data << "->null" << endl;
     delete root;
 
     return 0;

@@ -1,5 +1,13 @@
-// to check if a given BT is a BST or not
+/*You have been given a sorted array of length ‘N’. You need to construct a balanced binary search tree from the array. If there can be more than one possible tree, then you can return any.
 
+Note:
+1. A balanced binary tree is a binary tree structure in which the left and right subtrees of every node differ in height by no more than 1.
+
+2. A binary search tree is a binary tree data structure, with the following properties
+    a. The left subtree of any node contains nodes with value less than the node’s value.
+    b. The right subtree of any node contains nodes with values equal to or greater than the node’s value.
+    c. Right, and left subtrees are also binary search trees.
+ */
 #include "01_binarySearchTreeNode.h"
 BinaryTreeNode<int> *findNode(BinaryTreeNode<int> *root, int data)
 {
@@ -271,19 +279,55 @@ bool isBSTOptimal(BinaryTreeNode<int> *root, int min = INT_MIN, int max = INT_MA
     return leftOutput && rightOutput;
     // T:O(height)
 }
+// function to create a BST from a sorted array
+// it takes the sorted array,starting and ending index as inputs.
+// Function to create a Binary Search Tree (BST) from a sorted array
+// Returns:
+//   - BinaryTreeNode<int>*: Pointer to the root of the constructed BST
+BinaryTreeNode<int> *BSTFromSortedArray(int a[], int start_index, int end_index)
+{
+    // Base case: If the start index is greater than the end index,
+    // it means there are no elements in the current subarray, so return nullptr
+    if (start_index > end_index)
+    {
+        return nullptr;
+    }
+
+    // Base case: If the start index is equal to the end index,
+    // it means there is only one element in the current subarray,
+    // so create a node for that element and return its pointer
+    if (start_index == end_index)
+    {
+        BinaryTreeNode<int> *root = new BinaryTreeNode<int>(a[start_index]);
+        return root;
+    }
+
+    // Since the array is sorted, the middle element of the current subarray (a[mid]) will be the root.
+    int mid = (start_index + end_index) / 2;
+
+    // Creating a node for the root with the value of the middle element
+    BinaryTreeNode<int> *root = new BinaryTreeNode<int>(a[mid]);
+
+    // Recursively construct the left subtree from the elements before the middle element
+    root->left = BSTFromSortedArray(a, start_index, mid - 1);
+
+    // Recursively construct the right subtree from the elements after the middle element
+    root->right = BSTFromSortedArray(a, mid + 1, end_index);
+
+    // Return the pointer to the root of the constructed BST
+    return root;
+    // T:O(N),
+    // S:O(N)
+}
+
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1
     // 10 8 12 6 9 11 13 -1 -1 -1 -1 -1 -1 -1 -1
 
-    BinaryTreeNode<int> *root = takeInputLevelWise();
-    // cout << isBSTBrute(root) << endl;
-    // will print 1 if BST, otherwise 0.
-
-    isBSTReturn checkBST = isBSTBetter(root);
-    cout << checkBST.isBST << endl;
-
-    cout << isBSTOptimal(root) << endl;
+    int a[] = {1, 2, 3, 4, 5, 6, 7};
+    BinaryTreeNode<int> *root = BSTFromSortedArray(a, 0, 6);
+    printTree(root);
     delete root;
 
     return 0;

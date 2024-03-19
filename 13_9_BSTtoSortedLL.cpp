@@ -312,7 +312,7 @@ Node *BSTtoSortedLL(BinaryTreeNode<int> *root)
         }
         // temp is the last node before head node
         temp->next = head;
-        // now head will be the first node. means right part;
+        // now head will be the first node. means left part;
         head = leftPart;
     }
 
