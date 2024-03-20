@@ -319,6 +319,9 @@ Node *BSTtoSortedLL(BinaryTreeNode<int> *root)
     return head;
 }
 
+// function that returns vector of pointers
+// that points to the path of root node to the
+// node containing data which is taken as input.
 vector<int> *getRootToNodePath(BinaryTreeNode<int> *root, int data)
 {
     // base case
