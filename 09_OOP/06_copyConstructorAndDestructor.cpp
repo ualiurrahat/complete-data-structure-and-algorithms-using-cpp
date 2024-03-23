@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 // including header file containing Student class.
-#include "2_studentClass.cpp"
+#include "02_studentClass.cpp"
 int main()
 {
     Student a(1, 20);
