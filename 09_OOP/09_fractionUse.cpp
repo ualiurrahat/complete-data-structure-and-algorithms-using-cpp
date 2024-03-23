@@ -4,7 +4,7 @@ here, we will use our fraction class and create fraction numbers
 #include <bits/stdc++.h>
 using namespace std;
 // including fraction class
-#include "7_fractionClass.cpp"
+#include "08_fractionClass.cpp"
 
 int main()
 {
