@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "2_linkedListClass.cpp"
+#include "02_linkedListClass.cpp"
 
 using namespace std;
 
@@ -17,6 +17,7 @@ void printLinkedList(Node *head)
         head = head->next;
     }
     cout << "null" << endl;
+    // T:O(n), n = size of LL
 }
 
 int main()

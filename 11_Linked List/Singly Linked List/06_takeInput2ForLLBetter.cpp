@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
-#include "2_linkedListClass.cpp"
+#include "02_linkedListClass.cpp"
 
 using namespace std;
 
-// function to take user input linked list
+// better function to take user input linked list
 // returns head of the list
 // so return type would be Node*
 // the function takes input untill -1 is given as input
@@ -12,38 +12,41 @@ using namespace std;
 // so will take input as linked list node
 // untill -1 is given.
 
-Node *takeInput()
+Node *takeInputBetter()
 {
 
     cout << "Enter your data (enter -1 to exit): ";
     int data;
-    // initialising head node with null
+    // initialising head and tail node with null
     Node *head = nullptr;
+    Node *tail = nullptr;
 
     cin >> data;
     while (data != -1)
     {
+        // creating new node with user provided data
         Node *newNode = new Node(data);
-        // check if head is null, then assign newNode as head
+        // if head is null, then assign newNode as head
         if (head == nullptr)
         {
             head = newNode;
+            // for only one node, tail and head are same
+            tail = newNode;
         }
         else
         {
-            Node *temp = head;
-            while (temp->next != nullptr)
-            {
-                temp = temp->next;
-            }
-            temp->next = newNode;
+            // assign new node as next of tail node
+            tail->next = newNode;
+            // update tail node
+            tail = tail->next; // or, tail = newNode;
         }
         cout << "enter data (enter -1 to exit): ";
         cin >> data;
     }
     return head;
+    // complexity: T:O(n), n = size of LL
 }
-// complexity: T:O(n^2)
+
 // function to print linked list
 void printLinkedList(Node *head)
 {
@@ -58,11 +61,13 @@ void printLinkedList(Node *head)
         head = head->next;
     }
     cout << "null" << endl;
+    // T:O(n), n = size of LL
 }
 
 int main()
 {
-    Node *head = takeInput();
+    Node *head = takeInputBetter();
+    cout << endl;
     printLinkedList(head);
 
     return 0;
