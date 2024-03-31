@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
-#include "2_linkedListClass.cpp"
+#include "02_linkedListClass.cpp"
 
 using namespace std;
 
-// function to take user input linked list
+// better function to take user input linked list
 // returns head of the list
 // so return type would be Node*
 // the function takes input untill -1 is given as input
@@ -44,8 +44,9 @@ Node *takeInputBetter()
         cin >> data;
     }
     return head;
+    // complexity: T:O(n), n = size of LL
 }
-// complexity: T:O(n), n = size of LL
+
 // function to print linked list
 void printLinkedList(Node *head)
 {
@@ -60,12 +61,11 @@ void printLinkedList(Node *head)
         head = head->next;
     }
     cout << "null" << endl;
+    // T:O(n), n = size of LL
 }
-// T:O(n), n = size of LL
-
 // function to insert a node at any position.
+// index i starts with value 0.
 // takes the head node, index i and data of new node as parameters.
-
 Node *insertNode(Node *head, int i, int data)
 {
     // creating new node with data
@@ -110,10 +110,9 @@ Node *insertNode(Node *head, int i, int data)
     }
     // returning head of the linked list.
     return head;
+    // T:O(1), for inserting node at first,
+    // T:O(n), for any other postion insertion.
 }
-// T:O(1), for inserting node at first,
-// T:O(n), for any other postion insertion.
-//..................
 
 // function to insert node at any position recursively.
 Node *insertNodeRecursively(Node *head, int i, int data)

@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
-#include "2_linkedListClass.cpp"
+#include "02_linkedListClass.cpp"
 
 using namespace std;
 
-// function to take user input linked list
+// better function to take user input linked list
 // returns head of the list
 // so return type would be Node*
 // the function takes input untill -1 is given as input
@@ -44,8 +44,9 @@ Node *takeInputBetter()
         cin >> data;
     }
     return head;
+    // complexity: T:O(n), n = size of LL
 }
-// complexity: T:O(n), n = size of LL
+
 // function to print linked list
 void printLinkedList(Node *head)
 {
@@ -60,12 +61,11 @@ void printLinkedList(Node *head)
         head = head->next;
     }
     cout << "null" << endl;
+    // T:O(n), n = size of LL
 }
-// T:O(n), n = size of LL
-
 // function to insert a node at any position.
+// index i starts with value 0.
 // takes the head node, index i and data of new node as parameters.
-
 Node *insertNode(Node *head, int i, int data)
 {
     // creating new node with data
@@ -110,83 +110,10 @@ Node *insertNode(Node *head, int i, int data)
     }
     // returning head of the linked list.
     return head;
+    // T:O(1), for inserting node at first,
+    // T:O(n), for any other postion insertion.
 }
-// T:O(1), for inserting node at first,
-// T:O(n), for any other postion insertion.
-//..................
 
-// function to insert node at any position recursively.
-Node *insertNodeRecursively(Node *head, int i, int data)
-{
-    // edge case
-    // for null head, nothing can be added.
-    // just return the head.
-    if (head == nullptr)
-    {
-        return head;
-    }
-    // 1. base case
-    // when i = 0,
-    // create new node with data as value,attach it with head
-    // update the head and return
-    if (i == 0)
-    {
-        Node *newNode = new Node(data);
-        newNode->next = head;
-        head = newNode;
-        return head;
-    }
-
-    // 2. recursive call
-    Node *smallHead = insertNodeRecursively(head->next, i - 1, data);
-    // 3. small calculation
-    head->next = smallHead;
-    return head;
-}
-// function to delete a node from the list at any index
-// takes the head node and index  i as paramter.
-// index i starts from value 0.
-// returns head node
-Node *deleteNode(Node *head, int i)
-{
-    // to store the deleted node
-    Node *a;
-    int count = 0;
-    Node *temp = head;
-    // case 1: deleting head node
-    if (i == 0)
-    {
-        a = head;
-        // updating head
-        head = head->next;
-        // deleting old head
-        delete a;
-        // returning updated head.
-        return head;
-    }
-
-    // case 2: deleting any other node except head node
-    // loop for finding the node that has to be deleted
-    while (temp != nullptr && count < i - 1)
-    {
-        temp = temp->next;
-        count++;
-    }
-
-    // delete operation will be valid if
-    // index i is valid, hence temp is not null.
-    if (temp != nullptr)
-    {
-        a = temp->next;
-        Node *b = a->next;
-        temp->next = b;
-        delete a;
-    }
-    // returning head after performing deletion
-    return head;
-}
-// T:O(1), for deleting head node
-// T:O(n), for deleting any other node.
 int main()
 {
     // taking node for first user given LL
@@ -194,14 +121,18 @@ int main()
     // printing the LL.
     printLinkedList(head);
 
-    // loop to delete nodes in the LL
-    int i;
+    // loop to add 3 new node in the LL
     for (int j = 0; j < 3; j++)
     {
-        cout << "Enter index of node you wanna delete:";
+        // inserting a new node in the list
+        int i, data;
+        cout << "Insert the index for new Node: ";
         cin >> i;
+        cout << "Insert data for new Node: ";
+        cin >> data;
 
-        head = deleteNode(head, i);
+        // calling the function to add the new Node in the list
+        head = insertNode(head, i, data);
         printLinkedList(head);
     }
 
