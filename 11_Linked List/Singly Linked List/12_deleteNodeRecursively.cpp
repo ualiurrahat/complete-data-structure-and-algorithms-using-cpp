@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "2_linkedListClass.cpp"
+#include "02_linkedListClass.cpp"
 
 using namespace std;
 
@@ -234,21 +234,39 @@ int length(Node *head)
     return count;
 }
 // T:O(N)
+//............
+
+// recursive function to find length
+int lengthRecursively(Node *head)
+{
+    // edge case
+    if (head == nullptr)
+    {
+        return 0;
+    }
+    // base case
+    if (head->next == nullptr)
+    {
+        return 1;
+    }
+    // recursive call
+    int smallLength = lengthRecursively(head->next);
+    // small calculation
+    return smallLength + 1;
+}
 int main()
 {
-    // taking node for first user given LL
     Node *head = takeInputBetter();
-    // printing head
-    cout << head << endl;
-    // printing the LL.
     printLinkedList(head);
 
-    int count = length(head);
-    cout << "length: " << count << endl;
-    cout << head << endl;
-    // head node inside main function  won't be changed
-    // as we are sending just a copy of head pointer
-    // as parameter for length() function
+    int i;
+    for (int j = 0; j < 3; j++)
+    {
+        cout << "Enter index of node you wanna delete:";
+        cin >> i;
 
+        head = deleteNodeRecursively(head, i);
+        printLinkedList(head);
+    }
     return 0;
 }

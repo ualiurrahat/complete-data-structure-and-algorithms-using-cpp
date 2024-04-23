@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// better function to take user input linked list
+// function to take user input linked list
 // returns head of the list
 // so return type would be Node*
 // the function takes input untill -1 is given as input
@@ -44,9 +44,8 @@ Node *takeInputBetter()
         cin >> data;
     }
     return head;
-    // complexity: T:O(n), n = size of LL
 }
-
+// complexity: T:O(n), n = size of LL
 // function to print linked list
 void printLinkedList(Node *head)
 {
@@ -61,11 +60,12 @@ void printLinkedList(Node *head)
         head = head->next;
     }
     cout << "null" << endl;
-    // T:O(n), n = size of LL
 }
+// T:O(n), n = size of LL
+
 // function to insert a node at any position.
-// index i starts with value 0.
 // takes the head node, index i and data of new node as parameters.
+
 Node *insertNode(Node *head, int i, int data)
 {
     // creating new node with data
@@ -110,9 +110,10 @@ Node *insertNode(Node *head, int i, int data)
     }
     // returning head of the linked list.
     return head;
-    // T:O(1), for inserting node at first,
-    // T:O(n), for any other postion insertion.
 }
+// T:O(1), for inserting node at first,
+// T:O(n), for any other postion insertion.
+//..................
 
 // function to insert node at any position recursively.
 Node *insertNodeRecursively(Node *head, int i, int data)
@@ -142,10 +143,8 @@ Node *insertNodeRecursively(Node *head, int i, int data)
     head->next = smallHead;
     return head;
 }
-
 // function to delete a node from the list at any index
 // takes the head node and index  i as paramter.
-// index i starts from value 0.
 // returns head node
 Node *deleteNode(Node *head, int i)
 {
@@ -184,24 +183,92 @@ Node *deleteNode(Node *head, int i)
     }
     // returning head after performing deletion
     return head;
-    // T:O(1), for deleting head node
-    // T:O(n), for deleting any other node.
 }
+// T:O(1), for deleting head node
+// T:O(n), for deleting any other node.
+//..............................
 
+// function to delete a node from the list recursively.
+Node *deleteNodeRecursively(Node *head, int i)
+{
+    // edge case: for null head
+    // just return the head
+    if (head == nullptr)
+    {
+        return head;
+    }
+    // 1. base case: if index i = 0;
+    // means, we need to delete the head node
+    if (i == 0)
+    {
+        // storing the head node.
+        Node *temp = head;
+        // updating head node
+        head = head->next;
+        // deleting previous head node
+        delete temp;
+        // returning the head.
+        return head;
+    }
+    // 2. recursive call.
+    Node *smallHead = deleteNodeRecursively(head->next, i - 1);
+    // 3. small calculation
+    head->next = smallHead;
+    // returning head node after performing deletion.
+    return head;
+}
+// find lenght of linked list
+// length = total num of nodes
+int length(Node *head)
+{
+    if (head == nullptr)
+    {
+        return 0;
+    }
+    int count = 1;
+    while (head->next != nullptr)
+    {
+        head = head->next;
+        count++;
+    }
+    return count;
+}
+// T:O(N)
+//............
+
+// recursive function to find length
+int lengthRecursively(Node *head)
+{
+    // edge case
+    if (head == nullptr)
+    {
+        return 0;
+    }
+    // base case
+    if (head->next == nullptr)
+    {
+        return 1;
+    }
+    // recursive call
+    int smallLength = lengthRecursively(head->next);
+    // small calculation
+    return smallLength + 1;
+}
 int main()
 {
     // taking node for first user given LL
     Node *head = takeInputBetter();
+    // printing head
+    cout << head << endl;
     // printing the LL.
     printLinkedList(head);
 
-    // loop to delete nodes in the LL
-    int i;
-    cout << "Enter the index of the element you want to delete: ";
-    cin >> i;
-    head = deleteNode(head, i);
-    cout << "List after deleting " << i << " th node: " << endl;
-    printLinkedList(head);
+    int count = lengthRecursively(head);
+    cout << "length: " << count << endl;
+    cout << head << endl;
+    // head node inside main function  won't be changed
+    // as we are sending just a copy of head pointer
+    // as parameter for length() function
 
     return 0;
 }
