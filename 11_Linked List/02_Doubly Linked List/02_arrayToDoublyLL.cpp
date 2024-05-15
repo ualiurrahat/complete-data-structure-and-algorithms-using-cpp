@@ -169,7 +169,7 @@ Node *take_input()
     return head;
 }
 
-// delete node index wise
+// delete node 0-based index wise
 Node *deleteNode(Node *head, int index)
 {
     // deleting first index
@@ -214,6 +214,43 @@ Node *deleteNode(Node *head, int index)
         temp->next = nullptr; // temp->next = null
         return head;
     }
+}
+// function to delete head node of DLL
+Node *deleteHead(Node *head)
+{
+    // Write your code here.
+    // edge case: when LL has one node only
+    if (head->next == nullptr)
+    {
+        delete head;
+        return nullptr;
+    }
+    Node *temp = head;
+    head = temp->next;
+    head->prev = nullptr;
+    temp->next = nullptr;
+    delete temp;
+    return head;
+}
+// to delete the last node of the LL
+Node *deleteLastNode(Node *head)
+{
+    // Write your code here
+    Node *temp = head;
+    // case for only one node in the list
+    if (temp->next == NULL)
+    {
+        delete temp;
+        return NULL;
+    }
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->prev->next = NULL;
+    temp->prev = NULL;
+    delete temp;
+    return head;
 }
 // function to convert an array into a doubly linked list
 Node *convertArrayIntoDLL(int arr[], int n)

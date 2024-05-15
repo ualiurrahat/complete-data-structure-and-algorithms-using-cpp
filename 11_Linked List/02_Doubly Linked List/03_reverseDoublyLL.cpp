@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 // Doubly LL class.
@@ -142,7 +142,7 @@ Node *take_input()
     // we can not ask size as linked list is dynamic
     // so will take input as linked list node
     // untill -1 is given.
-    cout << "enter your linked list: " << endl;
+    cout << " enter your linked list: " << endl;
     int data;
     cin >> data;
     Node *head = nullptr;
@@ -169,7 +169,7 @@ Node *take_input()
     return head;
 }
 
-// delete node index wise
+// delete node 0-based index wise
 Node *deleteNode(Node *head, int index)
 {
     // deleting first index
@@ -215,6 +215,43 @@ Node *deleteNode(Node *head, int index)
         return head;
     }
 }
+// function to delete head node of DLL
+Node *deleteHead(Node *head)
+{
+    // Write your code here.
+    // edge case: when LL has one node only
+    if (head->next == nullptr)
+    {
+        delete head;
+        return nullptr;
+    }
+    Node *temp = head;
+    head = temp->next;
+    head->prev = nullptr;
+    temp->next = nullptr;
+    delete temp;
+    return head;
+}
+// to delete the last node of the LL
+Node *deleteLastNode(Node *head)
+{
+    // Write your code here
+    Node *temp = head;
+    // case for only one node in the list
+    if (temp->next == NULL)
+    {
+        delete temp;
+        return NULL;
+    }
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->prev->next = NULL;
+    temp->prev = NULL;
+    delete temp;
+    return head;
+}
 // function to convert an array into a doubly linked list
 Node *convertArrayIntoDLL(int arr[], int n)
 {
@@ -239,57 +276,83 @@ Node *convertArrayIntoDLL(int arr[], int n)
 
     return head;
 }
-// function to delete head node of DLL
-Node *deleteHead(Node *head)
+// function to reverse a doubly LL
+// approach: take a stack. insert all the LL data into it.
+// starting from head. and then fill all the stack data from top to bottom
+// in the LL starting from head.
+Node *reverseDoublyLLBruteForce(Node *head)
 {
-    // Write your code here.
-    // edge case: when LL has one node only
-    if (head->next == nullptr)
+    // edge case: if head is null
+    if (head == nullptr)
     {
-        delete head;
-        return nullptr;
+        return head;
     }
+    // take a stack to store data of LL nodes
+    stack<int> st;
+    // to traverse the LL
     Node *temp = head;
-    head = temp->next;
-    head->prev = nullptr;
-    temp->next = nullptr;
-    delete temp;
-    return head;
-}
-
-// to delete the last node of the LL
-Node *deleteLastNode(Node *head)
-{
-    // Write your code here
-    Node *temp = head;
-    // case for only one node in the list
-    if (temp->next == NULL)
+    // traverse and store LL data into stack
+    while (temp != nullptr)
     {
-        delete temp;
-        return NULL;
-    }
-    while (temp->next != NULL)
-    {
+        st.push(temp->data);
         temp = temp->next;
     }
-    temp->prev->next = NULL;
-    temp->prev = NULL;
-    delete temp;
+    // now fill up the temp data into LL starting from head.
+    temp = head;
+    while (temp != nullptr)
+    {
+        temp->data = st.top();
+        // update temp to go to next node
+        temp = temp->next;
+        // remove top element from stack
+        st.pop();
+    }
+    // reversing is done. return the head
     return head;
+    // T:O(n)+(n) = O(2n)
+    // S:O(n)
 }
+
+// optimal approach to reverse DLL.
+// method: a DLL node has 3 elements: data,nextP,prevP
+// we reversed data in previous method.
+// here we will reversed the prev,next linked.
+// reverse means, next pointer becomes previous and vice versa.
+Node *reverseDLLOptimal(Node *head)
+{
+    // for single node list
+    if (head == nullptr || head->next == nullptr)
+    {
+        return head;
+    }
+    // to track the previous node of each node in LL.
+    Node *last = nullptr;
+    // to traverse the list.
+    Node *current = head;
+    while (current != nullptr)
+    {
+        last = current->prev;
+        current->prev = current->next;
+        current->next = last;
+        current = current->prev;
+    }
+    // LL is reversed.update head of the reversed LL
+    head = last->prev;
+    return head;
+    // T:O(n)
+    // S:O(1)
+}
+
 int main()
 {
+    // take user defined doubly LL
     Node *head = take_input();
-    cout << "The entire Linked List is: " << endl;
+    cout << "User given Doubly LL is: ";
     print(head);
-    // deleting head first time
-    head = deleteHead(head);
-    cout << "After deleting head node: " << endl;
+    // head = reverseDoublyLLBruteForce(head);
+    // cout << "Reversed Doubly LL is: ";
+    head = reverseDLLOptimal(head);
+    cout << "Reversed Doubly LL is: ";
     print(head);
-    // deleting last node
-    head = deleteLastNode(head);
-    cout << "After deleting last node: " << endl;
-    print(head);
-
     return 0;
 }
