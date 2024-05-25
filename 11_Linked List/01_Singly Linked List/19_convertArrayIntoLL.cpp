@@ -1,39 +1,11 @@
-/*
-You are given the 'head' of a singly linked list. Your task is to group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list’s head.
-
-The first node is considered odd, and the second node is even, and so on.
-Input: 'head' -> 1 -> 3 -> 5 -> 7
-Output: 'head' -> 1 -> 5 -> 3 -> 7
-Explanation:
-The nodes with odd indices (1, 5) are grouped together, followed by the nodes with even indices (3, 7).
-Input: 10->20->30->40->50->60->null
-output:10->30->50->20->40->60->null
-
-*/
+// you are given an array. convert its elements into a linked list
+// ex: a[] = {18,1,8,5,20}
+// output: list = 18->1->8->5->20
 #include <bits/stdc++.h>
+#include "02_linkedListClass.cpp"
+
 using namespace std;
 
-class Node
-{
-public:
-    int data;
-    Node *next;
-
-    // constructor
-    Node(int data)
-    {
-        this->data = data;
-        this->next = nullptr;
-    }
-    // destructor
-    ~Node()
-    {
-        if (next != nullptr)
-        {
-            delete next;
-        }
-    }
-};
 // function to take user input linked list
 // returns head of the list
 // so return type would be Node*
@@ -42,6 +14,7 @@ public:
 // we cant ask size as linked list is dynamic
 // so will take input as linked list node
 // untill -1 is given.
+
 Node *takeInputBetter()
 {
 
@@ -331,99 +304,136 @@ Node *midPointBetter(Node *head)
     // slow is the mid node
     return slow;
 }
-// function to merge two sorted linked list
-// takes two sorted LL as parameters.
-// it returns the head of the sorted LL
-Node *mergeTwoSortedLL(Node *head1, Node *head2)
+// function to convert vector array into LL
+Node *convertArrayIntoLL(vector<int> &arr)
 {
-    // to sotre head and tail of the sorted LL
-    Node *finalHead = NULL;
-    Node *finalTail = NULL;
+    Node *head = new Node(arr[0]);
+    Node *temp = head;
+    int n = arr.size();
+    for (int i = 1; i < n; i++)
+    {
+        Node *tail = new Node(arr[i]);
+        temp->next = tail;
+        temp = temp->next;
+    }
+    return head;
+}
+// brute force solution to merge two sorted LL
+Node *mergeTwoSortedLLBrute(Node *head1, Node *head2)
+{
+    // step 1: take an array and insert all nodes data from both lists.
+    vector<int> arr;
+    Node *temp1 = head1;
+    // inserting node's data from list 1
+    while (temp1 != NULL) // O(n1)
+    {
+        arr.push_back(temp1->data);
+        temp1 = temp1->next;
+    }
+    // inserting node's data from list 2
+    Node *temp2 = head2;
+    while (temp2 != NULL) // O(n2)
+    {
+        arr.push_back(temp2->data);
+        temp2 = temp2->next;
+    }
+    // step 2: sort the array.
+    sort(arr.begin(), arr.end());               // o(NlogN), here N = n1+n2
+                                                // step 3: now convert the array into a linked list.
+                                                // this will be the sorted list
+    Node *sortedHead = convertArrayIntoLL(arr); // O(N)
+    return sortedHead;
+    // T:O(n1) + O(n2) + O(NlogN) + O(N)
+    // S:O(N)+O(N), for array and answer linked list = O(2N)
+}
+// optimal solution to merge two sorted linked list
+// here, we will use dummy pointer and two pointers approach
+// will not create any new node, but will change the links between the existing nodes.
+// it returns the head of the sorted LL
+Node *mergeTwoSortedLLOptimal(Node *head1, Node *head2)
+{
+    // creating a dummy node with data as -1.
+    // this node's next will be head of sorted LL
+    Node *dummyNode = new Node(-1);
+    Node *temp = dummyNode;
+    // temporary node to traverse both lists
+    Node *t1 = head1;
+    Node *t2 = head2;
 
     // traversing each LL and sorting nodes
-    while (head1 != NULL && head2 != NULL)
+    while (t1 != NULL && t2 != NULL)
     {
-        // when head1 has lesser value than head2
-        if (head1->data < head2->data)
+        // when t1 node's data is lesser than t2's
+        if (t1->data < t2->data)
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign node to head and tail of merged LL
-                finalHead = head1;
-                finalTail = head1;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as next tail of the merged LL
-                finalTail->next = head1;
-                // update the tail
-                finalTail = finalTail->next;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
+            // link t1 as temp's next
+            temp->next = t1;
+            // update temp
+            temp = t1;
+            // go to next node in list 1
+            t1 = t1->next;
         }
-        // head2 value is lesser than head1
+        // now t2 node's data is smaller
         else
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign head and tail node of the merged LL
-                finalHead = head2;
-                finalTail = head2;
-                // move to the next node of LL2
-                head2 = head2->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as tail's next of the merged LL
-                finalTail->next = head2;
-                // update tail
-                finalTail = finalTail->next;
-                // move to the next node of the LL2
-                head2 = head2->next;
-            }
+            // link temp's next with t2
+            temp->next = t2;
+            // update temp
+            temp = t2;
+            // go to next node in list 2
+            t2 = t2->next;
         }
     }
+    // the loop will be terminated when either t1 or t2 becomes null.
 
-    // if LL1 gets exhaused, need to continue sorting with LL2
-    while (head2 != NULL)
+    // case when t2 is exhausted and t1 is left
+    if (t1 != NULL)
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head2;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL2
-        head2 = head2->next;
+        // attach temp with the remaining part of t1
+        temp->next = t1;
     }
-
-    // if LL2 gets exhausted, need to continue sorting LL1
-    while (head1 != NULL)
+    // case when t1 is exhausted, and t2 is left
+    else
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head1;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL1
-        head1 = head1->next;
+        // attch temp with remaining part of t2
+        temp->next = t2;
     }
-    // returns the head of the merged LL
-    return finalHead;
+    // dummy's next is the head of sorted LL
+    return dummyNode->next;
+    // S:O(1), no extra space used
+    // T:O(N=n1+n2)
 }
-// T:(N1+N2), N1 = size of LL1, N2 = size of LL2
-//......................
 
-// sort a linked list using merge sort
-Node *mergeSort(Node *head)
+// brute force approach to sort a LL
+Node *sortLLBrute(Node *head)
+{
+    // step1: store all node's data into a vector
+    vector<int> arr;
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        arr.push_back(temp->data);
+        temp = temp->next;
+    }
+    // step2 : sort the vector
+    sort(arr.begin(), arr.end());
+    // step 3: assign node's data from vector sequentially
+    // starting from vector's 0th index and start assigning from head node.
+    temp = head;
+    int i = 0;
+    while (temp != NULL)
+    {
+        temp->data = arr[i];
+        i++;
+        temp = temp->next;
+    }
+    return head;
+    // S:O(n), for vector
+    // T:O(n)+O(nlogn)+o(n)
+}
+// optimal approach to sort a LL
+// using merge sort here.
+Node *mergeSortLL(Node *head)
 {
     // base case
     if (head == nullptr || head->next == nullptr)
@@ -432,27 +442,30 @@ Node *mergeSort(Node *head)
     }
 
     // find the mid node of the LL
-    Node *mid = midPointBetter(head);
+    // here, we need the first mid node in case of even lenght lists
+    // the function midPointBetter here finds the first mid node
+    Node *middleNode = midPointBetter(head);
     // dividing whole LL into two parts for merge sorting
     // first part: from head to mid
     // second part: from mid->next to last node.
-    Node *a = head;
-    Node *b = mid->next;
+    Node *leftHead = head;
+    Node *rightHead = middleNode->next;
 
-    mid->next = nullptr;
+    // sepearting the first half of LL from 2nd half
     // this is important.Assigning null to the mid->next,
-    // we are disconnecting the LL from head to end.
     // and dividing LL into two parts will be successul only after that
+    middleNode->next = nullptr;
 
-    // 2.recursively sort
-    a = mergeSort(a);
-    b = mergeSort(b);
-
-    // 3. merge a and b
-    Node *c = mergeTwoSortedLL(a, b);
-    return c;
+    // 2.recursively sort the both halves of LL
+    leftHead = mergeSortLL(leftHead);
+    rightHead = mergeSortLL(rightHead);
+    // 3. merge both halves of LL
+    Node *sortedHead = mergeTwoSortedLLOptimal(leftHead, rightHead);
+    return sortedHead;
+    // S:O(logn)for heights, O(n)for merging, and O(n/2) for middle node finding
+    // S:O(logn *(n+n/2))
+    // T:O(n), for recursive stack space.
 }
-
 // function to reverse a linked list : brute force approch
 Node *reverseLLBrute(Node *head)
 {
@@ -483,8 +496,6 @@ Node *reverseLLBrute(Node *head)
     // return the reversed list
     return smallAns;
 }
-// T:O(N^2)
-
 //..................
 // class for reverseLL to get better  time complexity
 // this will return an object
@@ -535,9 +546,8 @@ Pair reverseLL2(Node *head)
 Node *reverseLLBetter(Node *head)
 {
     return reverseLL2(head).head;
+    // T:O(N)
 }
-// T:O(N)
-//...............
 
 // best function to reverse a LL recursively
 // the main conern is to find the tail and attach head as tail's next
@@ -565,9 +575,8 @@ Node *reverseLLBest(Node *head)
     head->next = nullptr;
     // returning small reversed LL
     return smallAns;
+    // T:O(N)
 }
-// T:O(N)
-// .................
 
 // reversing LL iteratively
 Node *reverseLLIteratively(Node *head)
@@ -587,10 +596,8 @@ Node *reverseLLIteratively(Node *head)
     // prev is the head node of LL
     head = prev;
     return head;
+    // T:O(N)
 }
-// T:O(N)
-//.................
-
 // function to search a particular node with key as value
 // if it exists, function returns 1
 // otherwise -1
@@ -628,151 +635,36 @@ int searchNodeRecursively(Node *head, int key)
     }
     return searchNodeRecursively(head->next, key);
 }
-
-// function to add two numbers in the LL
-Node *addTwoNumbersInLL(Node *l1, Node *l2)
+// function to convert array into LL
+Node *convertArrayIntoLL(int arr[], int n)
 {
-    // take a dummy node first
-    Node *dummyNode = new Node(-1);
-    // we will attach our sum node starting from dummy node
-    Node *curr = dummyNode;
-    // to store carry
-    int carry = 0;
-    Node *temp1 = l1;
-    Node *temp2 = l2;
-    // to traverse the given two lists.
-    while (temp1 != nullptr || temp2 != nullptr)
-    {
-        int sum = carry;
-        // take dataue from lists only if they are not nullptr.
-        if (temp1)
-        {
-            sum = sum + temp1->data;
-        }
-        if (temp2)
-        {
-            sum = sum + temp2->data;
-        }
-        // creating node with dataue of sum of both lists.
-        Node *newNode = new Node(sum % 10);
-        // calculating carry
-        carry = sum / 10;
-        // attach newNode with the list
-        curr->next = newNode;
-        // update list
-        curr = curr->next;
-        // only go to next node if lists are not pointing to null
-        if (temp1)
-            temp1 = temp1->next;
-        if (temp2)
-            temp2 = temp2->next;
-    }
-    // if carry is still left, make node with its dataue
-    if (carry)
-    {
-        Node *newNode = new Node(carry);
-        curr->next = newNode;
-    }
-    // head of resultant list is next pointer of dummyNode
-    return dummyNode->next;
-}
-// brute force funciton to create odd even LL
-// method:
-// 1.traverse the list and insert all odd node data in an array
-// 2. traverse the list and insert all even node data in the same array
-// 3. insert from head node and assign node data from 0th index of the array.
-Node *oddEvenListBruteForce(Node *head)
-{
-    // edge case
-    if (head == NULL || head->next == NULL)
-    {
-        return head;
-    }
-    // to traverse the list.
+    Node *head = new Node(arr[0]);
     Node *temp = head;
-    // to store all node's data
-    vector<int> arr;
-    // 1. traverse list and insert all odd node's data in the array.
-    while (temp != NULL && temp->next != NULL)
+    for (int i = 1; i < n; i++)
     {
-        arr.push_back(temp->data);
-        temp = temp->next->next;
+        Node *tail = new Node(arr[i]);
+        temp->next = tail;
+        temp = tail;
     }
-    // in case of odd length list,last node data is not added to the array.
-    // check temp and insert the data in the array.
-    if (temp)
-    {
-        arr.push_back(temp->data);
-    }
-    // for even nodes, start from head->next node.
-    temp = head->next;
-    // 2. traverse the list and insert all even node's data in the array.
-    while (temp != NULL && temp->next != NULL)
-    {
-        arr.push_back(temp->data);
-        temp = temp->next->next;
-    }
-    // in case of even length node, last node data is not added to the array.
-    // check temp and insert data in the array.
-    if (temp)
-    {
-        arr.push_back(temp->data);
-    }
-    // updating temp to start traversing list from the start.
-    temp = head;
-    int i = 0;
-    // traverse list and insert node data from 0th index of the array.
-    while (temp)
-    {
-        // assign node data from array
-        temp->data = arr[i];
-        // update index of array
-        i++;
-        // go to next node in the list.
-        temp = temp->next;
-    }
-    // returning the list.
     return head;
-    // T:O(n/2) + O(n/2 ) + O(n) == O(2n)
-    // S:O(n), for extra array space
-}
-// better function to create odd even linked list
-Node *oddEvenListBetter(Node *head)
-{
-    // edge case
-    if (head == NULL || head->next == NULL)
-        return head;
-    // take odd and even node
-    Node *odd = head;
-    Node *even = head->next;
-    // storing even head node. we need to connect this with last odd node.
-    Node *evenHead = head->next;
-    // traverse list and change the links of nodes.
-    while (even != NULL && even->next != NULL)
-    {
-        // change links of nodes.
-        odd->next = odd->next->next;
-        even->next = even->next->next;
-        // move on to next odd and even node
-        odd = odd->next;
-        even = even->next;
-    }
-    // last odd node's next should be start from first even node
-    // so add evenHead node as next of last odd node.
-    odd->next = evenHead;
-    return head;
-    // O(n)
 }
 int main()
 {
-    // take user provided list
-    Node *head = takeInputBetter();
-    cout << "Input linked list: ";
+    // take size of user input array
+    int n;
+    cout << "array size: ";
+    cin >> n;
+    // creating array of size n
+    int arr[n];
+    // take array elements from user
+    cout << "insert array elements: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    // converting array into LL
+    Node *head = convertArrayIntoLL(arr, n);
     printLinkedList(head);
-    // creating odd even list using the funciton
-    // head = oddEvenListBruteForce(head);
-    head = oddEvenListBetter(head);
-    cout << "output linked list: ";
-    printLinkedList(head);
+
     return 0;
 }
