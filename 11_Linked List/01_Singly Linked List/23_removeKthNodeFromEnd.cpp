@@ -1,36 +1,17 @@
-/*Given a linked list of 'N' nodes, where each node has an integer value that can be 0, 1, or 2.
- You need to sort the linked list in non-decreasing order and
-  the return the head of the sorted list.
-
-
+/*You have been given a singly Linked List of 'N' nodes with integer data and an integer 'K'.
+Your task is to remove the 'K'th node from the end of the given Linked List and return the head of the modified linked list.
 Example:
-Given linked list is 1 -> 0 -> 2 -> 1 -> 2.
-The sorted list for the given linked list will be 0 -> 1 -> 1 -> 2 -> 2.
+Input : 1 -> 2 -> 3 -> 4 -> 'NULL'  and  'K' = 2
+Output: 1 -> 2 -> 4 -> 'NULL'
+Explanation:
+After removing the second node from the end, the linked list become 1 -> 2 -> 4 -> 'NULL'.
 */
+
 #include <bits/stdc++.h>
+#include "02_linkedListClass.cpp"
+
 using namespace std;
 
-class Node
-{
-public:
-    int data;
-    Node *next;
-
-    // constructor
-    Node(int data)
-    {
-        this->data = data;
-        this->next = nullptr;
-    }
-    // destructor
-    ~Node()
-    {
-        if (next != nullptr)
-        {
-            delete next;
-        }
-    }
-};
 // function to take user input linked list
 // returns head of the list
 // so return type would be Node*
@@ -39,6 +20,7 @@ public:
 // we cant ask size as linked list is dynamic
 // so will take input as linked list node
 // untill -1 is given.
+
 Node *takeInputBetter()
 {
 
@@ -328,99 +310,136 @@ Node *midPointBetter(Node *head)
     // slow is the mid node
     return slow;
 }
-// function to merge two sorted linked list
-// takes two sorted LL as parameters.
-// it returns the head of the sorted LL
-Node *mergeTwoSortedLL(Node *head1, Node *head2)
+// function to convert vector array into LL
+Node *convertArrayIntoLL(vector<int> &arr)
 {
-    // to sotre head and tail of the sorted LL
-    Node *finalHead = NULL;
-    Node *finalTail = NULL;
+    Node *head = new Node(arr[0]);
+    Node *temp = head;
+    int n = arr.size();
+    for (int i = 1; i < n; i++)
+    {
+        Node *tail = new Node(arr[i]);
+        temp->next = tail;
+        temp = temp->next;
+    }
+    return head;
+}
+// brute force solution to merge two sorted LL
+Node *mergeTwoSortedLLBrute(Node *head1, Node *head2)
+{
+    // step 1: take an array and insert all nodes data from both lists.
+    vector<int> arr;
+    Node *temp1 = head1;
+    // inserting node's data from list 1
+    while (temp1 != NULL) // O(n1)
+    {
+        arr.push_back(temp1->data);
+        temp1 = temp1->next;
+    }
+    // inserting node's data from list 2
+    Node *temp2 = head2;
+    while (temp2 != NULL) // O(n2)
+    {
+        arr.push_back(temp2->data);
+        temp2 = temp2->next;
+    }
+    // step 2: sort the array.
+    sort(arr.begin(), arr.end());               // o(NlogN), here N = n1+n2
+                                                // step 3: now convert the array into a linked list.
+                                                // this will be the sorted list
+    Node *sortedHead = convertArrayIntoLL(arr); // O(N)
+    return sortedHead;
+    // T:O(n1) + O(n2) + O(NlogN) + O(N)
+    // S:O(N)+O(N), for array and answer linked list = O(2N)
+}
+// optimal solution to merge two sorted linked list
+// here, we will use dummy pointer and two pointers approach
+// will not create any new node, but will change the links between the existing nodes.
+// it returns the head of the sorted LL
+Node *mergeTwoSortedLLOptimal(Node *head1, Node *head2)
+{
+    // creating a dummy node with data as -1.
+    // this node's next will be head of sorted LL
+    Node *dummyNode = new Node(-1);
+    Node *temp = dummyNode;
+    // temporary node to traverse both lists
+    Node *t1 = head1;
+    Node *t2 = head2;
 
     // traversing each LL and sorting nodes
-    while (head1 != NULL && head2 != NULL)
+    while (t1 != NULL && t2 != NULL)
     {
-        // when head1 has lesser value than head2
-        if (head1->data < head2->data)
+        // when t1 node's data is lesser than t2's
+        if (t1->data < t2->data)
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign node to head and tail of merged LL
-                finalHead = head1;
-                finalTail = head1;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as next tail of the merged LL
-                finalTail->next = head1;
-                // update the tail
-                finalTail = finalTail->next;
-                // move to next node in the LL1
-                head1 = head1->next;
-            }
+            // link t1 as temp's next
+            temp->next = t1;
+            // update temp
+            temp = t1;
+            // go to next node in list 1
+            t1 = t1->next;
         }
-        // head2 value is lesser than head1
+        // now t2 node's data is smaller
         else
         {
-            // if finalHead is null.
-            // means it is the first node of merged LL
-            if (finalHead == NULL)
-            {
-                // assign head and tail node of the merged LL
-                finalHead = head2;
-                finalTail = head2;
-                // move to the next node of LL2
-                head2 = head2->next;
-            }
-            // now head is already there in the merged LL
-            // so need to add this node as a tail.
-            else
-            {
-                // add the node as tail's next of the merged LL
-                finalTail->next = head2;
-                // update tail
-                finalTail = finalTail->next;
-                // move to the next node of the LL2
-                head2 = head2->next;
-            }
+            // link temp's next with t2
+            temp->next = t2;
+            // update temp
+            temp = t2;
+            // go to next node in list 2
+            t2 = t2->next;
         }
     }
+    // the loop will be terminated when either t1 or t2 becomes null.
 
-    // if LL1 gets exhaused, need to continue sorting with LL2
-    while (head2 != NULL)
+    // case when t2 is exhausted and t1 is left
+    if (t1 != NULL)
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head2;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL2
-        head2 = head2->next;
+        // attach temp with the remaining part of t1
+        temp->next = t1;
     }
-
-    // if LL2 gets exhausted, need to continue sorting LL1
-    while (head1 != NULL)
+    // case when t1 is exhausted, and t2 is left
+    else
     {
-        // add current node as tail's next of the merged LL
-        finalTail->next = head1;
-        // update tail
-        finalTail = finalTail->next;
-        // move to the next node of the LL1
-        head1 = head1->next;
+        // attch temp with remaining part of t2
+        temp->next = t2;
     }
-    // returns the head of the merged LL
-    return finalHead;
+    // dummy's next is the head of sorted LL
+    return dummyNode->next;
+    // S:O(1), no extra space used
+    // T:O(N=n1+n2)
 }
-// T:(N1+N2), N1 = size of LL1, N2 = size of LL2
-//......................
 
-// sort a linked list using merge sort
-Node *mergeSort(Node *head)
+// brute force approach to sort a LL
+Node *sortLLBrute(Node *head)
+{
+    // step1: store all node's data into a vector
+    vector<int> arr;
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        arr.push_back(temp->data);
+        temp = temp->next;
+    }
+    // step2 : sort the vector
+    sort(arr.begin(), arr.end());
+    // step 3: assign node's data from vector sequentially
+    // starting from vector's 0th index and start assigning from head node.
+    temp = head;
+    int i = 0;
+    while (temp != NULL)
+    {
+        temp->data = arr[i];
+        i++;
+        temp = temp->next;
+    }
+    return head;
+    // S:O(n), for vector
+    // T:O(n)+O(nlogn)+o(n)
+}
+// optimal approach to sort a LL
+// using merge sort here.
+Node *mergeSortLL(Node *head)
 {
     // base case
     if (head == nullptr || head->next == nullptr)
@@ -429,27 +448,30 @@ Node *mergeSort(Node *head)
     }
 
     // find the mid node of the LL
-    Node *mid = midPointBetter(head);
+    // here, we need the first mid node in case of even lenght lists
+    // the function midPointBetter here finds the first mid node
+    Node *middleNode = midPointBetter(head);
     // dividing whole LL into two parts for merge sorting
     // first part: from head to mid
     // second part: from mid->next to last node.
-    Node *a = head;
-    Node *b = mid->next;
+    Node *leftHead = head;
+    Node *rightHead = middleNode->next;
 
-    mid->next = nullptr;
+    // sepearting the first half of LL from 2nd half
     // this is important.Assigning null to the mid->next,
-    // we are disconnecting the LL from head to end.
     // and dividing LL into two parts will be successul only after that
+    middleNode->next = nullptr;
 
-    // 2.recursively sort
-    a = mergeSort(a);
-    b = mergeSort(b);
-
-    // 3. merge a and b
-    Node *c = mergeTwoSortedLL(a, b);
-    return c;
+    // 2.recursively sort the both halves of LL
+    leftHead = mergeSortLL(leftHead);
+    rightHead = mergeSortLL(rightHead);
+    // 3. merge both halves of LL
+    Node *sortedHead = mergeTwoSortedLLOptimal(leftHead, rightHead);
+    return sortedHead;
+    // S:O(logn)for heights, O(n)for merging, and O(n/2) for middle node finding
+    // S:O(logn *(n+n/2))
+    // T:O(n), for recursive stack space.
 }
-
 // function to reverse a linked list : brute force approch
 Node *reverseLLBrute(Node *head)
 {
@@ -480,8 +502,6 @@ Node *reverseLLBrute(Node *head)
     // return the reversed list
     return smallAns;
 }
-// T:O(N^2)
-
 //..................
 // class for reverseLL to get better  time complexity
 // this will return an object
@@ -532,9 +552,8 @@ Pair reverseLL2(Node *head)
 Node *reverseLLBetter(Node *head)
 {
     return reverseLL2(head).head;
+    // T:O(N)
 }
-// T:O(N)
-//...............
 
 // best function to reverse a LL recursively
 // the main conern is to find the tail and attach head as tail's next
@@ -562,9 +581,8 @@ Node *reverseLLBest(Node *head)
     head->next = nullptr;
     // returning small reversed LL
     return smallAns;
+    // T:O(N)
 }
-// T:O(N)
-// .................
 
 // reversing LL iteratively
 Node *reverseLLIteratively(Node *head)
@@ -584,10 +602,8 @@ Node *reverseLLIteratively(Node *head)
     // prev is the head node of LL
     head = prev;
     return head;
+    // T:O(N)
 }
-// T:O(N)
-//.................
-
 // function to search a particular node with key as value
 // if it exists, function returns 1
 // otherwise -1
@@ -625,7 +641,19 @@ int searchNodeRecursively(Node *head, int key)
     }
     return searchNodeRecursively(head->next, key);
 }
-
+// function to convert array into LL
+Node *convertArrayIntoLL(int arr[], int n)
+{
+    Node *head = new Node(arr[0]);
+    Node *temp = head;
+    for (int i = 1; i < n; i++)
+    {
+        Node *tail = new Node(arr[i]);
+        temp->next = tail;
+        temp = tail;
+    }
+    return head;
+}
 // function to add two numbers in the LL
 Node *addTwoNumbersInLL(Node *l1, Node *l2)
 {
@@ -818,16 +846,75 @@ Node *sortListOfZeroesOnesBetter(Node *head)
 
     return head;
 }
+// function to remove kth node from end of LL
+Node *removeKthNodeBrute(Node *head, int K)
+{
+
+    // first find the length of the linked list
+    int len = 0;
+    Node *temp = head;
+    while (temp)
+    {
+        len++;
+        temp = temp->next;
+    }
+    // edge case: deleting head node
+    if (len == K)
+    {
+        Node *newHead = head->next;
+        delete head;
+        return newHead;
+    }
+    // Nth node from end = len-N th node from start
+    int res = len - K;
+    // reassigning temp as head
+    temp = head;
+    while (--res)
+    {
+        temp = temp->next;
+    }
+    Node *deleteNode = temp->next;
+    temp->next = temp->next->next;
+    delete deleteNode;
+    return head;
+    // T:O(len) + O(len-K) == T:O(2*len) at max.
+}
+// better function to delete kth node from end of list.
+Node *removeKthNodeBetter(Node *head, int K)
+{
+    Node *fast = head;
+    for (int i = 1; i <= K; i++)
+    {
+        fast = fast->next;
+    }
+    // edge case:if fast is null,means head needs to be deleted.
+    if (fast == NULL)
+    {
+        Node *newhead = head->next;
+        delete head;
+        return newhead;
+    }
+    Node *slow = head;
+    while (fast->next != NULL)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    Node *deletenode = slow->next;
+    slow->next = slow->next->next;
+    delete deletenode;
+
+    return head;
+    // O(len)
+}
+
 int main()
 {
-    // take user provided list
-    cout << "Insert a linked list with only 0,1,2 as node value" << endl;
-    Node *head = takeInputBetter();
-    cout << "Input linked list: ";
+    Node *head = takeInputBetter(); // 1 2 3 4 5 6 -1
     printLinkedList(head);
-    // head = sortListOfZeroesOnesTwosBruteForce(head);
-    head = sortListOfZeroesOnesBetter(head);
-    cout << "linked list after sorting: ";
+    int k = 2;
+    // head = removeKthNodeBrute(head, k);
+    head = removeKthNodeBetter(head, k);
     printLinkedList(head);
     return 0;
 }
