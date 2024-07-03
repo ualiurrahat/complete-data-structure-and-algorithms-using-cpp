@@ -81,3 +81,93 @@ bool twoSumInBSTBrute(BinaryTreeNode<int> *root, int target)
     // T:O(N)+O(N)
     // S:O(N)
 }
+
+// optimal approach
+// using the next and before iterator
+// from BST iterator
+
+// BST iterator class
+class BSTIterator
+{
+private:
+    stack<BinaryTreeNode<int> *> myStack;
+    // reverse--> true == before
+    // reverse--> false == next
+    bool reverse = true;
+
+public:
+    BSTIterator(BinaryTreeNode<int> *root, bool isReverse)
+    {
+        reverse = isReverse;
+        pushAll(root);
+    }
+    // return whether we have a next smallest number
+    bool hasNext()
+    {
+        return !myStack.empty();
+    }
+    // return the next smallest number
+    int next()
+    {
+        BinaryTreeNode<int> *topNode = myStack.top();
+        myStack.pop();
+        if (!reverse)
+        {
+            pushAll(topNode->right);
+        }
+        else
+        {
+            pushAll(topNode->left);
+        }
+        return topNode->data;
+    }
+
+private:
+    void pushAll(BinaryTreeNode<int> *node)
+    {
+        while (node)
+        {
+            myStack.push(node);
+            if (reverse == true)
+            {
+                node = node->right;
+            }
+            else
+            {
+                node = node->left;
+            }
+        }
+    }
+};
+bool twoSumInBSTOptimal(BinaryTreeNode<int> *root, int target)
+{
+    // Write your code here
+    if (root == nullptr)
+    {
+        return false;
+    }
+    // for next iterator
+    BSTIterator l(root, false);
+    // for before iterator
+    BSTIterator r(root, true);
+    int i = l.next();
+    int j = r.next();
+    while (i < j)
+    {
+        if (i + j == target)
+        {
+            return true;
+        }
+        else if (i + j < target)
+        {
+            i = l.next();
+        }
+        else
+        {
+            j = r.next();
+        }
+    }
+    return false;
+    // T:O(N)
+    // S:O(H)*2
+}
