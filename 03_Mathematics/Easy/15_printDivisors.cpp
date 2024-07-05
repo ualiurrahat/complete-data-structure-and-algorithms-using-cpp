@@ -10,8 +10,7 @@ output = 1,2,3,4,6,9,12,18,36
 using namespace std;
 
 // brute force approach
-// T:O(log n)
-// S:O(1)
+
 void printDivisor(int n)
 {
     for (int i = 1; i <= n; i++)
@@ -21,20 +20,19 @@ void printDivisor(int n)
             cout << i << " ";
         }
     }
+    // T:O( n)
+    // S:O(1)
 }
 
 // better approach
-// T:O(sqrt n) + O(no. of factors) ~= O(sqrt n)
-// S:O(number of factors)
+
 void printDivisorBetter(int n)
 {
     // to store all divisors
-    // S:O(number of factors)
     vector<int> factors;
 
     // factors lie between 1 to square root of a number
     // so looping though 1 to sqrt of n
-    // T:O(sqrt n)
     for (int i = 1; i * i <= n; i++)
     {
         if (n % i == 0)
@@ -51,14 +49,14 @@ void printDivisorBetter(int n)
     }
 
     // now sorting the factors
-    // T:O(no. of factors * log(no. of factors) )
     sort(factors.begin(), factors.end());
     // printing all iterators
-    //  T:O(number of factors)
     for (auto i : factors)
     {
         cout << i << " ";
     }
+    // T:O(sqrt n) + O(no. of factors) ~= O(sqrt n)
+    // S:O(number of factors)
 }
 int main()
 {

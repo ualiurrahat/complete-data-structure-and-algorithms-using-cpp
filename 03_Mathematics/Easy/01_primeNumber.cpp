@@ -3,11 +3,32 @@
 #include <cmath>
 using namespace std;
 
-// function to check if a number is prime
+// brute force solution
+// returns 1 if input number n is prime
+// returns 0 otherwise.
+int isPrimeBrute(int n)
+{
+    // count total no. of divisors
+    int count = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            count++;
+        }
+    }
+    if (count > 2)
+    {
+        return 0;
+    }
+    return 1;
+    // T:O(N), S:O(1)
+}
+// optimal function to check if a number is prime
 // takes a number n as parameter
 // return 1 if n is prime, otherwise false.
-// time complexity: O(sqrt(n))
-int is_prime(int n)
+
+int isPrimeOptimal(int n)
 {
     int i;
     // all number less than 2 is not prime
@@ -36,6 +57,8 @@ int is_prime(int n)
     // function comes here when none of the condition came true
     // for n to be a non-prime number. so n is prime. returning 1
     return 1;
+    // time complexity: O(sqrt(n))
+    // S:O(1)
 }
 int main()
 {
@@ -49,7 +72,7 @@ int main()
         {
             break;
         }
-        if (is_prime(n) == 1)
+        if (isPrimeOptimal(n) == 1)
         {
             printf("%d is prime\n", n);
         }
