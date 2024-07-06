@@ -3,7 +3,7 @@
 //  then stores them in the bucket array
 
 // how to change data type of keys from original to int type?
-// ans: using hash function
+// solutin: using hash function
 // hashfunction--------- two parts.
 //   1. hash Code----. change keys into int
 //   2. compression function.... compressed the int value of key within array size.
@@ -13,7 +13,7 @@
 // keys......hash function.......()int) keys
 
 // how to use hash function
-// for example, to change string keys into int, we can take sum of ascii value
+// for example, to change string keys into int, we can take sum of ascii values.
 // or sum of first 3 digits
 // but these are not good hash code
 // better hash code is like considering a string as a number of base p

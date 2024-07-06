@@ -4,8 +4,7 @@
 using namespace std;
 
 // function to remove duplicates
-// T:O(n) as we have used unordered_map
-// for  map, it would have been T:O(nlogn)
+
 vector<int> removeDuplicates(int a[], int size)
 {
     vector<int> v;
@@ -30,6 +29,8 @@ vector<int> removeDuplicates(int a[], int size)
     // sorting vector
     // sort(v.begin(), v.end());
     return v;
+    // T:O(n) as we have used unordered_map
+    // for  map, it would have been T:O(nlogn)
 }
 
 int main()

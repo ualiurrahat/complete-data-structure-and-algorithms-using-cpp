@@ -38,15 +38,14 @@ int main()
     // if we use at(), it will either show value or show error(if key does not exist)
     // [] will show value if key already exists or add the key if it was not existed before
     // so we can't use map[key] to check if a particular key exists or not
-   
+
     // solution: use count() function
     // map stores a key just once only
-    // so a key will have value 1 if it exists, either 0 for non-exist
-    // so count() will give 1 if exits, or 0 if element not exists.
-
+    // so a key will have value 1 if it exists, either 0 for otherwise
+    // so count() will give 1 if a key exits, or 0 otherwise.
 
     // check presence
-    
+
     // checking if "mahbub" exist in the map
     if (ourmap.count("mahbub") > 0)
     {
