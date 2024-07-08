@@ -2,9 +2,9 @@
 // there will be an array Buckets which we will be using for our Map
 // each index of Buckets array will contain a linked list
 // in the link list we will insert elements as key-value pair
-// index will be based upon keys and values will be inserted on the linked list nodes
-// so each linked list node will have 3 elemenst. key, value, next node address
-// we will take string data type(default) for map and template(generic data type) for values
+// index will be based upon keys and values will be inserted on the linked list as nodes
+// so each linked list node will have 3 elements. key, value, next node address
+// we will take string data type(default) for keys and template(generic data type) for values
 // so, each node of linked list will look like this :
 // Node<v>*    here, v is template for values
 // since Buckets is an array of containing those linked list
@@ -46,7 +46,7 @@ public:
 template <typename V>
 class ourmap
 {
-    // map is an  array of linked list
+    // map is an  array of linked list nodes
     // nodes are MapNode<V>*
     // array of nodes will be MapNode<V>**
     MapNode<V> **buckets;
@@ -96,14 +96,15 @@ private:
     // function to get index of key in the buckets array
     // keep it private as user need not concern about hashing
     // 2 things has to be done
-    // 1. converty key into hashCode, 2. compress hashCode
+    // 1. converty key stringinto hashCode,
+    // 2. compress hashCode value within size of buckets.
     int getBucketIndex(string key)
     {
         // converting key into hashCode
         int hashCode = 0;
         int currentCoEfficient = 1;
 
-        // changing string key into int
+        // changing string key into int value
         // calculating integer value of key from the last index
         // using base p method, here p = 37
         for (int i = key.length() - 1; i >= 0; i--)
@@ -127,14 +128,15 @@ public:
         // using private function to get the bucketIndex
         int bucketIndex = getBucketIndex(key);
 
-        // creating a head node to access the node in the bucketIndex within the array
+        // creating a head node to access the node in the bucketIndex.
         MapNode<V> *head = buckets[bucketIndex];
 
         // traverseing the linked list
+        // check if the key already exists in the node
+        // if it exists, then update its value
         while (head != nullptr)
         {
-            // check if the key already exists in the node
-            // if it is then update its value
+
             if (head->key == key)
             {
                 // key already exists in the node
@@ -160,8 +162,10 @@ public:
 
         // checking load factor
         // load factor = total entries / total size
-        // if load factor is greater than 0.7
+        // if load factor > 0.7
         // we will perform rehashing
+        // rehasing is done to make sure load factor
+        // is < 0.7, so that T:O(1), for insertion,deletion,get value functions.
         double loadFactor = (1.0 * count) / bucketSize;
         if (loadFactor > 0.7)
         {
@@ -196,13 +200,13 @@ public:
     }
 
     // function to remove a key-value pair
-    // also returns the value of the key that has to be deleted
+    // also returns the value corresponding to the key that is deleted
     V remove(string key)
     {
         // first find the index in the bucket array
         // in which the key is in inside a linked list
         int bucketIndex = getBucketIndex(key);
-        // node for head and previos node of the key node in the LL
+        // node for head and previous node of the key node in the LL
         MapNode<V> *head = buckets[bucketIndex];
         MapNode<V> *prev = nullptr;
 
@@ -232,7 +236,7 @@ public:
                 V value = head->value;
                 // head node needs to be deleted
                 // but we change the delete operator in the destructor
-                // so calling "delete head" will delete the entire LL from head to end
+                // so calling "delete head" will delete the entire LL recursivelyfrom head to end
                 // so assigning head->next as null
                 // then deleting the head
                 head->next = nullptr;
@@ -257,7 +261,7 @@ public:
 
     void rehash()
     {
-        // temp array for containing the old hashmap
+        // temp array for containing the old hashmap i.e . bucket array.
         MapNode<V> **temp = buckets;
         // resizing the buckets array for rehashing
         buckets = new MapNode<V> *[2 * bucketSize];
@@ -301,8 +305,8 @@ public:
         delete[] temp;
     }
 
-    // function to find load factor
-    double loadFactor()
+    // function to get load factor
+    double getLoadFactor()
     {
         return (1.0 * count) / bucketSize;
     }

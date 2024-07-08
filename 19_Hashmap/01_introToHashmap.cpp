@@ -17,3 +17,20 @@
 // the in-built map is made up of both linked list and BST.
 // built-in Map in C++....use BST---> O(logN)
 // unordered_map......use HashMap---->O(1)
+
+/*
+ADVANTAGES OF HASHMAP
+1. Fast random memory access through hash functions
+2. Can use negative and non-integral values to access the values.
+3. Keys can be stored in sorted order hence can iterate over the maps easily.
+
+DISADVANTAGES:
+
+1. Collisions can cause large penalties and can blow up the time complexity to linear.
+2. When the number of keys is large, a single hash function often causes collisions.
+
+APPLICATIONS:
+
+1. These have applications in implementations of Cache where memory locations are mapped to small sets.
+2. They are used to index tuples in Database management systems.
+3. They are also used in algorithms like the Rabin Karp pattern matching algorithm.*/

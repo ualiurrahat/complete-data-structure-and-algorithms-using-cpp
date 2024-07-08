@@ -1,8 +1,6 @@
-// checking if hashMap class working properly
-#include <bits/stdc++.h>
-#include "14_6_hashMapClass.cpp"
 
-using namespace std;
+// adding  our coded hashmap header file
+#include "07_hashMapClass.h"
 
 int main()
 {
@@ -18,16 +16,14 @@ int main()
         key = key + c;
         int value = i + 1;
         m.insert(key, value);
-        cout << m.loadFactor() << endl;
+        cout << "load factor: " << m.getLoadFactor() << endl;
     }
 
-    // checking size() function
+    // total no. of entries in the hashmap
     cout << "size: " << m.size() << endl;
-    // checking remove() function
-     m.remove("abc2");
-     m.remove("abc7");
-
-    cout << "size: " << m.size() << endl;
+    // removing two entries
+    m.remove("abc2");
+    m.remove("abc7");
 
     // checking getValue() function
     for (int i = 0; i < 10; i++)
@@ -37,7 +33,6 @@ int main()
         key = key + c;
         cout << key << " : " << m.getValue(key) << endl;
     }
-    cout << m.size() << endl;
-
+    cout << "size: " << m.size() << endl;
     return 0;
 }

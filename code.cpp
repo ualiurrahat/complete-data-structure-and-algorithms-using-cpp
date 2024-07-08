@@ -1,122 +1,179 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-class TreeNode
+// class for linked list nodes
+template <typename V>
+class MapNode
 {
 public:
-    T data;
-    vector<TreeNode<T> *> children;
+    string key;
+    V value;
+    MapNode<V> *next;
     // constructor
-    TreeNode(T data)
+    MapNode(string key, V value)
     {
-        this->data = data;
+        this->key = key;
+        this->value value;
+        this->next = nullptr;
     }
-    // destrutor
-    ~TreeNode()
+    // destructor
+    ~MapNode()
     {
-        for (int i = 0; i < children.size(); i++)
-        {
-            delete children[i];
-        }
+        delete next;
     }
 };
-void printTree(TreeNode<int> *root)
+
+template <typename V>
+class Ourmap
 {
-    // print root node data
-    cout << root->data << ": ";
-    // print children node data of the root node
-    for (int i = 0; i < root->children.size(); i++)
+public:
+    MapNode<V> **buckets;
+    int count;
+    int bucketSize;
+    // constructor
+    Ourmap()
     {
-        if (i == root->children.size() - 1)
+
+        bucketSize = 5;
+        count = 0;
+        buckets = new MapNode<V> *[bucketSize];
+        for (int i = 0; i < bucketSize; i++)
         {
-            cout << root->children[i]->data;
-        }
-        else
-        {
-            cout << root->children[i]->data << ", ";
+            buckets[i] = nullptr;
         }
     }
-    // going to new line for moving on to next node
-    cout << endl;
-    // reucursive call on children nodes
-    for (int i = 0; i < root->children.size(); i++)
+    // ~destructor
+    ~Ourmap()
     {
-        printTree(root->children[i]);
-    }
-}
-TreeNode<int> *takeInput()
-{
-    int rootData;
-    cout << "Enter data : ";
-    cin >> rootData;
-
-    // creating root node
-    TreeNode<int> *root = new TreeNode<int>(rootData);
-    // total no. of children of root node
-    int n;
-    cout << "enter total no. of children of " << rootData << " : ";
-    cin >> n;
-    // recursive call to create children nodes
-    for (int i = 0; i < n; i++)
-    {
-        TreeNode<int> *child = takeInput();
-        root->children.push_back(child);
-    }
-    return root;
-}
-TreeNode<int> *takeInputLevelWise()
-{
-    int rootData;
-    cout << "Enter root data : ";
-    cin >> rootData;
-
-    // creating root node
-    TreeNode<int> *root = new TreeNode<int>(rootData);
-
-    // take a queue to take and store nodes
-    // levelwise
-    queue<TreeNode<int> *> pendingNodes;
-
-    // push root node to the queue
-    pendingNodes.push(root);
-
-    // take level wise tree input
-    // for contructing tree from user
-    while (pendingNodes.size() != 0)
-    {
-        // take the front node from the queue
-        TreeNode<int> *front = pendingNodes.front();
-        // pop out the front node from queue
-        pendingNodes.pop();
-
-        // take user input for front nodes children
-        int numChild;
-        cout << "Enter total no. of children of " << front->data << " : ";
-        cin >> numChild;
-
-        // loop to take front node's children node data
-        for (int i = 0; i < numChild; i++)
+        // delete each index's linked list
+        for (int i = 0; i < bucketSize; i++)
         {
-            int childData;
-            cout << "Enter " << i << " th child data of " << front->data << " : ";
-            cin >> childData;
+            delete buckets[i];
+        }
+        // delete map i.e. array of the linked list
+        delete[] buckets;
+    }
+    int size()
+    {
+        return count;
+    }
 
-            // create child node
-            TreeNode<int> *childNode = new TreeNode<int>(childData);
-            // attach child node as front node's children node
-            front->children.push_back(childNode);
-            // push child node to the queue
-            pendingNodes.push(childNode);
+private:
+    int getBucketIndex(string key)
+    {
+        int hashCode = 0;
+        int currentCoEfficient = 1;
+
+        for (int i = key.length() - 1; i >= 0; i--)
+        {
+            hashCode += key[i] * currentCoEfficient;
+            hashCode = hashCode % bucketSize;
+            currentCoEfficient *= 37;
+            currentCoEfficient = currentCoEfficient % bucketSize;
+
+            return hashCode % bucketSize;
         }
+    }
+
+public:
+    void insert(string key, V value)
+    {
+        int bucketIndex = getBucketIndex(key);
+        MapNode<V> *head = buckets[bucketIndex];
+        while (head != nullptr)
+        {
+            if (head->key == key)
+            {
+                head->value = value;
+                return;
+            }
+            head = head->next;
         }
-    return root;
-}
+        head = buckets[bucketIndex];
+        MapNode<V> *node = new MapNode<V>(key, value);
+        node->next = head;
+        buckets[bucketIndex] = node;
+        count++;
+        double loadFactor = (1.0 * count) / bucketSize;
+        if (loadFactor > 0.7)
+        {
+            rehash();
+        }
+        return;
+    }
+    V remove(string key)
+    {
+        int bucketIndex = getBucketIndex(key);
+        MapNode<V> *head = buckets[bucketIndex];
+        MapNode<V> *prev = nullptr;
+        while (head != nullptr)
+        {
+            if (head->key == key)
+            {
+                if (prev == NULL)
+                {
+                    buckets[bucketIndex] = head->next;
+                }
+                else
+                {
+                    prev->next = head->next;
+                }
+                V value = head->value;
+                head->next = nullptr;
+                delete head;
+                count--;
+                return value;
+            }
+            prev = head;
+            head = head->next;
+        }
+        return 0;
+    }
+    V getValue(string key)
+    {
+        int bucketIndex = getBucketIndex(key);
+        MapNode<V> *head = buckets[bucketIndex];
+        while (head != nullptr)
+        {
+            if (head->key == key)
+            {
+                return head->value;
+            }
+            head = head->next;
+        }
+        return 0;
+    }
+    void rehash()
+    {
+        MapNode<V> **temp = buckets;
+        buckets = new MapNode<V> *[2 * bucketSize];
+        int oldBucketSize = bucketSize;
+        bucketSize *= 2;
+        count = 0;
+        for (int i = 0; i < bucketSize; i++)
+        {
+            buckets[i] = nullptr;
+        }
+        for (int i = 0; i < oldBucketSize; i++)
+        {
+            MapNode<V> *head = temp[i];
+            while (head != nullptr)
+            {
+                string key = head->key;
+                V value = head->value;
+                insert(key, value);
+                head = head->next;
+            }
+        }
+        for (int i = 0; i < oldBucketSize; i++)
+        {
+            delete temp[i];
+        }
+        delete[] temp;
+    }
+};
 int main()
 {
-    TreeNode<int> *root = takeInputLevelWise();
-
-    printTree(root);
 
     return 0;
 }
