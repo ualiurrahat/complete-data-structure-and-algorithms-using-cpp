@@ -14,7 +14,7 @@ public:
     int data;
     Node *next;
     Node *random;
-    Node() : data(0), next(nullptr), random(nullptr){};
+    Node() : data(0), next(nullptr), random(nullptr) {};
     Node(int x) : data(x), next(nullptr), random(nullptr) {}
     Node(int x, Node *next, Node *random) : data(x), next(next), random(random) {}
 };

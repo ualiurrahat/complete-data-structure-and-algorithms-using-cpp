@@ -20,9 +20,9 @@ public:
     Node *back;
     Node *next;
     // constructor
-    Node() : data(0), back(nullptr), next(nullptr){};
-    Node(string x) : data(x), back(nullptr), next(nullptr){};
-    Node(string x, Node *back, Node *next) : data(x), back(back), next(next){};
+    Node() : data(0), back(nullptr), next(nullptr) {};
+    Node(string x) : data(x), back(nullptr), next(nullptr) {};
+    Node(string x, Node *back, Node *next) : data(x), back(back), next(next) {};
 };
 class Browser
 {
