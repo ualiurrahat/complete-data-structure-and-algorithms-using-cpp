@@ -167,4 +167,38 @@ public:
         return ans;
         // T:O(logN)
     }
+    // function to implement heapify algo
+    // this is for min heap
+    // takes index i as parameter
+    // function performs so that index i maintians the heap condition
+    // within the array
+    void heapify(int i)
+    {
+        int n = pq.size(); // size of heap. total no. of elements.
+        // as we are gonna built min heap, so take i as smallest index
+        int smallest = i;
+        // index of left and right child
+        int leftIndex = 2 * i + 1;
+        int rightIndex = 2 * i + 2;
+
+        // check min heap condition and update smallest index.
+        if (leftIndex < n && pq[smallest] > pq[leftIndex])
+        {
+            smallest = leftIndex;
+        }
+        if (rightIndex < n && pq[smallest] > pq[rightIndex])
+        {
+            smallest = rightIndex;
+        }
+
+        // if smallest index is changed, means heapify has been done
+        if (smallest != i)
+        {
+            // swap the numbers
+            swap(pq[smallest], pq[i]);
+            // perform heapify at smallest index
+            heapify(smallest);
+        }
+        // T:O(logN)
+    }
 };
