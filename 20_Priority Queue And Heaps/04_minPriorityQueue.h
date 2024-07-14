@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -16,20 +17,25 @@ public:
         // wrote this empty constructor
         // just to initialize priority queue when created
     }
+    // function to get the no. of elements present in the priority queue
     int size()
     {
         return pq.size();
     }
+    // function to check if priority queue
+    // is empty or not.
     bool isEmpty()
     {
         return pq.size() == 0;
     }
+    // function to get minimum data from the min priority queue
     int getMin()
     {
-        // if priority queue is empty, returning 0 as a sign
-        // that priority queue is zero;
+        // returning 0 as a sign that
+        // priority queue is empty
         if (isEmpty())
         {
+            cout << "returning 0 as queue is empty ";
             return 0;
         }
         // otherwise returning the min element
@@ -38,25 +44,34 @@ public:
     // function to insert an element in the min priority queue
     void insert(int element)
     {
+        // insert the element at the last position in the queue
         pq.push_back(element);
-
+        // get index of the child to perform up-heapify
         int childIndex = pq.size() - 1;
+        // loop to maintain min heap property.
+
         while (childIndex > 0)
         {
+            // figure out the parent's index
             int parentIndex = (childIndex - 1) / 2;
-
+            // compare parent and child data
             if (pq[childIndex] < pq[parentIndex])
             {
-                int temp = pq[childIndex];
-                pq[childIndex] = pq[parentIndex];
-                pq[parentIndex] = temp;
+                // child's data lesser than parent's.
+                // swap their data.
+                swap(pq[childIndex], pq[parentIndex]);
             }
             else
+            // means the element which we inserted has
+            // got to its right position
+            // so, breaking the loop.
             {
                 break;
             }
+            // update the child index.
             childIndex = parentIndex;
         }
+        // T:O(logn)
     }
 
     // function to remove minimum element from min heap priority queue
@@ -77,7 +92,7 @@ public:
     //     // down heapify
     //     int parentIndex = 0;
     //     int leftChildIndex = 2 * parentIndex + 1;
-    //     int rightChildIndex = 2 * parentIndex + 1;
+    //     int rightChildIndex = 2 * parentIndex + 2;
 
     //     // condition for the loop to be within the boundary
     //     while (leftChildIndex < pq.size())
@@ -109,32 +124,47 @@ public:
 
     int removeMin()
     {
+        // in case of empty queue, return 0
+        // as a sing that queue is empty
         if (isEmpty())
         {
+            cout << "Can't remove element as queue is empty ";
             return 0;
         }
+        // store the min heap root
         int ans = pq[0];
+        // replace root value with last element's value
         pq[0] = pq[pq.size() - 1];
+        // remove the last element
         pq.pop_back();
+        // performing down-heapfiy
         int parentIndex = 0;
         int leftChildIndex = 2 * parentIndex + 1;
         int rightChildIndex = 2 * parentIndex + 2;
-        while (leftChildIndex < pq.size() || rightChildIndex < pq.size())
+        // loop to maintain the heap property
+        while (leftChildIndex < pq.size())
         {
-
+            // get index of the lowest data among children
             int lowIndex = (pq[leftChildIndex] < pq[rightChildIndex]) ? leftChildIndex : rightChildIndex;
+            // check if parent's data is greater than lower index data
             if (pq[parentIndex] > pq[lowIndex])
             {
+                // swapping to maintain heap property
                 swap(pq[parentIndex], pq[lowIndex]);
             }
+            // all elements are positioned maintaing min heap property
             else
             {
+                // break the loop
                 break;
             }
+            // update the parent and children indexes.
             parentIndex = lowIndex;
             leftChildIndex = 2 * parentIndex + 1;
             rightChildIndex = 2 * parentIndex + 2;
         }
+        // return the removed element.
         return ans;
+        // T:O(logN)
     }
 };
