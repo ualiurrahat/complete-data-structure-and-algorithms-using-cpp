@@ -40,19 +40,19 @@ int isPrime(int n)
     // function comes here when none of the condition came true
     // for n to be a non-prime number. so n is prime. returning 1
     return 1;
+    // T:O(sqrt(N)), S:O(1)
 }
 
-int main()
+// brute force solution to print prime numbers in a given range
+// start = starting no. of the range
+// end = last number of the range
+
+void printPrimesBrute(int start, int end)
 {
-
-    int n1, n2, count = 0;
-    cout << "enter initial range number: ";
-    cin >> n1;
-    cout << "enter the final range number: ";
-    cin >> n2;
-
+    // to count total no. or primes
+    int count = 0;
     cout << "Prime Numbers are: ";
-    for (int i = n1; i <= n2; i++)
+    for (int i = start; i <= end; i++)
     {
 
         if (1 == isPrime(i))
@@ -63,6 +63,21 @@ int main()
     }
     cout << endl;
     cout << "Total Prime number: " << count << endl;
+    // T:O(range*sqrt(N))
+    // S:O(1)
+}
+
+int main()
+{
+
+    int n1, n2;
+    cout << "enter initial range number: ";
+    cin >> n1;
+    cout << "enter the final range number: ";
+    cin >> n2;
+
+    // print primes between n1 and n2
+    printPrimesBrute(n1, n2);
 
     return 0;
 }

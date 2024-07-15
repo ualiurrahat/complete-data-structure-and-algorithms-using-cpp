@@ -8,36 +8,37 @@ using namespace std;
 void primeSieve(int n)
 {
     // take an array of size n+1 to represent numbers from 0 to n
-    int prime[n + 1] = {0};
-    // initial value is given 0.
-    // indicating they are prime numbers.
-    prime[0] = 1;
-    prime[1] = 1;
-    // as 0, 1 are not prime so prime[0] = 1, prime[1] = 1.
+    int prime[n + 1];
 
+    // mark all numbers from 2 to n as 1,
+    // indicating they are potential primes
+    for (int i = 2; i <= n; i++)
+    {
+        prime[i] = 1;
+    }
     // to count total number of prime.
     int count = 0;
 
     for (int i = 2; i * i <= n; i++)
     {
 
-        // checking if prime[i] is unmarked or zero.
-        if (prime[i] == 0)
+        // checking if prime[i] is unmarked i.e. 1.
+        if (prime[i] == 1)
         {
             // marking all the values that are multiple of prime[i]
             // these are not prime numbers.
-            // ex: if prime[2] = 0 and unmarked, then marking 4,6,8,10.... as not primes
+            // ex: if prime[2] = 1 and unmarked, then marking 4,6,8,10.... as not primes
             for (int j = i * i; j <= n; j += i)
             {
-                prime[j] = 1;
+                prime[j] = 0;
             }
         }
     }
 
-    // now only unmarked elements(0 value in the ith index) are prime.
+    // now only unmarked elements(1 value in the ith index) are prime.
     for (int i = 2; i <= n; i++)
     {
-        if (prime[i] == 0)
+        if (prime[i] == 1)
         {
             count++;
             cout << i << " "; // i is the number. remember that.
@@ -46,6 +47,8 @@ void primeSieve(int n)
     cout << endl;
     cout << "Total count: " << count << endl;
     cout << endl;
+    // T:O(log(logN))+O(N)
+    // S:O(N+1)
 }
 
 int main()
