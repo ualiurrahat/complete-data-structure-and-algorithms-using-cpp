@@ -1,8 +1,11 @@
-// breadth first search traversal
-// similar to level order traversal in tree
+// the previous two functions printBFS and printDFS
+// works fine for connected graph
+// but not for disconnected graph
+// we will create function BFS DFS for disconnected graph
 
 #include <bits/stdc++.h>
 using namespace std;
+
 // function to print the graph in depth first search order;
 // only for connected graph.
 // it has 4 paramters.
@@ -51,19 +54,11 @@ void printDFS(int **edges, int n, int sv, bool *visited)
 // adjacency matrix(edges here) i.e. graph
 // n == total no. of vertices
 // sv == starting vertex
-void printBFS(int **edges, int n, int sv)
+void printBFS(int **edges, int n, int sv, bool *visited)
 {
     // take a queue to store vertices
     queue<int> pendingVertices;
-    // take an array to keep track of
-    // which vertices have been visited
-    bool *visited = new bool[n];
-    // assign false as value for all vertices in visited array
-    // since no vertices have been visited yet
-    for (int i = 0; i < n; i++)
-    {
-        visited[i] = false;
-    }
+
     // insert starting vertex in the queue
     pendingVertices.push(sv);
     // mark starting vertex in the visited array since it is visited now
@@ -96,7 +91,64 @@ void printBFS(int **edges, int n, int sv)
             }
         }
     }
-    // delete visited array
+}
+// function to traverse graph in DFS order for disconnected graph
+// take two paramters: n --> total no. of vertices
+// edges--> an adjacency matrix to implement graph
+void DFS(int **edges, int n)
+{
+    // take an array to keep track of whether
+    // vertices has been visited or not
+    bool *visited = new bool[n];
+    // mark all vertices as false
+    // since no vertex has been visited yet
+    for (int i = 0; i < n; i++)
+    {
+        visited[i] = false;
+    }
+    // now from vertex 0 to n-1, peform the printDFS function
+    // to find DFS traversal
+    for (int i = 0; i < n; i++)
+    {
+        // check if vertex i is not visited yet
+        if (visited[i] == false)
+        {
+            // take i as the starting vertex
+            // perform printDFS function
+            printDFS(edges, n, i, visited);
+        }
+    }
+    // delete dynamic memory
+    delete[] visited;
+}
+// function to perform BFS traversal for disconnected graph
+// it takes two parametes:
+// n--> total no. of vertices
+// edges--> an adjacency matrix to implement graph
+void BFS(int **edges, int n)
+{
+    // take an array to keep track of whether
+    // vertices has been visited or not
+    bool *visited = new bool[n];
+    // mark all vertices as false
+    // since no vertex has been visited yet
+    for (int i = 0; i < n; i++)
+    {
+        visited[i] = false;
+    }
+    // now from vertex 0 to n-1, peform the printBFS function
+    // to find BFS traversal
+    for (int i = 0; i < n; i++)
+    {
+        // check if vertex i is not visited yet
+        if (visited[i] == false)
+        {
+            // take i as the starting vertex
+            // perform printBFS function
+            printBFS(edges, n, i, visited);
+        }
+    }
+    // delete dynamic memory
     delete[] visited;
 }
 int main()
@@ -105,9 +157,9 @@ int main()
     int e; // total no. of edges.
 
     cout << "Enter total no. of vertices: ";
-    cin >> n; // 8
+    cin >> n; // 7
     cout << "Enter total no. of edges: ";
-    cin >> e; // 9
+    cin >> e; // 5
 
     // creating a 2D-matrix to create graph
     // the matrix is of n*n size
@@ -133,7 +185,7 @@ int main()
     {
         // take first and second vertices data from user.
         int f, s;
-        // 0 4 | 0 5 | 4 3 | 3 2 | 2 1 | 1 3 | 5 6 | 6 7 | 3 6
+        // 0 2 | 0 3 | 2 3 | 1 4 | 5 6
         cout << "enter starting and ending vertices: " << endl;
         cin >> f >> s;
         // now mark that location in the matrix by assigning 1
@@ -142,25 +194,14 @@ int main()
         edges[s][f] = 1;
     }
 
-    // taking an array to keep track of which nodes are visited
-    // true--> already visited
-    // false-> not visited
-    bool *visited = new bool[n];
-    // assign initial value 0 for all vertices
-    // since none is visited
-    for (int i = 0; i < n; i++)
-    {
-        visited[i] = false;
-    }
-
+    // printing DFS traversal for disconnected graph
     cout << "DFS traversal: " << endl;
     // printing the graph
-    printDFS(edges, n, 0, visited);
+    DFS(edges, n);
+    // printing BFS traversal for disconnected graph.
     cout << "BFS traversal: " << endl;
-    printBFS(edges, n, 0);
-    // deleting memory: edges and visited array
-    // deleting visited array
-    delete[] visited;
+    BFS(edges, n);
+
     // deleting edges array i.e. graph
     for (int i = 0; i < n; i++)
     {

@@ -6,7 +6,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// function to print the graph using depth first search;
+// function to print the graph in depth first search order;
+// only for connected graph.
 // it has 4 paramters.
 // takes adjacency matrix i.e. graph(edges here)
 // n == total no. of vertex
