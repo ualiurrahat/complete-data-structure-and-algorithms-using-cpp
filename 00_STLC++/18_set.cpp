@@ -6,7 +6,7 @@
    provide compare function so that we can store them in sorted order.
 set:
 --> the result are sorted.
---> use Red Band Tree(RBT) in backdrop.
+--> use Red Black Tree(RBT) in backdrop.
 --> complexity: O(logn);
 
 unordered set:
@@ -34,7 +34,7 @@ int main()
     s.insert(2);
     s.insert(2);
     // though we tried to insert 2 twice, only one time will be inserted inside the set
-    cout << s.size() << endl;
+    cout << s.size() << endl; // 4
 
     // now lets check if 8 and 2 is in the set or not.
     auto it = s.find(8);
@@ -59,8 +59,8 @@ int main()
 
     // lets see how many 2's are there in the set.
     int count = s.count(2);
-    cout << count << endl;
-    // see. 2 is only 1 time here even though mentioned 3 time.
+    cout << count << endl; // 1
+    // see. 2 is only 1 time here even though we tried to add it two times.
 
     // set contains elements in linearly ascending orders
     // set only stores unique elements. does not contain duplicates of elements
@@ -70,7 +70,8 @@ int main()
     // for (int i = 0; i < s.size(); i++)
     // {
     //     cout << s[i] << " " << endl;
-    // } cant use it as s[i] is not permitted
+    // } can't use it as s[i] is not permitted
+
     // displaying the set.
     cout << "s = { ";
     for (it = s.begin(); it != s.end(); it++)
@@ -80,7 +81,7 @@ int main()
     cout << " }" << endl;
 
     // let's try to empty the set s.
-    s.clear();
+    s.clear(); // deletes all the elemets from s.
     if (s.empty())
     {
         cout << "set s is empty." << endl;

@@ -7,13 +7,15 @@ int main()
 {
 
     vector<int> a;
-    a.push_back(18);
-    a.push_back(1);
+    // insert elements in vector using push_back(): add elements at the end of vector.
+    a.push_back(18); // a= 18
+    a.push_back(1);  // a = 18, 1
     a.push_back(8);
     a.push_back(5);
-    a.push_back(20);
+    a.push_back(20); // a = 18,1,8,5,20
 
-    //printing
+    // printing vector a
+    cout << "a = ";
     for (auto it : a)
     {
         cout << it << " ";
@@ -33,10 +35,10 @@ int main()
     // emplace_back() is faster than push_back()
 
     // upper bound, lower bound
-    // swap swap(v1,v2)
+    // swap(v1,v2)
     // begin(), end(), rbegin(), rend()
 
-    // defining 2d vector
+    // defining vecotr of vectors: 2d vector
     vector<vector<int>> vec;
 
     vector<int> v1 = {10, 20, 30};
@@ -44,10 +46,10 @@ int main()
 
     vec.push_back(v1);
     vec.push_back(v2);
-
-    cout << vec[1][1] << endl; // prints 2
+    cout << vec[1][1] << endl; // prints 2, second element of v2
 
     // printing 2d vector
+    cout << "printing 2d vector: " << endl;
     for (auto v : vec)
     {
         for (auto it : v)
@@ -60,6 +62,8 @@ int main()
 
     // define a 2d vector of 10*20 size with 0 as assigned value
     vector<vector<int>> vec2(10, vector<int>(20, 0));
+    // vector<int>v(20,0);
+    // means: v has 20 elements, each has 0 value as initial.
     // for different values we have to run a for loop
 
     // array of vectors
@@ -75,6 +79,7 @@ int main()
     ara[0].push_back(14);
     ara[0].push_back(1);
 
+    cout << "arr[0] = ";
     for (auto it : ara[0])
     {
         cout << it << " ";

@@ -16,7 +16,7 @@ template <class T>
 // function to print vector
 void display(vector<T> &v)
 {
-    cout << "\nDisplaying  this vector: ";
+
     for (int i = 0; i < v.size(); i++)
     {
         cout << v[i] << " "; // same: cout << v.at(i) << " ";
@@ -32,13 +32,15 @@ int main()
     // vector<containerName>vectorName;
 
     // ways to create a vector.
-    vector<int> vec;
-    // interger type zero length vector.
-    // take a vector with size 10
+    // way 1: simple declaration with 0 size
+    vector<int> vec; // int data type 0 size vector
+
+    // way 2: vector with definite size
     // vector<int>v(10);
-    // take a vector with size 5 each element having value 10;
-    // vector<int>(5,10);
-    display(vec); // there is no element in vec. so will show the message only.
+
+    // way 3: take a vector with size 5 each element having value 10;
+    vector<int> v1(5, 10);
+    display(v1);
 
     vector<int> vec1; // integer type zero length vector.
 
@@ -69,19 +71,19 @@ int main()
     // inserting 420 as the first vector element.
     vec1.insert(iter, 420);
 
-    cout << "vector elements after inserting an element: ";
+    cout << "vector elements after inserting 420: ";
     display(vec1);
     cout << endl;
 
     // inserting some more element.
-    vec1.insert(iter, 200); // will insert 200 after the first two element.
-    cout << "inserting 200: ";
+    vec1.insert(iter, 200);
+    cout << "After inserting 200: ";
     display(vec1);
     cout << endl;
 
     // inserting one element several times.
     vec1.insert(vec1.end(), 3, 100); //  keeping 100 for 3 times.
-    cout << "inserting 8 three times in the end: ";
+    cout << "After inserting 100 three times in the end: ";
     display(vec1);
     cout << endl;
 
@@ -115,15 +117,15 @@ int main()
 
     cout << endl;
 
-    vector<char> vec2(4); // 4 element character vector.
+    vector<char> vec2(4); // character vector of 4 elements .
     vec2.push_back('m');
     vec2.push_back('o');
     vec2.push_back('h');
     vec2.push_back('o');
     display(vec2);           // will show these characters.
-    vector<char> vec3(vec2); // 4 element character vector from vec2.
+    vector<char> vec3(vec2); // copying vector vec2
     display(vec3);
-    vector<int> vec4(6, 25); // 6 element vector of 25s.
+    vector<int> vec4(6, 25); // vector of 6 elements with 25 as initial value for all.
     display(vec4);           // will show 25 for 6 times.
 
     // copy vector of vec1 in vec5;
@@ -131,7 +133,10 @@ int main()
     vector<int> vec5 = vec1;
     display(vec5);
     vec5.push_back(1000);
+    cout << "vec1 = ";
     display(vec1);
+    cout << endl;
+    cout << "vec5 = ";
     display(vec5);
 
     cout << endl;

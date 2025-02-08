@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    
+
     // unordered set: no order in storing elements
     // does it arbitrarily
     // avg time complexity: O(1)
@@ -19,7 +19,7 @@ int main()
     un.insert(100);
     un.insert(200);
     un.insert(300);
-
+    cout << "Unordered set un = ";
     for (auto it : un)
     {
         cout << it << " ";
@@ -44,7 +44,7 @@ int main()
 
     // find how many times 1 occurs
     cout << "total 1 in ms: " << ms.count(1) << endl;
-
+    cout << "multiset ms = ";
     for (auto it : ms)
     {
         cout << it << " ";
@@ -55,11 +55,11 @@ int main()
     // 1. if we pass only a value, multiset will delete all the elements containing the same value
     // 2. but if we delete using iterator, multiset will delete just the first appearance of that value.
     // setName.erase(element)
-    ms.erase(25); 
-    // deleted all the 25
-    auto iter = ms.find(2); // pointing to the iterator pointing to 3
+    ms.erase(25);           // deleted all the 25 that was stored in ms
+    auto iter = ms.find(2); // iterator iter points to the pointer of value 2
     // cout << *iter << endl;
     ms.erase(iter);
+    cout << "ms after deleting all 25 and 2: ";
     for (auto it : ms)
     {
         cout << it << " ";

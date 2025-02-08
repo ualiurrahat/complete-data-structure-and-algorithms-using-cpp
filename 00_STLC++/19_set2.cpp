@@ -38,8 +38,8 @@ int main()
     // we can not use + or - operator in set
     // s.erase(s.begin() + 2) is not allowed
 
-    // erasing a particular element
-    s.erase(13);
+    // erasing a particular element: just insert the value
+    s.erase(13); // value 13 got deleted
     cout << "set after deleting 13: ";
     cout << endl;
     for (auto it = s.begin(); it != s.end(); it++)
@@ -50,20 +50,23 @@ int main()
     set<int> s2 = {10, 20, 30, 40, 50};
     // ways of coping set
     // way 1
-    set<int> s3 = s2;
+    set<int> s3 = s2; // s3 is a copy of s2
     // way 2
-    set<int> s4(s.begin(), s.end());
+    set<int> s4(s.begin(), s.end()); // s4 contains all elements of set s
     cout << endl;
+    cout << "s2 = ";
     for (auto it = s2.begin(); it != s2.end(); it++)
     {
         cout << *it << " ";
     }
     cout << endl;
+    cout << "s3 = ";
     for (auto it = s3.begin(); it != s3.end(); it++)
     {
         cout << *it << " ";
     }
     cout << endl;
+    cout << "s4 = ";
     for (auto it = s4.begin(); it != s4.end(); it++)
     {
         cout << *it << " ";
@@ -71,9 +74,9 @@ int main()
     cout << endl;
 
     // find
-    auto it = s2.find(30); // iterator point to 30
+    auto it = s2.find(30); // iterator point to the address where 30 is located.
 
-    auto it2 = s2.find(100); // iterator will point to s2.end()
+    auto it2 = s2.find(100); // iterator will point to s2.end(). because 100 does not exist in s2.
 
     // insert = emplace    s2.emplace(25)
 

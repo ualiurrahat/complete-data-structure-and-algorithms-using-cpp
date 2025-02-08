@@ -12,13 +12,15 @@ at(), [], front(), back(), data()
 insert(), emplace(), push_back(), emplace_back(), pop_back(), resize(), swap(), erase(), clear()
 
 
-note: arr[index]: if index exceeds size of arr, then compiler show error.
-        arr.at(index): if index is greater than size, then compiler shows exception not error.
+note: arr[index]: if index exceeds size of arr, then compiler shows error.
+    arr.at(index): if index is greater than size, then compiler shows exception not error.
 
 */
 #include <iostream>
 #include <string>
-#include <bits/stdc++.h>
+#include <vector>    // header file for vectors
+#include <algorithm> // to use max_element(), min_element() functions
+#include <numeric>   // to use accumulate() and partial_sum() functions
 
 using namespace std;
 
@@ -28,23 +30,23 @@ int main()
     // ways of traversing a vector.
     vector<int> v = {1, 2, 3};
 
-    // way 1.
+    // way 1: using index position through sqaure bracktes []
     for (int i = 0; i < v.size(); i++)
     {
         cout << v[i] << " ";
     }
     cout << endl;
-    // way 2
+    // way 2: using iterator
     vector<int>::iterator iter;
     for (iter = v.begin(); iter != v.end(); iter++)
     {
         cout << *iter << " ";
     }
     cout << endl;
-    // way 3.
+    // way 3: using for(auto) loop
     for (auto element : v)
     {
-        // here , element is a var name means element of vector v.
+        // here , element is a var name indicating each element of vector v.
         // this name can be anything, like (auto it: v)
         // auto will automatically change the data type according to element.
         // here auto is int type.
@@ -72,8 +74,7 @@ int main()
 
     // sum of vector
     // we use accumulate() defined in the numeric library.
-    // #define<numeric>
-    int sum1 = accumulate(v.begin(), v.end(), 0);
+    int sum1 = accumulate(v.begin(), v.end(), 0); // 0 = initial value of sum1
     cout << sum1 << endl;
 
     // *max_element returns pointer to the max element

@@ -1,7 +1,8 @@
 // here, we are nesting vectors with pair type data
 
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <utility> // for pair class
+#include <vector>  // for vector container
 using namespace std;
 
 // print vector
@@ -30,7 +31,7 @@ int main()
     for (int i = 0; i < n; i++)
     {
         int x, y;
-        
+
         cin >> x >> y;
         p.push_back({x, y});
         // p.push_back(make_pair(x,y));

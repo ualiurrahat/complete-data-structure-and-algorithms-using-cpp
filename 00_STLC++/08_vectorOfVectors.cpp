@@ -8,7 +8,7 @@ void printVector(vector<vector<T>> &v)
 {
     for (int i = 0; i < v.size(); i++)
     {
-        cout << "displaying vector " << i+1 << ": ";
+        cout << "displaying vector " << i + 1 << ": ";
         for (int j = 0; j < v[i].size(); j++)
         {
             cout << v[i][j] << " ";
@@ -34,8 +34,9 @@ int main()
         // using a temporary vector to take vector input
         vector<int> a;
         // another way to do it:
-        //push ith vector to the v
+        // push ith vector to the v
         // v.push_back(vector<int>());
+        cout << "Enter elements for vector: " << i + 1;
         for (int j = 0; j < size; j++)
         {
             int x;
@@ -47,12 +48,11 @@ int main()
         v.push_back(a);
     }
 
-   printVector(v);
-//    cout << v.size() << endl;
-//    cout << v[0].size() << endl;
-//    cout << v[1].size() << endl;
-//    cout << v[2].size() << endl;
-
+    printVector(v);
+    cout << v.size() << endl;
+    cout << v[0].size() << endl;
+    cout << v[1].size() << endl;
+    cout << v[2].size() << endl;
 
     return 0;
 }
