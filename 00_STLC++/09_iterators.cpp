@@ -1,6 +1,6 @@
 // Iterators are like pointers like structure
 // it locates the position of elements in STL containers
-// v.begin() -> location of the first element
+// v.begin() -> location just before of the first element
 // v.end() -> points out the location next to last element
 // it++ -> next iterator
 // it+1 -> next location
@@ -10,7 +10,9 @@
 // it++ means location of next element
 // it+1 means next location
 // NOTE: use it++ to find iterator of the next element in container
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <utility>
 using namespace std;
 
 int main()
@@ -33,24 +35,13 @@ int main()
     }
     cout << endl;
 
-    // v.begin() -> location of the first element
-    // v.end() -> points out the location next to last element
-    // it++ -> next iterator
-    // it+1 -> next location
-    // since vector is given continuous memory allocation,
-    // so it++ and it + 1 is same here,
-    // but for other containers like Map,
-    // it++ means location of next element
-    // it+1 means next location
-    // NOTE: use it++ to find iterator of the next element in container
-
     // taking vector of pairs
-    vector<pair<int,int>>p = {{1,10},{2,20}, {3,30}};
+    vector<pair<int, int>> p = {{1, 10}, {2, 20}, {3, 30}};
     // iterator for vector of pairs
-    vector<pair<int,int>>:: iterator it2;
+    vector<pair<int, int>>::iterator it2;
     // accessing pairs using iterator
     cout << "pair using iterator: " << endl;
-    for(it2 = p.begin(); it2 != p.end(); it2++)
+    for (it2 = p.begin(); it2 != p.end(); it2++)
     {
         cout << it2->first << " " << it2->second << endl;
         // cout << (*it2).first << " " << (*it2).second << endl;

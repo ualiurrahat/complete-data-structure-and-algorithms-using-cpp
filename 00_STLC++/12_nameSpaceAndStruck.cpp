@@ -1,14 +1,14 @@
-//#include <bits/stdc++.h>
 #include <iostream>
 #include <string>
 
 using namespace std;
-// why write namespace?
-// namespace is a scope for function and var
-// c++ has written its functions on std
 
-// own written namespace
-// we can write our own namespace like this
+// Why use namespaces?
+// A namespace defines a scope that holds functions, variables, and other identifiers.
+// The standard C++ library is encapsulated within the "std" namespace.
+
+// Defining a custom namespace
+// We can create our own namespace to avoid name conflicts and organize code better.
 namespace rahat
 {
     int val = 25;
@@ -18,13 +18,15 @@ namespace rahat
     }
 }
 
-// using struct in a professional way.
+// Using struct in a professional way
+// A struct (short for structure) is a user-defined data type that groups related variables together.
 struct Person
 {
     string name;
     int age;
     double income;
 
+    // Constructor to initialize struct members
     Person(string a, int b, double c)
     {
         name = a;
@@ -35,26 +37,28 @@ struct Person
 
 int main()
 {
-    // int a = 5;
-    // double a = 2.5;
-    // standard namespace shows error on above code.
-    // if we don't use std namespace, we can't use cout like (cout << a;)
-    // cout should be written as: std:: cout which is painful
+    // Demonstrating namespace usage
+    int val = 10;                    // Local variable in main function
+    cout << val << endl;             // Outputs 10 (local variable in main)
+    cout << rahat::val << endl;      // Outputs 25 (variable from "rahat" namespace)
+    cout << rahat::getVal() << endl; // Outputs 250 (function from "rahat" namespace)
 
-    int val = 10;
-    cout << val << endl;        // 10
-    cout << rahat::val << endl; // 25
-    cout << rahat::getVal() << endl; // 250
+    // The standard namespace (std) is required for using cout and other standard functions.
+    // If we don't include "using namespace std;", we must explicitly write std::cout.
 
-    // wrong way of defining struck
+    // Incorrect way of defining a struct instance
+    // This won't work as Person doesn't have a default constructor.
     // Person r;
     // r.name = "loser";
     // r.income = 0.00;
     // r.age = 25;
 
-    // right way of defining struct
-    Person *loser = new Person("rahat", 25,0.00);
+    // Correct way 1: using constructor
+    Person r("rahat", 25, 40000);
+    // Correct way 2: Using dynamic allocation to instantiate the struct
+    Person *coder = new Person("rahat", 25, 0.00);
+    // delete dynamic memory
+    delete coder;
 
-   
     return 0;
 }

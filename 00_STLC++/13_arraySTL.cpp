@@ -1,4 +1,4 @@
-//#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 #include <iostream>
 // header file to use array from STL
 #include <array>
@@ -17,7 +17,7 @@ int main()
     // 10^7 -> bool
     int ara[5] = {1}; // {1,0,0,0,0}
     // only zeroth index gets one, all other gets 0.
-
+    cout << "ara = ";
     for (int i = 0; i < 5; i++)
     {
         cout << ara[i] << " ";
@@ -25,8 +25,9 @@ int main()
     cout << endl;
     // creating array using STL array class
     array<int, 5> a;
-    // creates an array of int number of 5 lengths
+    // creates an array 'a' of int number of 5 lengths
     a.fill(8); // all elements will have 8
+    cout << "a = ";
     for (int i = 0; i < 5; i++)
     {
         cout << a[i] << " ";
@@ -42,15 +43,16 @@ int main()
 
     array<int, 5> b;
     b = {18, 1, 8, 1, 20};
-
+    cout << "b = ";
     for (auto it = b.begin(); it != b.end(); it++)
     {
-        cout << *it << " "; 
+        cout << *it << " ";
         // 18 1 8 1 20
     }
     cout << endl;
 
     // reverse traversal with reverse iterator
+    cout << "b in reverse order: ";
     for (auto it = b.rbegin(); it != b.rend(); it++)
     {
         cout << *it << " ";
@@ -59,21 +61,21 @@ int main()
     cout << endl;
 
     // reverse traversal with non-reverse iterator
-    for (auto it = b.end() - 1; it >= b.begin(); it--)
-    {
-        cout << *it << " ";
-        // 20 1 8 1 18
-    }
+    // for (auto it = b.end() - 1; it >= b.begin(); it--)
+    // {
+    //     cout << *it << " ";
+    //     // 20 1 8 1 18
+    // }
     cout << endl;
 
     // for each loop
     // auto element iterator
     // always work on forward path...goes first to last element
-    for (auto it : b)
-    {
-        cout << it << " ";
-        // 18 1 8 1 20
-    }
+    // for (auto it : b)
+    // {
+    //     cout << it << " ";
+    //     // 18 1 8 1 20
+    // }
     cout << endl;
 
     string name = "ahnaf";
@@ -90,8 +92,8 @@ int main()
     cout << b.max_size() << endl;
 
     // front and back element
-    cout << b.front() << endl; // 18 since b = 18 1 8 1 20
-    cout << b.back() << endl;// 20
+    cout << b.front() << endl;          // 18 since b = 18 1 8 1 20
+    cout << b.back() << endl;           // 20
     cout << b.at(b.size() - 1) << endl; // 20
 
     return 0;

@@ -75,6 +75,14 @@ int main()
     // sum of vector
     // we use accumulate() defined in the numeric library.
     int sum1 = accumulate(v.begin(), v.end(), 0); // 0 = initial value of sum1
+
+    /*we can even perform any binary operation with accumulate(), not just addition.
+      int mul(int x, int y) // custom multiplication function
+    {
+        return x * y;
+    }
+  int product = accumulate(v.begin(), v.end(), 1, mul);
+  */
     cout << sum1 << endl;
 
     // *max_element returns pointer to the max element
@@ -94,6 +102,14 @@ int main()
     {
         cout << element << " ";
     }
+    /* Same as accumulate(), we can even pass a custom function with partial_sum()
+
+  int myop (int x, int y) {
+     return x+y+1;
+  }
+
+  vector<int> result2(v.size());
+  partial_sum(v.begin(), v.end(), result2.begin(), myop); */
     cout << endl;
 
     return 0;
