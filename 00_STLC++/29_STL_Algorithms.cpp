@@ -1,16 +1,15 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 
 int main()
 {
 
-    // sorting
-    // array, vector
-
+    // sorting array using sort alogirthm
     int a[5] = {18, 1, 8, 5, 20};
-
-    // sort from index 1 to 3
+    // sort elements from index 1 to 3
     sort(a + 2, a + 5);
     cout << "sorting array from index 2 to 4: ";
     for (int i = 0; i < 5; i++)
@@ -110,12 +109,12 @@ int main()
     int b[] = {5, 8, 13, 21, 34};
     int res1 = binary_search(b, b + 5, 18);
     int res2 = binary_search(b, b + 5, 21);
-    cout << res1 << endl;
-    cout << res2 << endl;
+    cout << res1 << endl; // false -> 0
+    cout << res2 << endl; // true -> 1
 
     // lower_bound function
     // returns an iterator pointing to the first element
-    // which is not less than x
+    // which is not less than(greater than or equal to) x
     // c = {1,5,7,7,8,10,10,10,12,25}
     // x = 10, lower_bound iterator returns index = 5
     // x = 6, index = 2.

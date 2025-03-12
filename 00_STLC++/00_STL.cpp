@@ -6,15 +6,15 @@
 //    ii. stack
 //    iii. queue
 //    iv. pair(not a container,basically a c++ class, but keeps data sequentially)
-//    - non-ordered containers
+
 //    keeps data in an orderly manner
 //    i. set
 //    ii. map
 //    iii. multiset
 //    iv. multimap;
 //     - unorderd
-//     i. unordered map 
-//     ii. unordered set 
+//     i. unordered map
+//     ii. unordered set
 
 // - nested containers
 // containers within containers

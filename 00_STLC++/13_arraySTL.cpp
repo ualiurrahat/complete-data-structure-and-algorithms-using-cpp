@@ -1,4 +1,4 @@
-// #include <bits/stdc++.h>
+
 #include <iostream>
 // header file to use array from STL
 #include <array>
@@ -88,13 +88,13 @@ int main()
     cout << endl;
 
     // size and max size
-    cout << b.size() << endl;
-    cout << b.max_size() << endl;
+    cout << "size of b: " << b.size() << endl;
+    cout << "max size of b: " << b.max_size() << endl;
 
     // front and back element
-    cout << b.front() << endl;          // 18 since b = 18 1 8 1 20
-    cout << b.back() << endl;           // 20
-    cout << b.at(b.size() - 1) << endl; // 20
+    cout << "front element of b: " << b.front() << endl; // 18 since b = 18 1 8 1 20
+    cout << "back element of b: " << b.back() << endl;   // 20
+    cout << b.at(b.size() - 1) << endl;                  // 20
 
     return 0;
 }

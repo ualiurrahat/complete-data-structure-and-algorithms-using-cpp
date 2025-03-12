@@ -46,16 +46,16 @@ int main()
     // a will be increased but not i
     // since i and a points different location
     cout << "value of i : " << i << endl;
-    cout <<"value of a: " << a << endl;
+    cout << "value of a: " << a << endl;
 
     // taking another pointer pointing the same address of i
     int *q = p;
     (*q)++;
     // q,p and i points the same location.
     // so increase of q means increase in p and i
-    cout <<"value of i: " << i << endl;
-    cout <<"value of *p: " << *p << endl;
-    cout <<"value of *q: " << *q << endl;
+    cout << "value of i: " << i << endl;
+    cout << "value of *p: " << *p << endl;
+    cout << "value of *q: " << *q << endl;
 
     return 0;
 }
