@@ -1,72 +1,70 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
 int main()
 {
     /*
-    The differnces between array and pointer arise, are because of one thing
-    array takes a single block of continuous element, so it can not be reassigned.
-    pointer takes a 4 or 8 bit of memory. so it can be reassigned.
+    Key Differences Between Arrays and Pointers:
 
-    int a[10];
-    here, a behaves like a poiter but not a pointer completely
-    ex: a = a+1 or a++, not possible in array
-    because once a's address is stored in the symbol table
-    it cannot be changed
-    *** symbol table entry can't be changed ever
-    ex: p = p+1, p++, p = &a[0] and then p = &a[3], possible in pointer.
+    1. **Memory Allocation:**
+       - An array occupies a contiguous block of memory.
+       - A pointer only occupies 4 or 8 bytes (depending on the system) and can be reassigned.
+
+    2. **Symbol Table Entry:**
+       - The name of an array (`a`) is a fixed address stored in the symbol table and cannot be modified.
+       - A pointer (`p`) can be reassigned to point to different memory locations.
+
+    3. **Operations:**
+       - Arrays behave like pointers in many cases, but they are not fully interchangeable.
+       - Example: `p = p + 1;` (valid for pointers) but `a = a + 1;` (invalid for arrays).
+
     */
 
-    int a[10];
+    int a[10]; // Declare an integer array of size 10.
 
-    cout << a << endl;
-    cout << &a << endl;
-    cout << &a[0] << endl;
-    // a points to the a[0] address. so a, &a, &a[0] is same location
+    cout << a << endl;     // Prints the address of the array (same as &a[0]).
+    cout << &a << endl;    // Prints the address of the entire array.
+    cout << &a[0] << endl; // Also prints the address of the first element.
 
-    int *p = &a[0];
+    // Since `a` represents the starting address of the array, all three print statements output the same address.
+
+    int *p = &a[0]; // Pointer `p` stores the address of the first element of the array.
 
     a[0] = 25;
     a[1] = 35;
-    cout << *a << endl;
-    cout << *(a + 1) << endl;
-    cout << a[1] << endl;
+    cout << *a << endl;       // Dereferencing `a` gives the value at a[0] (25).
+    cout << *(a + 1) << endl; // Equivalent to a[1], prints 35.
+    cout << a[1] << endl;     // Directly prints a[1], which is 35.
 
-    cout << a << endl;
-    cout << &a << endl;
-    cout << p << endl;
-    cout << &p << endl;
-    // there is difference between &p and &a.
-    // because pointer p is given an 8 or 4 bytes of memory
-    // where it stores address of other variable.
-    // but a is not given any other extra memory
-    // array a has total 40 bit of memory where a points to the a[0] address
-    // and a[0] holds 4 bytes of memory
+    cout << a << endl;  // Address of the first element of `a`.
+    cout << &a << endl; // Address of the whole array (same as `a` in this case).
+    cout << p << endl;  // Address stored in `p` (which is `&a[0]`).
+    cout << &p << endl; // Address of the pointer `p` itself (different from `a`).
 
-    cout << sizeof(p) << endl;
-    cout << sizeof(a) << endl;
-    // see, the p pointer is 4 bytes where a has full 40 bytes
-    // cause array is given a continuous block of memory
+    /*
+    **Memory Allocation Differences:**
+    - `p` is a pointer that occupies 4 or 8 bytes of memory (depending on the system).
+    - `a` is an array that occupies a contiguous block of memory (e.g., 40 bytes for 10 integers).
+    */
 
-    // 3 key differnce in memory allocation between pointers and array:
-    // 1. sizeof() operator
-    // in array sizeof() shows whole array size where pointer shows only its size
-    // 2. &a vs &p
-    // a and &a has same location as no other memory is alloted to a
-    // but &p shows the address where p is located
-    // and p shows address of other var
-    // so a and &a is same but p and &p is not same
+    cout << sizeof(p) << endl; // Size of pointer `p` (4 or 8 bytes).
+    cout << sizeof(a) << endl; // Size of the entire array `a` (e.g., 40 bytes for int[10]).
 
-    // p = p+1, is possible
-    // but a = a+1 is not possible
+    /*
+    **Three Key Differences Between Arrays and Pointers in Memory Allocation:**
+    1. `sizeof()`:
+       - For arrays, `sizeof(a)` returns the total memory occupied by all elements.
+       - For pointers, `sizeof(p)` returns the size of the pointer itself.
 
-    free(p);
+    2. `&a` vs `&p`:
+       - `a` and `&a` point to the same memory location since `a` has no separate memory allocation.
+       - `p` and `&p` are different; `p` stores an address, whereas `&p` gives the address of `p` itself.
 
-    // things we can't do with array
-    // a = a+1    array can't be reassigned.
-    // hence, a++ is not possible.
-    // p = p+1  (pointer can be reassigned)
+    3. Reassignment:
+       - `p = p + 1;` is valid since `p` is a pointer.
+       - `a = a + 1;` is invalid since `a` is a fixed memory address and cannot be modified.
+    */
 
     return 0;
 }
