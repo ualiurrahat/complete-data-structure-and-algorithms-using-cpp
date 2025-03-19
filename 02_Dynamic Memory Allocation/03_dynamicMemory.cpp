@@ -1,83 +1,71 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
+// Demonstrating dynamic memory allocation in C++
+
+// The following is an example of a bad practice:
 // int n;
-// cin >>n;
-// int a[n]; this is bad practice
-// cause a[n] is stored in stack memory
-// a small memory is alloted in stack
-// so, if n is a huge number, then a[n] might not get
-// enough memory
-// but heap is having a big memory
-// so dynamic memory comes in to solve this problem
+// cin >> n;
+// int a[n];  // This is not recommended because a[n] is allocated on the stack, which has limited memory.
+// If n is a large number, the stack might not have enough memory for the array.
+// Instead, dynamic memory allocation should be used to allocate large memory blocks from the heap, which has more space.
 
 int main()
 {
-
+    // Allocating memory dynamically for a single integer
     int *p = new int;
 
-    // p gets stored in stack and 4 bytes for new int stored in heap.
-    *p = 10;
-    cout << *p << endl;
+    // The pointer p is stored on the stack, but the memory for the integer is allocated on the heap.
+    *p = 10;            // Assign value to the dynamically allocated memory
+    cout << *p << endl; // Output the value stored at the memory location pointed by p
 
+    // Allocating memory dynamically for other data types
     double *pd = new double;
-
     char *pc = new char;
 
-    // array memory allocation
-
+    // Dynamically allocating memory for an array of integers (size 5)
     int *pa = new int[5];
 
+    // Dynamically allocating memory for an array of integers with size n
     int n = 35;
-    // pa2 is good practice
-    // since we are using heap memory
+    // pa2 uses heap memory, which is good practice when working with large arrays
     int *pa2 = new int[n];
 
-    // but how will store elements in the array.
-    // just like we do in array
-    // like a[0] = 25;
+    // Storing elements in the dynamically allocated arrays
     pa[0] = 18;
     pa[1] = 1;
 
     pa2[0] = 20;
     pa2[1] = 1;
 
+    // Output values stored in dynamically allocated arrays
     cout << pa[0] << " " << pa[1] << " " << pa[1] << " " << pa[0] << endl;
 
-    // deleting memory
-    // 'delete p' = deletes the 4 bytes heap memory(new int) it used to point
-    // the stack memory owned by p will be automatically free
-    // once the program gets out of its scope
+    // Deallocating dynamically allocated memory using delete
+    // 'delete p' frees the 4 bytes of memory (new int) that p was pointing to.
+    // Memory allocated on the stack (the pointer p itself) is automatically freed when the program exits the scope of p.
 
-    delete p; // deleting single memory
-    delete pd;
-    delete pc;
-    delete[] pa; // deleting memory
-    delete[] pa2;
+    delete p;     // Free the memory allocated for a single integer
+    delete pd;    // Free the memory allocated for a double
+    delete pc;    // Free the memory allocated for a character
+    delete[] pa;  // Free the memory allocated for the dynamic array pa
+    delete[] pa2; // Free the memory allocated for the dynamic array pa2
 
-    // why deleting memory is so important?
-    // example: 1
-    // while(true)
+    // Why is deleting dynamically allocated memory important?
+    // Example 1: If memory is allocated in an infinite loop
+    // while (true)
     // {
-    //     int n;
+    //     int n;  // Memory for n is released when the loop iterates, but this memory is reallocated every time.
     // }
-    // this program will run forever
-    // every time n will take 4 bytes
-    // will release the memory as soon as program comes out of its scope
-    // so n will be recreated and will re-release its memory everytime
-    // code will run forever.
+    // This would run forever, and the memory used for variable n will keep getting recreated and released repeatedly.
 
-    // example: 2
-    // while(true)
+    // Example 2: If memory is allocated in an infinite loop but on the heap
+    // while (true)
     // {
-    // int *p = new int;
+    //     int *p = new int;  // Memory is allocated on the heap but not freed, causing a memory leak.
     // }
-    // p will release its memory once program gets out of its scope
-    // but since new int is heap memory
-    // it won't be deleted automatically
-    // so program will crash once it
-    // deavours all the heap memory.
+    // This program will crash once all the heap memory is exhausted, as heap memory is not automatically freed like stack memory.
 
     return 0;
 }

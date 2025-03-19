@@ -1,76 +1,52 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
-// int i = 10;
-// int & k = i;
-// here k is a reference var of i
-// reference is not allowed any memory
-// so its just like another name of i memory.
+// Demonstrating the concept of references in C++
+// int i = 10;               // Declare an integer i with initial value 10
+// int & k = i;              // k is a reference to i, referring to the same memory location
+// A reference variable does not consume additional memory and acts as an alias for the original variable.
 
-// benefits of reference memory:
-// 1. it doesn't take any memory. so memory is saved
-// 2. it can change the var inside main function
-//     if send as a reference to any other function
+// Benefits of using reference variables:
+// 1. No additional memory is consumed since it directly refers to the original variable.
+// 2. Changes made to the reference variable will affect the original variable, especially when passed to functions.
 
-void incrementbyValue(int n)
+void incrementByValue(int n)
 {
-    n++;
-    // this increment will not happen in main function var
-    // it will happen only in the local var n
-    // which will be vanished when the function
-    // incrementbyValue is done.
-}
-void incrementbyReference(int &n)
-{
-    // this will change the var in the main function also
-    n++;
+    n++; // Increment the local variable n, but this will not affect the original variable in main().
+    // The increment only applies to the local copy of the argument passed to this function.
+    // The local variable n goes out of scope when the function execution completes.
 }
 
-// trying to access or return reference or address of a local var
-// inside a local function, is a bad practice.
-// because it may misbehave.
-// very bad practice: returning reference of local var from function
+void incrementByReference(int &n)
+{
+    n++; // Increment the original variable through reference, which modifies the variable in the main function.
+}
 
-// int &fun(int k)
-// {
-//     int a = k;
-//     return a;
-// }
-
-// very bad practice:returning address of local var from funciton
-// int *fun2()
-// {
-//     int a = 10;
-//     return &a;
-// }
 int main()
 {
+    int i = 10; // Declare an integer i and initialize it to 10
+    int &j = i; // j is a reference to i, meaning j and i share the same memory location
 
-    int i = 10;
-    int &j = i; // j is referencing i;
-    cout << i << endl;
-    cout << j << endl;
-    i++;
-    cout << i << " " << j << endl;
+    cout << "Value of variable i: " << i << endl;
+    cout << "Value of j (reference to i): " << j << endl;
+    cout << "Address of i: " << &j << endl; // The address of i (which j refers to)
+    cout << "Address of j: " << &j << endl; // The address of j is the same as the address of i
 
-    incrementbyValue(j);
-    cout << j << endl; // j's value will not change.
+    i++; // Increment i; this will also affect j since j is a reference to i
+    cout << "After incrementing i: i = " << i << " , j = " << j << endl;
 
-    // don't return a refernce or address of local var from a function
-    // as soon as the function work ends, you may not use the momory.
-    // int &a = fun(i); // don't practice this
-    // int *b = fun2(); // don't practice this
+    incrementByValue(j); // Call the function with j (which refers to i)
+    cout << "Value of j after executing function incrementByValue(): " << j << endl;
+    // j will not change because the increment happens on a local copy inside the function.
 
-    incrementbyReference(j);
-    // j's value will change this time
-    cout << j << endl;
+    incrementByReference(j); // Call the function with j by reference
+    cout << "Value of j after executing function incrementByReference(): " << j << endl;
+    // j will change because the reference variable modifies the original value of i.
 
     int k = 100;
-    j = k;
-    // now j is coping k's value. so j and i will have k's value.
-    // since j and k is same
-    cout << j << " " << i << endl;
+    j = k; // Assign the value of k to j. Since j refers to i, both i and j now hold the value of k.
+    cout << "i = " << i << "; j = " << j << "; k = " << k << endl;
 
     return 0;
 }

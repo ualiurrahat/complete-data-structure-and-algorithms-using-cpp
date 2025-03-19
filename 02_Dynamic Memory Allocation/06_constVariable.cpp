@@ -1,10 +1,10 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
 // Notes:
 // 1. storage is not constant. Path is.
-// 2. If you have a read-only path, you can not make a writtenable path using read-only path.
+// 2. If you have a read-only path, you can not make a write-able path using read-only path.
 
 int main()
 {
@@ -15,10 +15,12 @@ int main()
     //()int const a;
     // a = 20.)
 
+    // 1. const int
     const int i = 10;
-    // i++  this is not allowed.
+    // since, i is a constant variable,i++  this is not allowed.
+    // const int i or int const i is same thing.
 
-    // const reference from a non const int
+    // 2. const reference from a non const int
     int j = 25;
     const int &k = j; // now k is const reference of j
     cout << j << endl;
@@ -26,38 +28,39 @@ int main()
     j++;
     cout << j << endl;
     cout << k << endl;
-    // j++ is possible
-    // k++; // not possible
+    // j++ is possible as it is a regular variable
+    // but k++ is not possible. it is a const reference
     // remember: path is or can be constant
     // actual storage can not be constant
     // here, path k is blocked to reach to j.
 
-    // const reference from a const int
+    // 3. const reference for a const int
     int const x = 30;
     int const &y = x;
     // x++, y++ ...both not possible
 
-    // reference from a const int
-    int const abul = 20;
-    //int & p = abul;
-    // this is not possible. so p++ is not possible.
-    // why: cause p is an int reference
-    // where abul is a const int
-    // a const int can not have only int reference.
+    // 4. reference from a const int
+    int const a = 20;
+    // int & p = a;
+    //  this is not possible. so p++ is not possible.
+    //  why: cause p is an reference for an int
+    //  here, a is a int which is const
+    // we can't change a by 'a' itself
+    // so how will we be able to change a throug 'p'?
+    // this is not allowed
+    //  a const int can not have a regular int reference.
+    // int const & p = a; this is permitted
 
-    // int const & p = abul; this is permitted
-
-    // const pointer for const value
+        // const pointer for const value
     // a const can have only const pointer
     // can not change its address neither its value
-
     int const rahat = 0;
 
-    //int const *r = &rahat;
-    // means r is a pointer to a const int
-    // but r is not constant
-    // so r = &kbkt is possible
-    // but (*r)++ is not possible.since raht is int const
+    // int const *r = &rahat;
+    //  means r is a pointer to a const int
+    //  but r is not constant
+    //  so r = &kbkt is possible
+    //  but (*r)++ is not possible.since rahat is an int const
 
     // a const pointer for a var is possible
     // line: int const * p; means p is a pointer to a const integer

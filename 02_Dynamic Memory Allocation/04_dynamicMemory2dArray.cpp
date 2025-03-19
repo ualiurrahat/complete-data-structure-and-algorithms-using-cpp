@@ -1,29 +1,28 @@
-// dynamic memory allocation of 2D array.
-#include <bits/stdc++.h>
+// Dynamic memory allocation for a 2D array
+#include <iostream>
 
 using namespace std;
 
 int main()
 {
-    // creating a 2d array like this a[10][20] dynamically
-    int **p = new int *[10];
+    // Dynamically allocating a 2D array (10 rows, 20 columns)
+    int **p = new int *[10]; // Allocating memory for 10 rows
     for (int i = 0; i < 10; i++)
     {
-        p[i] = new int[20];
+        p[i] = new int[20]; // Allocating memory for 20 columns in each row
     }
 
-    // how to delete 2d array?
-    // remember: wherever new is written, we have to delete that
-    // so first delete rows
-    // then delete the pointer
+    // Deallocating the dynamically allocated 2D array
+    // It is essential to delete each allocated memory location using delete to prevent memory leaks.
+
+    // Step 1: Deleting the rows (the individual 1D arrays)
     for (int i = 0; i < 10; i++)
     {
-        // deleting each rows
-        // like p[0],p[1],........p[9].
+        // Delete memory for each row (like p[0], p[1], ..., p[9])
         delete[] p[i];
     }
 
-    // now deleting the pointer p itself
+    // Step 2: Deleting the pointer array (the array of pointers to the rows)
     delete[] p;
 
     return 0;
