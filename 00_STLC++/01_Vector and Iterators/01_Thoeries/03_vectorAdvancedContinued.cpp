@@ -1,3 +1,20 @@
+/*
+    Topic: Advanced Vector Concepts in C++
+
+    This file covers:
+    1. Copying vectors in different ways.
+    2. Difference between push_back() and emplace_back().
+    3. Using STL functions like upper_bound(), lower_bound(), begin(), end(), rbegin(), rend().
+    4. Understanding and working with:
+       - 2D Vectors (Vector of Vectors)
+       - Arrays of Vectors
+       - 3D Vectors (Multidimensional Vectors)
+    5. Practical use cases and examples of nested vectors.
+
+    Note: This file builds on the basics of vectors.
+    For introductory vector operations, refer to '01_vectorBasics.cpp'.
+*/
+
 #include <iostream>
 #include <vector>
 

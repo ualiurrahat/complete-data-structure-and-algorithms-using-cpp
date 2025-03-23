@@ -1,9 +1,22 @@
-// vectors in cpp STL
+
 /*
-difference between vector and array:
-1. size of array is fixed but vector is dynamic.
-2. can create copy of vector but not in array.
-3. array  cannot be returned by function but vector can be.
+    Topic: Introduction to std::vector in C++
+
+    This file covers:
+    1. Difference between arrays and vectors.
+    2. Declaration and initialization of vectors.
+    3. Methods to insert, access, and modify vector elements.
+    4. Using iterators with vectors.
+    5. Sorting and reversing vectors.
+    6. Copying vectors (deep copy vs shallow copy).
+
+    Note: This file focuses on fundamental vector operations.
+    For STL functions like max_element(), accumulate(), and partial_sum(), refer to 'vector_stl_functions.cpp'.
+
+    difference between vector and array:
+    1. size of array is fixed but vector is dynamic.
+    2. can create copy of vector but not in array.
+    3. array  cannot be returned by function but vector can be.
 */
 #include <iostream>
 #include <string>
