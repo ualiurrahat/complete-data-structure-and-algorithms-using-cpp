@@ -1,3 +1,6 @@
+// This program demonstrates the use of STL algorithms such as copy, reverse, fill, and iota.
+// It showcases how to copy elements between ranges, reverse the order of elements, fill a container with a specific value, and assign sequential values to a container using iota.
+
 #include <iostream>
 #include <vector>
 #include <algorithm>

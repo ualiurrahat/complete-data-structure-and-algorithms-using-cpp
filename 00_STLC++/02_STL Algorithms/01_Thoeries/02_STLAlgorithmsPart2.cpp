@@ -1,3 +1,6 @@
+// This program showcases sorting, reversing, finding max/min elements, and other operations like binary search, lower_bound, and upper_bound on arrays and vectors.
+// It also covers the use of accumulate for summing elements, counting occurrences, and finding indices.
+
 #include <iostream>
 #include <vector>
 #include <algorithm>

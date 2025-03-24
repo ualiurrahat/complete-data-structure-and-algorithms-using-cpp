@@ -1,3 +1,6 @@
+// This program demonstrates various sorting and manipulation techniques on vectors and arrays using STL algorithms.
+// It includes sorting in ascending and descending order, reverse, stable_sort, max_element, min_element, partial_sort, and merging two vectors.
+
 #include <iostream>
 #include <string>
 #include <vector>
