@@ -1,5 +1,5 @@
 // sort an array using recursion.
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
@@ -19,6 +19,16 @@ bool isSorted(int a[], int n)
     bool isSmallerSorted = isSorted(a + 1, n - 1);
 
     return isSmallerSorted;
+    /*return isSmallerSorted is equivalent to....
+    if(isSmallerSorted)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    */
 }
 
 // check what is the difference between the first and second function
@@ -35,8 +45,13 @@ bool isSorted2(int a[], int n)
     // recursive call
     bool isSmallerSorted = isSorted(a + 1, n - 1);
 
+    // check if the array from the last that we traverse through recursion is sorted or not
     if (!isSmallerSorted)
     {
+        // array is not sorted in the recursive part
+        // so no point in checking the first two element
+        // as even if arr[0],arr[1] are sorted, still whole array is unsorted.
+        // returning false as array is not sorted.
         return false;
     }
     // condition to check sorted or not
