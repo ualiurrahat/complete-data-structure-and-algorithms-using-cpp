@@ -19,7 +19,7 @@ int main()
     cout << str2 << endl;
 
     // string str3;
-    // getline(cin, str3); // used to take sentence as sentence.
+    // getline(cin, str3); // used to take while sentence from the user.
     // cout << str3 << endl;
 
     string ami[15]; // string with 15 characters.
@@ -40,17 +40,20 @@ int main()
     cout << str4[0] << endl;
 
     // erase string.
+    // The clear() function in C++ removes all characters from the string. It makes the string empty, but doesn't delete the variable itself.
     str4.clear();
 
     // string comparison.
+    /*The compare() function compares two strings lexicographically. It returns
+    0 → if the two strings are equal
+    < 0 → if the calling string is less than the argument string
+    > 0 → if the calling string is greater than the argument string*/
     string s1 = "abc";
     string s2 = "zkl";
     string s3 = "abc";
 
     cout << s2.compare(s1) << endl;
-    // string compare() function
-    // returns 0 it strings are equal
-    // return 1 otherwise
+
     if (!s1.compare(s3)) // if(s1.compare(s2) == 0)
     {
         cout << "strings are equal" << endl;
@@ -58,6 +61,7 @@ int main()
 
     // string empty.
     s1.clear();
+    // s1.empty(): return true if the s1 is empty. Or false even it has at least one character.
     if (s1.empty())
     {
         cout << "s1 is empty" << endl;
@@ -69,6 +73,11 @@ int main()
     cout << s4 << endl;
 
     // string find.
+    /*The find() function is used to search for a substring or character inside a string. It returns the position (index) of the first occurrence of the substring/character.
+
+    If not found, it returns a special constant: string::npos.
+
+*/
     string s5 = "ahnaf";
     cout << s5.find("naf") << endl; // returns index of the first character of the substring.
 

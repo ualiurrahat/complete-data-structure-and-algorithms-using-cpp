@@ -95,6 +95,12 @@ for the largest number, the other 30 bits have to be 1
 largest = |0| 1 1 1 1 1 1 1 1 1 .......................1
 
 = 2^30(2nd bit) + 2^29 + 2^28 + .......................2^0
+this is a geometric progression, where first number, a = 2^0 = 1
+common ratio, r = 2, n= 31(total number from 2^0 to 2^30)
+
+sum , s = a * (r^n+1  - 1 ) / (r-1)
+=> s = 1. (2^31 - 1) / (2-1)
+so, s = (2^31) - 1
 
 = (2^31) -1 -----> equivalent to INT_MAX
 
@@ -130,11 +136,10 @@ Bitwise Not (~) Operator
 ex: number 13 = |0| 0 0................ 0 1 1 0 1
      flip bit =  1  1 1................ 1 0 0 1 0
 it is negative. now do its 2's complement
-     flip bit = |1|  1 1 1 0 0 1 0
-     1's com. =      0 0 0 1 1 0 1
-     add 1    =             + 1
+ 1s com =     flip bit = |1|  1 1 1 0 0 1 0
+                 add 1    =             + 1
 ---------------------------------
-      (~13)   = |1| 0 0 0 1 1 1 0 = -14
+          (~13)   = |1| 0 0 0 1 1 1 0 = -14
 
 
 Always Remeber:
