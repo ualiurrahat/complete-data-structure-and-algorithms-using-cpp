@@ -1,76 +1,71 @@
-/*The Dutch National Flag i.e. DNF sort is used to
-sort an array containing 0,1,and 2 only
-......................
-intuition behind DNF sort:
-we take 3 pointers-->low,mid,high
-index [0,......,low-1] --> contains 0 (extreme left part of the array)
-index [low,......, mid-1] --> contains 1
-index[high+1,......., n-1] --> contains 2 (extreme right part)
-these are the sorted part of the array.
-index[mid,.....,high] --> contains unsorted elements means 0,1,2.
-this is the unsorted part of the array..
-we need to place these numbers in the sorted places.
-we will take pointer low = 0, mid = 0 and high = n-1.
-then start the iteration with the mid index element:
-1)if a[mid] == 0,
- swap(a[low], a[mid]), mid++,low++
- since 0 resides in the regin a[0,...low-1]
- low is increased, since total sorted no. of 0 is increased by 1.
- mid is increased, to go and check the next element.
-2)if a[mid] == 1,then we do nothing but mid++.
-since a[low-1,....mid-1] contains all 1,
-that is why a[mid]=1 is already in the right position
-so going to the next element doing mid++.
-3) if a[mid] == 2,
-swap(a[mid], a[high]),high--,mid++
-since 2 resides in the a[high+1,.....n-1]
-so there is a new 2 arrives here.
-assigned it in the place a[high]
-since total no. of sorted 2 is increased by 1
-if any other 2 comes during iteration,
-we need place it infront of the current 2
-hence high is decreased doing high--;
-the whole iteration will continue while(mid <= high)
+/*
+Problem:
+Given an array arr[] containing only 0s, 1s, and 2s.
+Sort the array in ascending order without using any built-in sort function.
+
+Approach:
+We use the Dutch National Flag algorithm, which processes the array in a single pass.
+We maintain three pointers:
+- low: boundary between 0s and 1s
+- mid: current element under consideration
+- high: boundary between 2s and unknowns
+
+The algorithm works by:
+1. Swapping 0 to the front and incrementing both low and mid
+2. Leaving 1s in place and incrementing mid
+3. Swapping 2 to the end and decrementing high
 */
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
-// funciton to perform DNF sort
-void DNFSort(int arr[], int n)
+// Function to sort the array containing only 0s, 1s, and 2s
+void sort012(vector<int> &arr)
 {
+    int n = arr.size();
     int low = 0, mid = 0, high = n - 1;
+
+    // Traverse the array until all elements are processed
     while (mid <= high)
     {
         if (arr[mid] == 0)
         {
+            // Swap 0 to the front (position of 'low'), then move both pointers forward
             swap(arr[mid], arr[low]);
             low++;
             mid++;
         }
         else if (arr[mid] == 1)
         {
+            // 1 is already in the correct region, just move mid forward
             mid++;
         }
-        else
+        else if (arr[mid] == 2)
         {
+            // Swap 2 to the end (position of 'high'), move high pointer backward
             swap(arr[mid], arr[high]);
             high--;
+            // mid is not incremented here because the swapped element needs to be checked
         }
     }
-    return;
+
+    // T:O(N), S:O(1)
 }
-// T:O(N),S:O(1)
+
+// Driver code to test the function
 int main()
 {
-    int arr[] = {0, 1, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 0, 1, 2};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    DNFSort(arr, n);
-    cout << "array after sorting with DNF algo: " << endl;
-    for (int i = 0; i < n; i++)
+    vector<int> arr = {2, 0, 2, 1, 1, 0};
+
+    sort012(arr);
+
+    // Print the sorted array
+    for (int num : arr)
     {
-        cout << arr[i] << " ";
+        cout << num << " ";
     }
+    cout << endl;
 
     return 0;
 }
