@@ -1,34 +1,21 @@
 /*
 Problem statement
 You are given a string 'exp' which is a valid infix expression.
-
-
-
 Convert the given infix expression to postfix expression.
-
-
 
 Note:
 Infix notation is a method of writing mathematical expressions in which operators are placed between operands.
-
 For example, "3 + 4" represents the addition of 3 and 4.
-
 Postfix notation is a method of writing mathematical expressions in which operators are placed after the operands.
-
 For example, "3 4 +" represents the addition of 3 and 4.
-
 Expression contains digits, lower case English letters, ‘(’, ‘)’, ‘+’, ‘-’, ‘*’, ‘/’, ‘^’.
-
 
 Example:
 Input: exp = ‘3+4*8’
-
 Output: 348*+
 
 Explanation:
 Here multiplication is performed first and then the addition operation. Hence postfix expression is  3 4 8 * +.
-
-
 */
 #include <iostream>
 #include <stack>
@@ -88,7 +75,7 @@ string infixToPostfix(string exp)
             st.pop();
         }
         // case 4: if the current char is an operand
-        // pop out operands whose priority is lesser than current char operand
+        // pop out operands whose priority is greater than or equal to current char operand
         // and add them to the result
         else
         {
@@ -109,10 +96,15 @@ string infixToPostfix(string exp)
         st.pop();
     }
     return result;
-    // T:O(N)+O(N)[for the outer while loop + for the inner while loop] = O(2N)= O(2N)
-    // even in worst case, we might need to fill n elements in the stack and n to be popped out.
-    // so time complexity is always T:O(N)
-    // S:O(N)[for stack] + O(N)[for storing answer string] = O(2N) = O(2N)
+    // Time Complexity: O(N)
+    // - Each character in the input expression is processed exactly once in the for-loop → O(N)
+    // - Each operator is pushed and popped from the stack at most once → O(N)
+    // - Therefore, the total time complexity is O(N)
+
+    // Space Complexity: O(N)
+    // - Stack can store at most N characters in the worst case → O(N)
+    // - Result string stores the postfix expression of length up to N → O(N)
+    // - Therefore, total auxiliary space used is O(N) + O(N) = O(N)
 }
 
 /*
