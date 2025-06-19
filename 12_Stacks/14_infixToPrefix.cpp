@@ -132,12 +132,12 @@ string infixToPrefix(string infix)
         if (infix[i] == '(')
         {
             infix[i] = ')';
-            i++;
+            continue;
         }
         else if (infix[i] == ')')
         {
             infix[i] = '(';
-            i++;
+            continue;
         }
     }
 
