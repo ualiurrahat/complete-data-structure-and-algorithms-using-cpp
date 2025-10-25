@@ -10,6 +10,9 @@ using namespace std;
 // int a[n];  // This is not recommended because a[n] is allocated on the stack, which has limited memory.
 // If n is a large number, the stack might not have enough memory for the array.
 // Instead, dynamic memory allocation should be used to allocate large memory blocks from the heap, which has more space.
+// we should do this:
+// int * a = new int[n];
+// by doing this, we are allocating memory for array a from the heap memory. So there will be no problem.
 
 int main()
 {
@@ -44,7 +47,9 @@ int main()
 
     // Deallocating dynamically allocated memory using delete
     // 'delete p' frees the 4 bytes of memory (new int) that p was pointing to.
-    // Memory allocated on the stack (the pointer p itself) is automatically freed when the program exits the scope of p.
+    // Memory allocated on the stack (the pointer p itself) is automatically freed when the program exits the scope of p. So stack memory automatically gets deleted on the basis of scope of variables.
+    // Deleting memory manually for dynamically allocated is required.
+    // NOTE: if a memory is acquired using "new", it needs to be deleted manually.
 
     delete p;     // Free the memory allocated for a single integer
     delete pd;    // Free the memory allocated for a double

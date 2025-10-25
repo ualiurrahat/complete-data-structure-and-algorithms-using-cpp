@@ -12,8 +12,8 @@ int main()
     // const must be initialized with the declaration.
     // ex: const a = 20;
     // can't write:
-    //()int const a;
-    // a = 20.)
+    // int const a;
+    // a = 20. XXXXX this is not allowed.
 
     // 1. const int
     const int i = 10;
@@ -51,7 +51,7 @@ int main()
     //  a const int can not have a regular int reference.
     // int const & p = a; this is permitted
 
-        // const pointer for const value
+    // const pointer for const value
     // a const can have only const pointer
     // can not change its address neither its value
     int const rahat = 0;
