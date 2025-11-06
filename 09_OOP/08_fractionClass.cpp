@@ -1,65 +1,111 @@
-#include <bits/stdc++.h>
+/*
+====================================================================
+   FILE: 08_fractionClass.cpp
+   TOPIC: Fraction Class Implementation (with Addition & Multiplication)
+====================================================================
+
+🧠 PURPOSE:
+-----------
+This program demonstrates the creation of a simple **Fraction** class in C++
+to represent and operate on fractional numbers.
+
+The Fraction class supports:
+1. Printing a fraction.
+2. Simplifying a fraction to its lowest form.
+3. Adding two fractions.
+4. Multiplying two fractions.
+
+Concepts Covered:
+-----------------
+- Use of constructors and member functions.
+- Accessing members via `this` pointer.
+- Passing objects by reference and using `const` for safety.
+- Real-world class design and method functionality in OOP.
+*/
+
+#include <iostream>
+#include <algorithm> // for min()
 using namespace std;
 
 /*
-Creating a fraction class.
-it can produce and display fraction numbers
-and performs addition and multiplication between fraction numbers.
+====================================================================
+   CLASS: Fraction
+====================================================================
+
+This class models fractional numbers and defines behaviors such as:
+- Printing
+- Simplifying
+- Adding
+- Multiplying fractions
 */
 
 class Fraction
 {
 private:
-    // fraction number has two parts: numerator and denominator
-    // ex: 3/4, here, numerator = 3 and denominator = 4
+    // A fraction number has two parts: numerator and denominator.
+    // Example: For 3/4 → numerator = 3 and denominator = 4
     int numerator;
     int denominator;
 
 public:
-    // constructor
+    // ---------------------- Constructor ----------------------
+    /**
+     * @brief Initializes a Fraction object with given numerator and denominator.
+     *
+     * @param numerator   The numerator of the fraction.
+     * @param denominator The denominator of the fraction.
+     *
+     * Explanation:
+     * - The `this` pointer is used to differentiate between class members
+     *   and parameters with the same name.
+     */
     Fraction(int numerator, int denominator)
     {
         this->numerator = numerator;
         this->denominator = denominator;
     }
-    // function to display fraction numbers.
+
+    // ---------------------- Display Function ----------------------
+    /**
+     * @brief Displays the fraction in the format "numerator / denominator".
+     *
+     * Note:
+     * - Technically we should write:
+     *      cout << this->numerator << " / " << this->denominator << endl;
+     *   But since the parameter names do not shadow the member names,
+     *   we can omit `this->` safely.
+     *
+     * - Whenever we access an object's properties using the dot operator
+     *   inside the main function, that object’s address is stored in the
+     *   hidden pointer `this`.
+     */
     void print()
     {
         cout << numerator << " / " << denominator << endl;
-        /*
-         this should be written as
-         cout << this->numerator << " / " << this->denominator << endl;
-         but still working fine.
-         as we have used no parameter
-         nameds as numerator or denominator
-         so compiler automatically taking values
-         from this pointer reference.
-
-         note: whenever we access object's properties using dot operation
-        inside main function, that object's address is saved in the this pointer
-        */
     }
 
-    // function to simply the fraction numbers
-    // ex: if f1 = 70/8, we can simplify it to f1 = 35/4.
-    // how?
-    // solution: divide numerator and denominator of f1 by their gcd.
-    // here, gcd of (70,8) = 2
-    // so 70/2 = 35 and 8/2 = 4
-    // so, f1 = 70/8 becomes f1 = 35/4
+    // ---------------------- Simplify Function ----------------------
+    /**
+     * @brief Simplifies the fraction to its lowest terms.
+     *
+     * Example:
+     *   If f1 = 70/8, gcd(70,8) = 2 → f1 = 35/4.
+     *
+     * Logic:
+     *   - Find the greatest common divisor (gcd) of numerator and denominator.
+     *   - Divide both numerator and denominator by gcd.
+     */
     void simplify()
     {
         int gcd = 1;
-        // take minimum value between numerator and denominator
-        int j = min(this->numerator, this->denominator);
-        // even if we write, j = min(numerator,denominator), it will work
-        // as computer will explicitly take the values from this pointer.
 
-        // the max value of a gcd for two numbers
-        // will be the minimum of these numbers.
-        // j takes min among numerator and denominator
-        // so j is the greatest value that can be the gcd
-        // of numerator and denominator
+        // Take minimum value between numerator and denominator
+        int j = min(this->numerator, this->denominator);
+
+        // Even if we write: j = min(numerator, denominator)
+        // it will still work since compiler uses the implicit this pointer.
+
+        // The maximum possible value for gcd will be the smaller of numerator or denominator.
         for (int i = 1; i <= j; i++)
         {
             if (numerator % i == 0 && denominator % i == 0)
@@ -68,48 +114,67 @@ public:
             }
         }
 
-        // now minimizing the fraction.
+        // Now minimizing (simplifying) the fraction.
         this->numerator = this->numerator / gcd;
         this->denominator = this->denominator / gcd;
     }
 
-    // function to add two fraction numbers.
-    // f1. add(f2) ---> means = f1 + f2
-    // so, function is called by a fraction number object
-    // a number which needs to be added is used as a parameter.
-    // function doesn't return anything, void type.
-    // resultant number is saved in the number f1(the number which called the add function)
-
-    // why we are not writing function like: void add(Fraction f2) ??
-    // it is interpret as Fraction f2 = main.f2
-    // so a new fraction object f2 is created using copy constructor and values of f2 object from main function
-    // but this wastes time and space as complete object is again created
-    // and we just want to add f2 with the number by which add function was called
-    // so we are taking reference of a f2 number
-    // and making it const so that no one can change f2 object of the main function
-    // better write function : void add(Fraction const &f2)
-
+    // ---------------------- Addition Function ----------------------
+    /**
+     * @brief Adds two fractions (this + f2) and stores the result in the current object.
+     *
+     * @param f2 Another fraction (passed by const reference).
+     *
+     * Example:
+     *   f1.add(f2);  // means f1 = f1 + f2
+     *
+     * Why use `const Fraction&` instead of `Fraction f2`?
+     * --------------------------------------------------
+     * - If we write `Fraction f2`, it will call the copy constructor and create
+     *   a new fraction object, wasting memory and time.
+     * - Passing by reference (`Fraction&`) avoids copying.
+     * - Adding `const` ensures that we don’t accidentally modify the original object.
+     *
+     * Logic:
+     *   1. Find LCM of denominators.
+     *   2. Adjust numerators accordingly.
+     *   3. Compute new numerator = (n1 * multiplier1) + (n2 * multiplier2)
+     *   4. Denominator = LCM
+     *   5. Simplify the result.
+     */
     void add(Fraction const &f2)
     {
-        // lcm of the denomiators of f1 and f2
+        // LCM of the denominators of current and f2
         int lcm = this->denominator * f2.denominator;
         int x = lcm / this->denominator;
         int y = lcm / f2.denominator;
-        // numerator of the resultant fraction number
+
+        // Numerator of the resultant fraction
         int newNumerator = (x * this->numerator) + (y * f2.numerator);
-        // denominator of the resulatnt fraction number is equal to lcm value
+
+        // Denominator of resultant fraction equals LCM
         int newDenominator = lcm;
 
-        // now store the result number within the f1(the number which called the function) itself
+        // Store the result in the calling object itself
         this->numerator = newNumerator;
         this->denominator = newDenominator;
 
-        // calling simplifying function to simplify the result
-        simplify();
-        // this works as: f1.simplify();
+        // Simplify the result
+        simplify(); // Equivalent to this->simplify();
     }
 
-    // function to multiply fraction numbers
+    // ---------------------- Multiplication Function ----------------------
+    /**
+     * @brief Multiplies two fraction numbers and stores the result in the current object.
+     *
+     * Example:
+     *   f1.multiply(f2); // f1 = f1 * f2
+     *
+     * Logic:
+     *   - Multiply numerators together.
+     *   - Multiply denominators together.
+     *   - Simplify the resulting fraction.
+     */
     void multiply(Fraction const &f2)
     {
         numerator = numerator * f2.numerator;

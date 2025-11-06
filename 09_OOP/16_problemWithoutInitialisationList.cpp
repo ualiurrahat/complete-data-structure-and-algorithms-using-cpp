@@ -1,59 +1,91 @@
-// initialization list: In object-oriented programming (OOP), an initialization list, also known as an initializer list or member initialization list, is a mechanism used in various programming languages to initialize the member variables of a class within the constructor of that class. It's a way to set initial values for the class's data members when an object of the class is created.
-
 /*
-let's oversee a point:
-int a = 5; allowed
-int a;
-a = 5; allowed
-int const a; ** not allowed
-note: we have to assign values for const variables at the time of creation
-int const a = 25;
-same goes for reference variable also. They must be assigned at the time of creation only.
-int i = 25;
-int &j = i; allowed
-int &j;** not allowed
-j = i; ** not allowed
+====================================================================
+   FILE: 16_problemWithInitializationList.cpp
+   TOPIC: Initialization List in C++
+====================================================================
+
+PURPOSE:
+--------
+This program explains the problem with assigning values to
+`const` and reference variables inside a constructor and
+introduces the concept of an **initialization list** in C++.
+
+Key Points:
+-----------
+1. Const and reference variables must be initialized at the
+   time of creation; assignment after creation is not allowed.
+2. Using a constructor body to assign values to const/reference
+   variables will cause a compilation error.
+3. Initialization lists provide a way to initialize such variables
+   at the time of memory allocation.
+
+====================================================================
 */
 
 #include <bits/stdc++.h>
-
 using namespace std;
 
 class Student
 {
 public:
-    int age;
-    const int roll;
+    int age;        // normal variable, can be assigned inside constructor or after object creation
+    const int roll; // const variable, must be initialized at the time of creation
+
     /*
-    Student (int r)
+    Example of a constructor body (WRONG approach):
+    -----------------------------------------------
+    Student(int r)
     {
-        roll = r;
+        roll = r; // ❌ Error: cannot assign value to const variable here
     }
     */
 };
 
 int main()
 {
+    /*
+    Demonstration of const variable assignment problem:
+    --------------------------------------------------
+
     // Student s1;
     // s1.age = 22;
-    // s1.roll = 135;
-    // error occurs. cause roll is an const var and we have to initialise it at the time
-    //  of creation. Student s1 created s1.roll but needs to be initialised i.e. assigned value
-    //  Solution: parameterized constructor to initialize roll number
+    // s1.roll = 135; // ❌ Error: roll is const and must be initialized at creation
 
-    //  example:Student s1(135);
-    //  but this also gives error.why?
-    // suppose we write: int a;
-    // a = 5; here, we did not write int before a. because a is already created in the previous line.
-    // same goes for const int roll.
-    // we did not write const int before roll = r in the paramter.
-    // it means roll is already created and contains a garbage value.
-    // now we are reassigning r in the roll. that is why error is occurring.
-    // problem: we can not assign values of const var inside the constructor.
-    // then how will we use const vars in class and assign their values?
-    // Solution: we have to assign value of the const vars at the time of its creation
-    // i.e. memory allocation
-    // HOW: using initialisation List
+    Explanation:
+    ------------
+    - 'roll' is a const variable.
+    - Memory for 'roll' is already allocated when object is created.
+    - Assigning a value in the constructor body is equivalent to
+      "reassigning" it after creation, which is illegal.
+
+    Solution:
+    ---------
+    - Use a **parameterized constructor with initialization list**.
+
+    Example (still wrong if using assignment inside constructor body):
+    Student s1(135);
+    Why error occurs:
+    - Writing 'roll = r;' inside the constructor body attempts to
+      assign after creation.
+    - Const variable must be initialized during memory allocation.
+
+    Correct approach (not implemented yet in this file):
+    -----------------------------------------------------
+    - Use initialization list in constructor:
+      Student(int r) : roll(r) {}
+    - This assigns value to const variable at the time of creation.
+    */
+
+    /*
+    Additional Note:
+    ----------------
+    Similar rules apply to reference variables:
+
+    int i = 25;
+    int &j = i;   // ✅ allowed
+    int &j;       // ❌ not allowed
+    j = i;        // ❌ not allowed
+    */
 
     return 0;
 }
