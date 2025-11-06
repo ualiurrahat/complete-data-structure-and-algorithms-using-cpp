@@ -2,13 +2,13 @@
 // ex: aaabbcccddde
 // out: abcde
 
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 void removeDup(char str[])
 {
     // base case
-    if (strlen(str) == 1)
+    if (str[1] == '\0')
     {
         return;
     }

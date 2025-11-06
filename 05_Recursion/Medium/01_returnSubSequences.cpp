@@ -8,6 +8,8 @@
 // formula: is a string has 'n' characters, it will have exactly
 // 2^n no. of total subsequence
 
+/*problem link: https://www.naukri.com/code360/problems/subsequences-of-string_985087*/
+
 #include <bits/stdc++.h>
 
 using namespace std;

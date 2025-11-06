@@ -1,8 +1,9 @@
-// sort an array using recursion.
+// Check if an array is sorted or not using recursion.
 #include <iostream>
 
 using namespace std;
 
+// function to check whether array is sorted (in ascending order)
 bool isSorted(int a[], int n)
 {
     // base case
