@@ -1,217 +1,219 @@
 /*
-here, we will create a dynamic array class.
-It is just like C++ STL vector container.
-in this dynamic array,we will be able to
-1)increase array size dynamically.
-if array is filled, a double sized array will be created.
-2)add(element) -> function to add the element in the array.
-3)add(element,index) -> funciton to add element in the user given index.
-4)get(i) -> function to get ith index element
+----------------------------------------------------------
+File: 23_DynamicArrayClass.cpp
+Topic: Implementation of a Dynamic Array Class (like STL vector)
+----------------------------------------------------------
+This program implements a custom DynamicArray class similar to
+the C++ STL vector container.
 
-
+Functionalities included:
+1️⃣ Automatically increases the array size dynamically.
+    ➤ If the array becomes full, it doubles its capacity.
+2️⃣ add(element) — Adds an element to the array.
+3️⃣ add(element, index) — Inserts an element at the user-specified index.
+4️⃣ get(i) — Returns the element at the i-th index.
+----------------------------------------------------------
 */
 
 #include <iostream>
 using namespace std;
 
-// Dynamic array class
+/*
+----------------------------------------------------------
+DynamicArray Class
+----------------------------------------------------------
+A class that demonstrates dynamic memory allocation,
+deep copy, and dynamic resizing of arrays.
+----------------------------------------------------------
+*/
 class DynamicArray
 {
-    // dynamic array pointer
-    int *data;
-    // to check index of the next elements needs to be added in the array.
-    int nextIndex;
-    // total size of the array.
-    int capacity;
+    int *data;     // Pointer to the dynamic array
+    int nextIndex; // Index of the next element to be inserted
+    int capacity;  // Total current capacity of the array
 
 public:
-    // constructor
+    /**
+     * @brief Constructor initializes the dynamic array with size 5.
+     */
     DynamicArray()
     {
-        // initially, an array for 5 elements is created.
-        data = new int[5];
-        // first element's index will be zero
-        nextIndex = 0;
-        // initial capacity
-        capacity = 5;
+        data = new int[5]; // Initially allocate space for 5 elements
+        nextIndex = 0;     // First available index is 0
+        capacity = 5;      // Initial capacity is 5
     }
 
-    // function to add element in the array
-    // ex: a[] = {1,2,3};
-    // a.add(10); now, a[] = {1,2,3,10}
+    /**
+     * @brief Adds an element at the end of the array.
+     *        If array is full, capacity is doubled.
+     */
     void add(int element)
     {
-        // condition to check if array is full
+        // Check if array is full
         if (nextIndex == capacity)
         {
-            // creating new array having double size of the previous array
+            // Create a new array with double capacity
             int *newData = new int[2 * capacity];
-            // coping elements from old to new array
+
+            // Copy all elements from old array to new one
             for (int i = 0; i < capacity; i++)
             {
                 newData[i] = data[i];
             }
 
-            // deleting old array
+            // Delete old memory and reassign pointer
             delete[] data;
-            // assigning new array as the data array
             data = newData;
-            // update the capacity*2 since double sized array is created.
+
+            // Update capacity to new doubled value
             capacity = 2 * capacity;
         }
-        // add the element in the data array
+
+        // Add element and move to next index
         data[nextIndex] = element;
-        // update the index
         nextIndex++;
     }
 
-    // function to get an element of a particular index
-    // takes a paramter i denoting index value
-    // return the element if index is valid
-    // otherwise -1.
+    /**
+     * @brief Returns element at index i (if valid).
+     * @param i Index position
+     * @return Element value or -1 if invalid index
+     */
     int get(int i) const
     {
-        // for valid index i, it should be less than the next index
         if (i < nextIndex)
-        {
-            // index is valid. return the element.
             return data[i];
-        }
         else
-        {
-            // returning -1 as a sign that
-            // no element exists in this index
-            return -1;
-        }
+            return -1; // Invalid index
     }
-    // funciton to add an element in a particular index
-    // takes two parameter:ind denoting index, and an element
-    // case1: assign element at the ind index if ind is valid.
-    // case 2: if ind == nextIndex, then we call add(element) funciton
-    // case 3: if ind is invalid, simply just return.
+
+    /**
+     * @brief Adds element at a particular index.
+     *
+     * Cases handled:
+     *   1️⃣ If index < nextIndex → Replace element at index.
+     *   2️⃣ If index == nextIndex → Append using add().
+     *   3️⃣ If index > nextIndex → Invalid index, do nothing.
+     */
     void add(int ind, int element)
     {
-        // case 1: condition to check if ind is a valid index
         if (ind < nextIndex)
         {
-            // index is valid. assigning the element.
+            // Valid index — replace element
             data[ind] = element;
         }
-        // case 2: ind == index.
-        // so it is just adding the element in the array
         else if (ind == nextIndex)
         {
-            // calling the add function.
+            // Add at the end of array
             add(element);
         }
-        // case 3: ind position is higher than last index of the array
-        // since ind is invalid, just returning from the function.
         else
         {
+            // Invalid index — do nothing
             return;
         }
     }
-    // funciton to print array
+
+    /**
+     * @brief Prints all current elements of the array.
+     */
     void print()
     {
-        // array has up to nextIndex element.loop goes from 0 to nextIndex value.
         for (int i = 0; i < nextIndex; i++)
         {
             cout << data[i] << " ";
         }
         cout << endl;
     }
-    // funciton to get size of the array
+
+    /**
+     * @brief Returns total current capacity of the array.
+     */
     int getSize()
     {
         return capacity;
     }
-    // copy constructor: to create new array from already created one.
-    // ex: DynamicArray d2(d1);
-    // d2 will have same values for all properties as d1
+
+    /**
+     * @brief Copy Constructor (performs deep copy)
+     *
+     * Creates a new DynamicArray with its own copy of data,
+     * preventing shared memory (shallow copy).
+     */
     DynamicArray(DynamicArray const &d)
     {
-        // shallow copy
-        // this->data = d.data;
-
-        // deep copy
-        // create dynamic array with the size of the array d
         this->data = new int[d.capacity];
-        // copy all the elements for d array
         for (int i = 0; i < d.nextIndex; i++)
         {
             this->data[i] = d.data[i];
         }
-
-        // this part is same for shallow and deep copy
         this->nextIndex = d.nextIndex;
         this->capacity = d.capacity;
     }
-    // copy assignment operator overloading
-    // ex: DynamicArray d2 = d1;
-    // so new array d2 will have same values for all properties
-    // as the values in the array d1.
+
+    /**
+     * @brief Copy Assignment Operator Overloading (deep copy)
+     *
+     * Example:
+     * DynamicArray d2 = d1;
+     */
     void operator=(DynamicArray const &d)
     {
-        // shallow copy
-        // this->data = d.data;
-
-        // deep copy
-        // create dynamic array with the size of the array d
         this->data = new int[d.capacity];
-        // copy all the elements for d array
         for (int i = 0; i < d.nextIndex; i++)
         {
             this->data[i] = d.data[i];
         }
-
-        // this part is same for shallow and deep copy
         this->nextIndex = d.nextIndex;
         this->capacity = d.capacity;
     }
 };
+
+/*
+----------------------------------------------------------
+Main Function
+----------------------------------------------------------
+Demonstrates all features of the DynamicArray class.
+----------------------------------------------------------
+*/
 int main()
 {
-
     DynamicArray d;
+
     d.add(10);
     d.add(20);
     d.add(30);
     d.add(40);
     d.add(50);
-    // printing the array
-    d.print(); // 10 20 30 40 50
-    // chaning index 3 value to 100
+
+    d.print(); // Output: 10 20 30 40 50
+
     d.add(3, 100);
-    // printing again
-    d.print(); // 10 20 30 100 50
+    d.print(); // Output: 10 20 30 100 50
 
-    // trying to add 1000 in index 7 which is out of scope
-    d.add(7, 255); // add() should do nothing and return
-    d.print();     // 10 20 30 100 50
-    // printing capacity
-    cout << "size of the array:" << d.getSize() << endl; // 5
+    d.add(7, 255); // Invalid index → no change
+    d.print();     // Output: 10 20 30 100 50
 
-    // now adding 6th element in the array
+    cout << "Size of the array: " << d.getSize() << endl; // 5
+
+    // Add one more element — triggers resizing
     d.add(420);
-    // since initial size is 5 and if
-    // further element is added, array size will become double
-    // let's check array size now
-    cout << "size of the array:" << d.getSize() << endl; // 5
+    cout << "Size of the array: " << d.getSize() << endl; // 10
 
-    // creating another array c using copy constructor
+    // Demonstrate copy constructor
     DynamicArray c(d);
-    cout << "printing array c: ";
+    cout << "Printing array c: ";
     c.print();
 
-    // now changing in c
+    // Modify c without affecting d
     c.add(0, -25);
     d.print();
     c.print();
 
-    // creating a new array using copy assignment operator
+    // Demonstrate copy assignment operator
     DynamicArray b = d;
     b.print();
+
     b.add(307);
     d.print();
     b.print();
