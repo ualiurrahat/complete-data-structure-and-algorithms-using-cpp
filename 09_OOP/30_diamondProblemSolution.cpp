@@ -1,20 +1,23 @@
 /*
 In hybrid inheritance, a problem named diamond problem may occur.
-It happens when B and C is derived from Clas A
-and then D is derived from B and C.
-so D inherits properties of A class
-by the help of B and C, since they are inherited from A
-So, if D tries to access A class property,
-compiler gets confused thinking of from
-which derived class(B or C) D is trying to
-access property of A.
-This is called Diamond Problem.
- */
+It happens when B and C are derived from class A,
+and then D is derived from both B and C.
+
+So, class D indirectly inherits A's properties twice:
+(1) Through B
+(2) Through C
+
+Therefore, when D tries to access A's members,
+the compiler becomes confused about **which A subobject**
+(from B or from C) should be referenced.
+
+This is called the Diamond Problem.
+*/
 
 #include <iostream>
 using namespace std;
 
-// class Vehicle
+// ======================= Base Class: Vehicle =======================
 class Vehicle
 {
 private:
@@ -25,58 +28,50 @@ protected:
 
 public:
     string color;
+
     // default constructor
     Vehicle()
     {
         cout << "Vehicle default constructor!" << endl;
+        maxSpeed = 0;
     }
+
     // parameterized constructor
     Vehicle(int z)
     {
         cout << "Vehicle class parameterized constructor!" << endl;
         maxSpeed = z;
     }
-    // print funciton
+
     void print()
     {
-        cout << "vehicle" << endl;
+        cout << "Vehicle print() called!" << endl;
     }
-    // destructor
+
     ~Vehicle()
     {
         cout << "Vehicle class destructor!" << endl;
     }
 };
 
-// creating Car class from Vehicle class
+// ======================= Derived Class: Car =======================
 class Car : public Vehicle
 {
-
-    // maxSpeed is private. so can not be inherited.
-    // color is public. so it is publicly inherited.
-    // numTyres is protectedly inherited.
 public:
     int numGears;
-    // constructor
+
     Car()
     {
         cout << "Car default constructor!" << endl;
     }
-    // destructor
+
     ~Car()
     {
         cout << "Car class destructor!" << endl;
     }
-
-    // void print()
-    // {
-    //     cout << "NumTyres: " << numTyres << endl;
-    //     cout << "NumGears: " << numGears << endl;
-    //     cout << "color: " << color << endl;
-    //     // cout << "maxSpeed: " << maxSpeed << endl;
-    // }
 };
-// creating Truck class from Vehicle
+
+// ======================= Derived Class: Truck =======================
 class Truck : public Vehicle
 {
 public:
@@ -86,8 +81,10 @@ public:
     }
 };
 
-// now creating a Bus class,
-// taking Truck,Car as its base class.
+// ======================= Derived Class: Bus =======================
+// Bus inherits from BOTH Car and Truck,
+// which means it contains **two separate Vehicle subobjects**
+// → one from Car, and one from Truck.
 class Bus : public Car, public Truck
 {
 public:
@@ -96,26 +93,26 @@ public:
         cout << "Bus default constructor!" << endl;
     }
 };
+
+// ======================= Main Function =======================
 int main()
 {
     Bus b;
-    // look at the constructor call pattern:
-    // vehicle,car,vehicle,truck and then bus constructor.
 
-    // b.print(); show error as ambiguity occurs
-    // Bus is inherited Car,Truck classes
-    // these both classes inherited print() function
-    // from the base Vehcile class.
-    // so compiler is confused on which print()
-    // function user is pointing to.
-    // solution 1: use write Bus class own print() function
-    // solution 2: explicitly mention whose print() funciton
-    // you want to acquire. like this:
-    // b.Car::print();
+    // Constructor order:
+    // Vehicle (via Car)
+    // Car
+    // Vehicle (via Truck)
+    // Truck
+    // Bus
 
-    // NOTE: if we want to restrict double coping of Vehicle class
-    // properties in class Bus(through inheritance of class Car,Truck)
-    // we can made class Car,Truck virtual
-    // check out the next code.
+    // b.print();   // ❌ ERROR: Ambiguous!
+    // Because Bus has TWO Vehicle subobjects
+    // one through Car and one through Truck.
+
+    // Solution: explicitly specify which path to follow:
+    b.Car::print();
+    b.Truck::print();
+
     return 0;
 }
