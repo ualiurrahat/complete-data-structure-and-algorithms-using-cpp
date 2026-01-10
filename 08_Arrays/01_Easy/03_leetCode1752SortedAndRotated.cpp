@@ -1,6 +1,6 @@
 /*
 ============================================================================
-   FILE: 24_checkIfSortedAndRotated.cpp
+   FILE: 03_leetCode1752SortedAndRotated.cpp
    TOPIC: Check if Array is Sorted and Rotated
 ============================================================================
 

@@ -1,170 +1,226 @@
+#include <iostream>  // For input-output operations (cin, cout)
+#include <vector>    // For using vector container
+#include <algorithm> // For sort() function
+#include <climits>   // For INT_MIN constant
+using namespace std;
+
 /*
 ============================================================================
-   FILE: 02_secondLargestElement.cpp
-   TOPIC: Find the Second Largest Element in an Array
-============================================================================
+PROBLEM:
+Find the SECOND LARGEST DISTINCT element in an array.
 
-🧠 PROBLEM STATEMENT:
----------------------
-Given an array of integers, find and return the second largest element.
-
-Example:
----------
-Input:  a[] = {12, 35, 1, 10, 34, 1}
-Output: 34
-
+IMPORTANT POINTS:
+1. Duplicate values may exist.
+2. Second largest must be STRICTLY smaller than the largest.
+3. If no such element exists, return -1.
 ============================================================================
 */
 
-#include <iostream>
-#include <vector>
-#include <algorithm> // For sort()
-#include <climits>   // For INT_MIN
-using namespace std;
+// ---------------------- BRUTE FORCE APPROACH ----------------------
+/*
+APPROACH EXPLANATION:
+1. Sort the array.
+2. The last element will be the largest.
+3. Traverse backwards to find the first element
+   which is strictly smaller than the largest.
 
-// ---------------------- Brute Force Approach ----------------------
-/**
- * @brief Finds the second largest element using sorting.
- *
- * 🕒 Time Complexity: O(N log N)
- * 💾 Space Complexity: O(1)
- *
- * @param a Vector of integers representing the array.
- * @param n Size of the array.
- * @return int The second largest element (or -1 if not found).
- */
+WHY IT WORKS:
+- Sorting places elements in order.
+- Reverse traversal avoids duplicates.
+
+TIME COMPLEXITY: O(N log N)
+SPACE COMPLEXITY: O(1)
+*/
 int secondLargestBrute(vector<int> &a, int n)
 {
-    // to store the second largest element
-    // initial value -1, in case second largest does not exist in the array
-    int ans = -1;
+    // If array has fewer than 2 elements,
+    // second largest cannot exist
+    if (n < 2)
+        return -1;
 
-    // sort the array: O(nlogn)
+    // Sort the array in ascending order
     sort(a.begin(), a.end());
 
-    // now traverse the sorted array in reverse order
-    // return the second largest element
+    // Store the largest element (last element after sorting)
     int largest = a[n - 1];
 
-    // O(n)
+    // Traverse from second last index to the beginning
     for (int i = n - 2; i >= 0; i--)
     {
+        // As soon as we find a value strictly smaller than largest,
+        // that value is the second largest
         if (a[i] < largest)
         {
-            ans = a[i];
-            break;
+            return a[i];
         }
     }
-    return ans;
+
+    // If no smaller element is found,
+    // second largest does not exist
+    return -1;
 }
 
-// ---------------------- Better Approach ----------------------
-/**
- * @brief Finds the second largest element using two passes (two traversals).
- *
- * 🕒 Time Complexity: O(2N)
- * 💾 Space Complexity: O(1)
- *
- * @param a Vector of integers representing the array.
- * @param n Size of the array.
- * @return int The second largest element.
- */
+// ---------------------- BETTER APPROACH (TWO PASSES) ----------------------
+/*
+APPROACH EXPLANATION:
+1. First traversal finds the largest element.
+2. Second traversal finds the largest element
+   that is strictly smaller than the largest.
+
+WHY TWO PASSES:
+- Keeps logic simple and readable.
+- Avoids sorting overhead.
+
+TIME COMPLEXITY: O(2N) ≈ O(N)
+SPACE COMPLEXITY: O(1)
+*/
 int secondLargestBetter(vector<int> &a, int n)
 {
-    // take -1 as initial answer if all given inputs are +ve,
-    // or INT_MIN for +ve,-ve numbers as input
-    int secondLargest = INT_MIN;
+    // If array size is less than 2,
+    // second largest cannot exist
+    if (n < 2)
+        return -1;
 
-    // first parse: find the largest element: O(n)
-    int largest = a[0];
-    for (int i = 1; i < n; i++)
-    {
-        if (largest < a[i])
-        {
-            largest = a[i];
-        }
-    }
-
-    // second parse: find second largest now.
-    // O(n)
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] > secondLargest && a[i] < largest)
-        {
-            secondLargest = a[i];
-        }
-    }
-    return secondLargest;
-}
-
-// ---------------------- Optimal Approach ----------------------
-/**
- * @brief Finds the second largest element using a single traversal.
- *
- * 🕒 Time Complexity: O(N)
- * 💾 Space Complexity: O(1)
- *
- * @param a Vector of integers representing the array.
- * @param n Size of the array.
- * @return int The second largest element.
- */
-int secondLargestBest(vector<int> &a, int n)
-{
+    // -------- FIRST PASS --------
+    // Assume first element is the largest initially
     int largest = a[0];
 
-    // take -1 as initial answer if all given inputs are +ve,
-    // or INT_MIN for +ve,-ve numbers as input
-    int secondLargest = INT_MIN;
-
-    // traverse the array
+    // Traverse array to find the largest element
     for (int i = 1; i < n; i++)
     {
-        // if a[i] > largest, set secondLargest to largest
-        // update largest to a[i]
+        // If current element is greater than largest,
+        // update largest
         if (a[i] > largest)
         {
-            secondLargest = largest;
             largest = a[i];
         }
-        // a[i] > secondLargest but not than largest,
-        // update the secondLargest
-        else if (a[i] < largest && a[i] > secondLargest)
+    }
+
+    // -------- SECOND PASS --------
+    // Initialize secondLargest to INT_MIN
+    int secondLargest = INT_MIN;
+
+    // Boolean flag to check if second largest exists
+    bool foundSecond = false;
+
+    // Traverse again to find second largest
+    for (int i = 0; i < n; i++)
+    {
+        // Check:
+        // 1. Element must be smaller than largest
+        // 2. Element must be greater than current secondLargest
+        if (a[i] < largest && (!foundSecond || a[i] > secondLargest))
         {
-            secondLargest = a[i];
+            secondLargest = a[i]; // Update second largest
+            foundSecond = true;   // Mark existence
         }
     }
-    return secondLargest;
+
+    // If second largest was found, return it
+    // Otherwise, return -1
+    return foundSecond ? secondLargest : -1;
 }
 
-// ---------------------- Main Function ----------------------
+// ---------------------- OPTIMAL APPROACH (ONE PASS) ----------------------
+/*
+APPROACH EXPLANATION:
+We maintain two variables while traversing once:
+1. largest        → stores the largest value so far
+2. secondLargest → stores the second largest distinct value
+
+WHY THIS IS OPTIMAL:
+- Only one traversal
+- No sorting
+- Constant extra space
+
+TIME COMPLEXITY: O(N)
+SPACE COMPLEXITY: O(1)
+*/
+int secondLargestOptimal(vector<int> &a, int n)
+{
+    // If array has fewer than 2 elements,
+    // second largest cannot exist
+    if (n < 2)
+        return -1;
+
+    // Initialize largest and secondLargest
+    int largest = INT_MIN;
+    int secondLargest = INT_MIN;
+
+    // Boolean flag to track if second largest exists
+    bool foundSecond = false;
+
+    // Traverse the array once
+    for (int i = 0; i < n; i++)
+    {
+        // CASE 1:
+        // If current element is greater than largest
+        if (a[i] > largest)
+        {
+            // If largest was already assigned,
+            // it becomes the second largest
+            if (largest != INT_MIN)
+            {
+                secondLargest = largest;
+                foundSecond = true;
+            }
+
+            // Update largest
+            largest = a[i];
+        }
+
+        // CASE 2:
+        // If element is smaller than largest
+        // but greater than secondLargest
+        else if (a[i] < largest)
+        {
+            // Update the second largest element:
+            // - If no second largest has been found yet, accept this value
+            // - Otherwise, update it only if the current value is larger
+            //   than the existing second largest (but still < largest)
+            if (!foundSecond || a[i] > secondLargest)
+            {
+                secondLargest = a[i];
+                foundSecond = true;
+            }
+        }
+        // CASE 3:
+        // If a[i] == largest → ignore (duplicate)
+    }
+
+    // If second largest exists, return it
+    // Otherwise return -1
+    return foundSecond ? secondLargest : -1;
+}
+
+// ---------------------- MAIN FUNCTION ----------------------
 int main()
 {
     int n;
+
+    // Input number of elements
     cout << "Enter total no. of elements: ";
     cin >> n;
 
+    // Declare vector of size n
     vector<int> arr(n);
+
+    // Input array elements
     cout << "Enter elements: ";
     for (int i = 0; i < n; i++)
     {
         cin >> arr[i];
     }
 
-    // You can test all three methods as shown below:
-    // cout << "Second largest element (Brute): " << secondLargestBrute(arr, n) << endl;
-    // cout << "Second largest element (Better): " << secondLargestBetter(arr, n) << endl;
-    cout << "Second largest element (Optimal): " << secondLargestBest(arr, n) << endl;
+    // Call and display results from all approaches
+    cout << "Second largest element (Brute): "
+         << secondLargestBrute(arr, n) << endl;
+
+    cout << "Second largest element (Better): "
+         << secondLargestBetter(arr, n) << endl;
+
+    cout << "Second largest element (Optimal): "
+         << secondLargestOptimal(arr, n) << endl;
 
     return 0;
 }
-
-/*
-============================================================================
-✅ SAMPLE INPUT:
-Enter total no. of elements: 6
-Enter elements: 12 35 1 10 34 1
-
-✅ EXPECTED OUTPUT:
-Second largest element (Optimal): 34
-============================================================================
-*/
